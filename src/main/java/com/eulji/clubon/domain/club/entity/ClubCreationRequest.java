@@ -1,6 +1,7 @@
 package com.eulji.clubon.domain.club.entity;
 
 import com.eulji.clubon.domain.member.entity.Member;
+import com.eulji.clubon.global.error.AlreadyProcessedClubCreationRequestException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -41,6 +42,10 @@ public class ClubCreationRequest {
     @Column(nullable = false, length = 20)
     private ClubType type;
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 30)
+    private ClubCategory category;
+
     @Column(nullable = false, length = 100)
     private String shortDescription;
 
@@ -68,12 +73,14 @@ public class ClubCreationRequest {
             Member requester,
             String name,
             ClubType type,
+            ClubCategory category,
             String shortDescription,
             String fullDescription
     ) {
         this.requester = requester;
         this.name = name;
         this.type = type;
+        this.category = category == null ? ClubCategory.ETC : category;
         this.shortDescription = shortDescription;
         this.fullDescription = fullDescription;
         this.status = ClubCreationRequestStatus.PENDING;
@@ -85,8 +92,35 @@ public class ClubCreationRequest {
         if (status == null) {
             status = ClubCreationRequestStatus.PENDING;
         }
+        if (category == null) {
+            category = ClubCategory.ETC;
+        }
         if (createdAt == null) {
             createdAt = LocalDateTime.now();
         }
+    }
+
+    public void approve(Club createdClub) {
+        if (this.status != ClubCreationRequestStatus.PENDING) {
+            throw new AlreadyProcessedClubCreationRequestException();
+        }
+
+        this.status = ClubCreationRequestStatus.APPROVED;
+        this.createdClub = createdClub;
+        this.reviewedAt = LocalDateTime.now();
+    }
+
+    public void reject(String rejectedReason) {
+        if (this.status != ClubCreationRequestStatus.PENDING) {
+            throw new AlreadyProcessedClubCreationRequestException();
+        }
+
+        this.status = ClubCreationRequestStatus.REJECTED;
+        this.rejectedReason = rejectedReason;
+        this.reviewedAt = LocalDateTime.now();
+    }
+
+    public ClubCategory getCategory() {
+        return category == null ? ClubCategory.ETC : category;
     }
 }

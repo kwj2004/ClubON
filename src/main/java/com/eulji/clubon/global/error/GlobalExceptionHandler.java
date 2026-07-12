@@ -110,6 +110,26 @@ public class GlobalExceptionHandler {
                 ));
     }
 
+    @ExceptionHandler(DuplicateClubApplicationException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateClubApplicationException(DuplicateClubApplicationException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+            .body(ErrorResponse.of(
+                HttpStatus.CONFLICT.value(),
+                "DUPLICATE_CLUB_APPLICATION",
+                e.getMessage()
+            ));
+    }
+
+    @ExceptionHandler(AlreadyClubMemberException.class)
+    public ResponseEntity<ErrorResponse> handleAlreadyClubMemberException(AlreadyClubMemberException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+            .body(ErrorResponse.of(
+                HttpStatus.CONFLICT.value(),
+                "ALREADY_CLUB_MEMBER",
+                e.getMessage()
+            ));
+    }
+
     @ExceptionHandler(LoginFailedException.class)
     public ResponseEntity<ErrorResponse> handleLoginFailedException(LoginFailedException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -139,6 +159,75 @@ public class GlobalExceptionHandler {
                         e.getMessage()
                 ));
     }
+    @ExceptionHandler(ClubRecordNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleClubRecordNotFoundException(ClubRecordNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(ErrorResponse.of(
+                HttpStatus.NOT_FOUND.value(),
+                "CLUB_RECORD_NOT_FOUND",
+                e.getMessage()
+            ));
+    }
+
+    @ExceptionHandler(ClubPostNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleClubPostNotFoundException(ClubPostNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(ErrorResponse.of(
+                HttpStatus.NOT_FOUND.value(),
+                "CLUB_POST_NOT_FOUND",
+                e.getMessage()
+            ));
+    }
+
+    @ExceptionHandler(ClubReviewNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleClubReviewNotFoundException(ClubReviewNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(ErrorResponse.of(
+                HttpStatus.NOT_FOUND.value(),
+                "CLUB_REVIEW_NOT_FOUND",
+                e.getMessage()
+            ));
+    }
+
+    @ExceptionHandler(DuplicateClubReviewException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateClubReviewException(DuplicateClubReviewException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+            .body(ErrorResponse.of(
+                HttpStatus.CONFLICT.value(),
+                "DUPLICATE_CLUB_REVIEW",
+                e.getMessage()
+            ));
+    }
+
+    @ExceptionHandler(ClubMembershipNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleClubMembershipNotFoundException(ClubMembershipNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(ErrorResponse.of(
+                HttpStatus.NOT_FOUND.value(),
+                "CLUB_MEMBERSHIP_NOT_FOUND",
+                e.getMessage()
+            ));
+    }
+
+    @ExceptionHandler(ClubApplicationNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleClubApplicationNotFoundException(ClubApplicationNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(ErrorResponse.of(
+                HttpStatus.NOT_FOUND.value(),
+                "CLUB_APPLICATION_NOT_FOUND",
+                e.getMessage()
+            ));
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalStateException(IllegalStateException e) {
+        return ResponseEntity.badRequest()
+            .body(ErrorResponse.of(
+                HttpStatus.BAD_REQUEST.value(),
+                "INVALID_APPLICATION_STATUS",
+                e.getMessage()
+            ));
+    }
 
     @ExceptionHandler(MemberNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleMemberNotFoundException(MemberNotFoundException e) {
@@ -160,6 +249,38 @@ public class GlobalExceptionHandler {
                 ));
     }
 
+    @ExceptionHandler(InquiryNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleInquiryNotFoundException(InquiryNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(ErrorResponse.of(
+                HttpStatus.NOT_FOUND.value(),
+                "INQUIRY_NOT_FOUND",
+                e.getMessage()
+            ));
+    }
+
+    @ExceptionHandler(AlreadyAnsweredInquiryException.class)
+    public ResponseEntity<ErrorResponse> handleAlreadyAnsweredInquiryException(
+        AlreadyAnsweredInquiryException e
+    ) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+            .body(ErrorResponse.of(
+                HttpStatus.CONFLICT.value(),
+                "INQUIRY_ALREADY_ANSWERED",
+                e.getMessage()
+            ));
+    }
+
+    @ExceptionHandler(NotificationNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNotificationNotFoundException(NotificationNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(ErrorResponse.of(
+                HttpStatus.NOT_FOUND.value(),
+                "NOTIFICATION_NOT_FOUND",
+                e.getMessage()
+            ));
+    }
+
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException e) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
@@ -168,5 +289,25 @@ public class GlobalExceptionHandler {
                         "ACCESS_DENIED",
                         e.getMessage()
                 ));
+    }
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException e) {
+        return ResponseEntity.badRequest()
+            .body(ErrorResponse.of(
+                HttpStatus.BAD_REQUEST.value(),
+                "INVALID_INPUT_VALUE",
+                e.getMessage()
+            ));
+    }
+    @ExceptionHandler(AlreadyProcessedClubCreationRequestException.class)
+    public ResponseEntity<ErrorResponse> handleAlreadyProcessedClubCreationRequestException(
+        AlreadyProcessedClubCreationRequestException e
+    ) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+            .body(ErrorResponse.of(
+                HttpStatus.CONFLICT.value(),
+                "ALREADY_PROCESSED_CLUB_CREATION_REQUEST",
+                e.getMessage()
+            ));
     }
 }

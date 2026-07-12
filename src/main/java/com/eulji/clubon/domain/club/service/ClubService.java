@@ -4,6 +4,8 @@ import com.eulji.clubon.domain.club.dto.ClubDetailResponse;
 import com.eulji.clubon.domain.club.dto.ClubListResponse;
 import com.eulji.clubon.domain.club.dto.UpdateClubRequest;
 import com.eulji.clubon.domain.club.entity.Club;
+import com.eulji.clubon.domain.club.entity.ClubActivityLogType;
+import com.eulji.clubon.domain.club.entity.ClubCategory;
 import com.eulji.clubon.domain.club.entity.ClubMemberRole;
 import com.eulji.clubon.domain.club.entity.ClubStatus;
 import com.eulji.clubon.domain.club.entity.ClubType;
@@ -26,11 +28,12 @@ public class ClubService {
     private final ClubRepository clubRepository;
     private final ClubMembershipRepository clubMembershipRepository;
     private final ClubBookmarkService clubBookmarkService;
+    private final ClubActivityLogService clubActivityLogService;
 
-    public List<ClubListResponse> getClubs(ClubType type, ClubStatus status, String keyword) {
+    public List<ClubListResponse> getClubs(ClubType type, ClubCategory category, ClubStatus status, String keyword) {
         String normalizedKeyword = normalizeKeyword(keyword);
 
-        return clubRepository.searchClubs(type, status, normalizedKeyword)
+        return clubRepository.searchClubs(type, category, status, normalizedKeyword)
                 .stream()
                 .map(ClubListResponse::from)
                 .toList();
@@ -59,6 +62,7 @@ public class ClubService {
 
         club.updateInfo(
                 request.status(),
+                request.category(),
                 trimOrNull(request.shortDescription()),
                 trimOrNull(request.fullDescription()),
                 trimOrNull(request.recruitPeriod()),
@@ -66,6 +70,14 @@ public class ClubService {
                 trimOrNull(request.activityInfo()),
                 trimOrNull(request.contactUrl()),
                 trimOrNull(request.imageUrl())
+        );
+
+        clubActivityLogService.log(
+                clubId,
+                email,
+                ClubActivityLogType.CLUB_UPDATED,
+                "동아리 정보가 수정되었습니다.",
+                "/clubs/" + clubId
         );
     }
 

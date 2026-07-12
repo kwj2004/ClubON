@@ -33,6 +33,10 @@ public class Club {
     @Column(nullable = false, length = 20)
     private ClubType type;
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 30)
+    private ClubCategory category;
+
     @Column(length = 50)
     private String shortDescription;
 
@@ -65,6 +69,7 @@ public class Club {
     public Club(
             String name,
             ClubType type,
+            ClubCategory category,
             String shortDescription,
             String fullDescription,
             String recruitPeriod,
@@ -76,6 +81,7 @@ public class Club {
     ) {
         this.name = name;
         this.type = type;
+        this.category = category == null ? ClubCategory.ETC : category;
         this.shortDescription = shortDescription;
         this.fullDescription = fullDescription;
         this.recruitPeriod = recruitPeriod;
@@ -92,6 +98,9 @@ public class Club {
         if (status == null) {
             status = ClubStatus.OPEN;
         }
+        if (category == null) {
+            category = ClubCategory.ETC;
+        }
         if (createdAt == null) {
             createdAt = LocalDateTime.now();
         }
@@ -99,6 +108,7 @@ public class Club {
 
     public void updateInfo(
             ClubStatus status,
+            ClubCategory category,
             String shortDescription,
             String fullDescription,
             String recruitPeriod,
@@ -109,6 +119,9 @@ public class Club {
     ) {
         if (status != null) {
             this.status = status;
+        }
+        if (category != null) {
+            this.category = category;
         }
         if (shortDescription != null) {
             this.shortDescription = shortDescription;
@@ -131,5 +144,9 @@ public class Club {
         if (imageUrl != null) {
             this.imageUrl = imageUrl;
         }
+    }
+
+    public ClubCategory getCategory() {
+        return category == null ? ClubCategory.ETC : category;
     }
 }

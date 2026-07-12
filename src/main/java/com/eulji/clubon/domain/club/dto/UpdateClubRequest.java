@@ -1,11 +1,14 @@
 package com.eulji.clubon.domain.club.dto;
 
+import com.eulji.clubon.domain.club.entity.ClubCategory;
 import com.eulji.clubon.domain.club.entity.ClubStatus;
 import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.URL;
 
 public record UpdateClubRequest(
         ClubStatus status,
+
+        ClubCategory category,
 
         @Size(max = 100, message = "한 줄 소개는 최대 100자까지 입력할 수 있습니다.")
         String shortDescription,
@@ -27,6 +30,7 @@ public record UpdateClubRequest(
 
     public boolean hasAnyValue() {
         return status != null
+                || category != null
                 || shortDescription != null
                 || fullDescription != null
                 || recruitPeriod != null

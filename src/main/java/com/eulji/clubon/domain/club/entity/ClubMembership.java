@@ -55,4 +55,8 @@ public class ClubMembership {
         this.role = role;
         this.joinedAt = LocalDateTime.now();
     }
+
+    public void updateRole(ClubMemberRole role) {
+        this.role = role;
+    }
 }
