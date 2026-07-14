@@ -34,4 +34,13 @@ public class MailService {
 
         mailSender.send(message);
     }
+
+    public void sendPasswordResetCode(String to, String code) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        if (StringUtils.hasText(from)) message.setFrom(from);
+        message.setTo(to);
+        message.setSubject("[동아리 ON] 비밀번호 재설정 인증번호");
+        message.setText("비밀번호 재설정 인증번호는 [%s] 입니다. 인증번호는 5분 동안 유효합니다.".formatted(code));
+        mailSender.send(message);
+    }
 }

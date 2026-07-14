@@ -6,6 +6,9 @@ import com.eulji.clubon.domain.auth.dto.SignupMemberType;
 import com.eulji.clubon.domain.auth.dto.SignupRequest;
 import com.eulji.clubon.domain.auth.dto.SignupResponse;
 import com.eulji.clubon.domain.auth.dto.TokenInfo;
+import com.eulji.clubon.domain.auth.dto.RefreshTokenRequest;
+import com.eulji.clubon.domain.auth.entity.RefreshToken;
+import com.eulji.clubon.domain.auth.repository.RefreshTokenRepository;
 import com.eulji.clubon.domain.club.entity.Club;
 import com.eulji.clubon.domain.club.entity.ClubAdminRequest;
 import com.eulji.clubon.domain.club.repository.ClubAdminRequestRepository;
@@ -23,6 +26,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Value;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.util.Base64;
 
 // 회원가입, 운영자 신청 회원가입, 로그인을 처리하는 인증 서비스입니다.
 @Service
@@ -37,6 +47,11 @@ public class AuthService {
     private final EmailVerificationService emailVerificationService;
     private final ClubRepository clubRepository;
     private final ClubAdminRequestRepository clubAdminRequestRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final SecureRandom secureRandom = new SecureRandom();
+
+    @Value("${auth.refresh-token.expiration}")
+    private long refreshTokenExpiration;
 
     // 학교 이메일 인증 여부와 중복 정보를 검증한 뒤 회원을 생성합니다.
     @Transactional
@@ -70,7 +85,36 @@ public class AuthService {
         }
 
         TokenInfo tokenInfo = jwtTokenProvider.createToken(member.getEmail(), member.getRole());
+        if (request.rememberMe()) tokenInfo = addRefreshToken(member, tokenInfo);
         return LoginResponse.of(member, tokenInfo);
+    }
+
+    @Transactional
+    public TokenInfo refresh(RefreshTokenRequest request) {
+        RefreshToken saved = refreshTokenRepository.findByTokenHash(hash(request.refreshToken()))
+            .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 Refresh Token입니다."));
+        if (!saved.isUsable(LocalDateTime.now()))
+            throw new IllegalArgumentException("Refresh Token이 만료되었거나 폐기되었습니다.");
+        saved.revoke();
+        return addRefreshToken(saved.getMember(), jwtTokenProvider.createToken(saved.getMember().getEmail(), saved.getMember().getRole()));
+    }
+
+    @Transactional
+    public void logout(RefreshTokenRequest request) {
+        refreshTokenRepository.findByTokenHash(hash(request.refreshToken())).ifPresent(RefreshToken::revoke);
+    }
+
+    private TokenInfo addRefreshToken(Member member, TokenInfo accessToken) {
+        byte[] bytes = new byte[32]; secureRandom.nextBytes(bytes);
+        String raw = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+        refreshTokenRepository.save(RefreshToken.builder().member(member).tokenHash(hash(raw))
+            .expiresAt(LocalDateTime.now().plusNanos(refreshTokenExpiration * 1_000_000)).build());
+        return accessToken.withRefreshToken(raw, refreshTokenExpiration / 1000);
+    }
+
+    private String hash(String value) {
+        try { return java.util.HexFormat.of().formatHex(MessageDigest.getInstance("SHA-256").digest(value.getBytes(StandardCharsets.UTF_8))); }
+        catch (NoSuchAlgorithmException e) { throw new IllegalStateException(e); }
     }
 
     // 이메일과 학번은 서비스 전체에서 유일해야 하므로 가입 전에 중복을 차단합니다.

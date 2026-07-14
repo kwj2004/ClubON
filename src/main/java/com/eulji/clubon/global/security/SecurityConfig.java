@@ -33,6 +33,10 @@ public class SecurityConfig {
                                 "/api/auth/login",
                                 "/api/auth/email-verifications/send",
                                 "/api/auth/email-verifications/confirm",
+                                "/api/auth/tokens/refresh",
+                                "/api/auth/logout",
+                                "/api/auth/login-id/find",
+                                "/api/auth/password-resets/**",
                                 "/error"
                         ).permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/departments").permitAll()
