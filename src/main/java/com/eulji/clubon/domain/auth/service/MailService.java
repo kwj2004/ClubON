@@ -1,7 +1,9 @@
 package com.eulji.clubon.domain.auth.service;
 
+import com.eulji.clubon.global.error.MailSendFailedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -32,7 +34,7 @@ public class MailService {
             인증번호는 5분 동안 유효합니다.
             """.formatted(code));
 
-        mailSender.send(message);
+        send(message);
     }
 
     public void sendPasswordResetCode(String to, String code) {
@@ -41,6 +43,14 @@ public class MailService {
         message.setTo(to);
         message.setSubject("[동아리 ON] 비밀번호 재설정 인증번호");
         message.setText("비밀번호 재설정 인증번호는 [%s] 입니다. 인증번호는 5분 동안 유효합니다.".formatted(code));
-        mailSender.send(message);
+        send(message);
+    }
+
+    private void send(SimpleMailMessage message) {
+        try {
+            mailSender.send(message);
+        } catch (MailException e) {
+            throw new MailSendFailedException(e);
+        }
     }
 }
