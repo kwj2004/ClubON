@@ -15,6 +15,16 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(StorageOperationFailedException.class)
+    public ResponseEntity<ErrorResponse> handleStorageOperationFailedException(StorageOperationFailedException e) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(ErrorResponse.of(
+                        HttpStatus.SERVICE_UNAVAILABLE.value(),
+                        "STORAGE_OPERATION_FAILED",
+                        e.getMessage()
+                ));
+    }
+
     @ExceptionHandler(MailSendFailedException.class)
     public ResponseEntity<ErrorResponse> handleMailSendFailedException(MailSendFailedException e) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)

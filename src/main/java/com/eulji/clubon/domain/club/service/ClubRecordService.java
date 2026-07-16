@@ -28,6 +28,7 @@ public class ClubRecordService {
     private final ClubRecordRepository clubRecordRepository;
     private final ClubRepository clubRepository;
     private final ClubMembershipRepository clubMembershipRepository;
+    private final ClubRecordImageService clubRecordImageService;
 
     @Transactional
     public CreateClubRecordResponse createRecord(
@@ -48,6 +49,8 @@ public class ClubRecordService {
             throw new AccessDeniedException("해당 동아리의 활동 기록을 작성할 권한이 없습니다.");
         }
 
+        clubRecordImageService.validateRecordImageKeys(clubId, request.imageUrls());
+
         ClubRecord record = clubRecordRepository.save(ClubRecord.builder()
             .club(club)
             .title(request.title())
@@ -64,7 +67,10 @@ public class ClubRecordService {
 
         return clubRecordRepository.findByClub_IdOrderByCreatedAtDesc(clubId)
             .stream()
-            .map(ClubRecordListResponse::from)
+            .map(record -> ClubRecordListResponse.from(
+                record,
+                clubRecordImageService.createDownloadUrl(record.getThumbnailUrl())
+            ))
             .toList();
     }
     public ClubRecordDetailResponse getRecordDetail(Long clubId, Long recordId) {
@@ -75,7 +81,7 @@ public class ClubRecordService {
         ClubRecord record = clubRecordRepository.findByIdAndClubId(recordId, clubId)
             .orElseThrow(ClubRecordNotFoundException::new);
 
-        return ClubRecordDetailResponse.from(record);
+        return ClubRecordDetailResponse.from(record, clubRecordImageService.createDownloadUrls(record.getImageUrls()));
     }
     @Transactional
     public void updateRecord(
@@ -97,6 +103,8 @@ public class ClubRecordService {
         if (!isClubAdmin) {
             throw new AccessDeniedException("해당 동아리의 활동 기록을 수정할 권한이 없습니다.");
         }
+
+        clubRecordImageService.validateRecordImageKeys(clubId, request.imageUrls());
 
         ClubRecord record = clubRecordRepository.findByIdAndClubId(recordId, clubId)
             .orElseThrow(ClubRecordNotFoundException::new);

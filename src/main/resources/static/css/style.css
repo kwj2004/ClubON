@@ -1,0 +1,9406 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --yellow: #ffc053;
+  --yellow-light: #f8d393;
+  --blue: #072c6c;
+  --blue-muted: #6c7aa4;
+  --green: #74b79e;
+  --border: rgba(0, 0, 0, 0.25);
+  --container: 1280px;
+}
+
+body {
+  margin: 0;
+  color: var(--blue);
+  background: #ffffff;
+  font-family: "Pretendard", "Noto Sans KR", Arial, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+/* Header */
+.site-header {
+  width: 100%;
+  min-height: 82px;
+  padding: 0 clamp(24px, 5vw, 58px);
+  background: var(--yellow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 19px;
+}
+
+.header-emblem {
+  width: 51px;
+  height: 49px;
+  object-fit: contain;
+}
+
+.logo-wrap span {
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -0.7px;
+  white-space: nowrap;
+}
+
+.gnb {
+  height: 82px;
+  display: flex;
+  align-items: center;
+  gap: clamp(28px, 3.4vw, 54px);
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.gnb a {
+  height: 82px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  white-space: nowrap;
+}
+
+.gnb a.is-active::after {
+  content: "";
+  width: 36px;
+  height: 3px;
+  background: var(--blue);
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+}
+
+/* Hero */
+.hero-section {
+  height: 708px;
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.glow {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.glow-1 {
+  width: 420px;
+  height: auto;
+  top: 123px;
+  left: calc(50% - 390px);
+}
+
+.glow-2 {
+  width: 407px;
+  height: auto;
+  top: 243px;
+  left: calc(50% + 53px);
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 1;
+  margin-top: 212px;
+}
+
+.hero-copy h1 {
+  margin: 0;
+  font-size: clamp(58px, 5.55vw, 80px);
+  line-height: 1.18;
+  letter-spacing: -3.2px;
+  font-weight: 900;
+}
+
+.hero-copy p {
+  margin: 28px 0 0;
+  font-size: clamp(16px, 1.4vw, 20px);
+  font-weight: 900;
+}
+
+/* Feature marquee */
+.feature-marquee {
+  width: 100%;
+  overflow: hidden;
+}
+
+.feature-track {
+  display: flex;
+  gap: 62px;
+  width: max-content;
+  animation: featureMarquee 36s linear infinite;
+  will-change: transform;
+}
+
+.feature-marquee:hover .feature-track {
+  animation-play-state: paused;
+}
+
+.feature-set {
+  display: flex;
+  gap: 62px;
+  flex-shrink: 0;
+}
+
+.feature-card {
+  width: 317px;
+  height: 343px;
+  flex: 0 0 auto;
+  border-radius: 16px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  perspective: 1000px;
+  color: var(--blue);
+}
+
+.feature-card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.55s ease;
+}
+
+.feature-card.is-back .feature-card-inner {
+  transform: rotateY(180deg);
+}
+
+.feature-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  backface-visibility: hidden;
+}
+
+.feature-front {
+  padding-top: 35px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.feature-card.light .feature-front,
+.feature-card.light .feature-back {
+  background: var(--yellow-light);
+}
+
+.feature-card.yellow .feature-front,
+.feature-card.yellow .feature-back {
+  background: var(--yellow);
+}
+
+.feature-front h2 {
+  margin: 0;
+  font-size: 35px;
+  line-height: 1.2;
+  font-weight: 900;
+  letter-spacing: -1px;
+  white-space: nowrap;
+}
+
+.feature-front img {
+  width: 121px;
+  height: 121px;
+  margin-top: 74px;
+  object-fit: contain;
+}
+
+.feature-back {
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 42px;
+  text-align: center;
+}
+
+.feature-back p {
+  margin: 0;
+  font-size: 29px;
+  line-height: 1.35;
+  font-weight: 500;
+  letter-spacing: -0.6px;
+}
+
+@keyframes featureMarquee {
+  from {
+    transform: translateX(-121px);
+  }
+  to {
+    transform: translateX(calc(-50% - 31px));
+  }
+}
+
+/* Search */
+.search-section {
+  margin-top: 292px;
+  display: flex;
+  justify-content: center;
+}
+
+.search-bar {
+  width: min(888px, 90vw);
+  height: 56px;
+  border: 2px solid var(--blue);
+  border-radius: 51.5px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  padding-left: 28px;
+  padding-right: 21px;
+}
+
+.search-bar input {
+  flex: 1;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  color: var(--blue);
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.search-bar input::placeholder {
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.search-bar button {
+  border: 0;
+  background: transparent;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.search-bar svg {
+  width: 31px;
+  height: 31px;
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+/* Club sections */
+.club-section {
+  width: min(var(--container), 88vw);
+  margin: 114px auto 0;
+}
+
+.general-section {
+  margin-top: 156px;
+  margin-bottom: 283px;
+}
+
+.section-title-row {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin-bottom: 55px;
+}
+
+.section-title-row h2 {
+  margin: 0;
+  font-size: 35px;
+  line-height: 1;
+  font-weight: 900;
+  white-space: nowrap;
+  letter-spacing: -1px;
+}
+
+.section-title-row span {
+  height: 3px;
+  background: var(--blue);
+  flex: 1;
+}
+
+.section-title-row a {
+  font-size: 30px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.section-title-row b {
+  font-size: 43px;
+  line-height: 0;
+  margin-left: 13px;
+  position: relative;
+  top: 3px;
+}
+
+.club-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 31px;
+}
+
+.club-card {
+  height: 312px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.club-thumb {
+  height: 184px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.club-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.club-content {
+  height: 128px;
+  padding: 13px 27px 14px;
+}
+
+.club-content h3 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.club-content p {
+  margin: 7px 0 0;
+  font-size: 15px;
+  line-height: 1.1;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.club-bottom {
+  margin-top: 21px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tag {
+  width: 68px;
+  height: 26px;
+  border-radius: 8px;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.tag.green {
+  background: var(--green);
+}
+
+.tag.blue {
+  background: var(--blue-muted);
+}
+
+.tag.yellow {
+  background: var(--yellow-light);
+}
+
+.bookmark-icon {
+  width: 16px;
+  height: 20px;
+  object-fit: contain;
+}
+
+/* Footer */
+.site-footer {
+  min-height: 169px;
+  padding: 30px clamp(36px, 5vw, 73px);
+  background: var(--yellow);
+  color: #000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 48px;
+}
+
+.footer-brand img {
+  width: 106px;
+  height: 24px;
+  object-fit: contain;
+  object-position: left center;
+  display: block;
+}
+
+.footer-brand h2 {
+  margin: 16px 0 34px;
+  font-size: 35px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.footer-brand p {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.footer-brand span {
+  margin-left: 68px;
+}
+
+.footer-menu {
+  display: flex;
+  gap: 70px;
+  padding-top: 12px;
+  font-size: 12px;
+  line-height: 2.1;
+  font-weight: 700;
+}
+
+.footer-menu ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Responsive */
+@media (max-width: 1180px) {
+  .club-grid {
+    grid-template-columns: repeat(2, minmax(0, 296px));
+    justify-content: center;
+  }
+
+  .club-section {
+    width: min(700px, 88vw);
+  }
+
+  .section-title-row {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 860px) {
+  .site-header {
+    min-height: auto;
+    padding: 16px 20px 10px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .gnb {
+    height: 42px;
+    width: 100%;
+    justify-content: center;
+    gap: 18px;
+    font-size: 14px;
+  }
+
+  .gnb a {
+    height: 42px;
+  }
+
+  .logo-wrap span {
+    font-size: 26px;
+  }
+
+  .hero-section {
+    height: 560px;
+  }
+
+  .hero-copy {
+    margin-top: 140px;
+  }
+
+  .hero-copy h1 {
+    font-size: 47px;
+    letter-spacing: -2px;
+  }
+
+  .hero-copy p {
+    width: min(390px, 88vw);
+    margin: 22px auto 0;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .glow-1 {
+    width: 360px;
+    top: 70px;
+    left: calc(50% - 245px);
+  }
+
+  .glow-2 {
+    width: 360px;
+    top: 210px;
+    left: calc(50% - 10px);
+  }
+
+  .feature-track,
+  .feature-set {
+    gap: 36px;
+  }
+
+  .feature-card {
+    width: 270px;
+    height: 292px;
+  }
+
+  .feature-front h2 {
+    font-size: 28px;
+  }
+
+  .feature-front img {
+    width: 96px;
+    height: 96px;
+    margin-top: 58px;
+  }
+
+  .feature-back p {
+    font-size: 24px;
+  }
+
+  .search-section {
+    margin-top: 160px;
+  }
+
+  .search-bar input {
+    font-size: 15px;
+  }
+
+  .section-title-row h2 {
+    font-size: 28px;
+  }
+
+  .section-title-row a {
+    font-size: 22px;
+  }
+
+  .site-footer {
+    flex-direction: column;
+  }
+
+  .footer-brand span {
+    margin-left: 0;
+    display: block;
+    margin-top: 10px;
+  }
+
+  .footer-menu {
+    padding-top: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .gnb {
+    gap: 12px;
+    font-size: 12px;
+  }
+
+  .feature-card {
+    width: 245px;
+    height: 265px;
+  }
+
+  .club-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-title-row {
+    gap: 12px;
+  }
+
+  .section-title-row span {
+    min-width: 42px;
+  }
+
+  .club-content p {
+    white-space: normal;
+  }
+}
+
+
+/* ===== Fix: feature marquee should not make the web page horizontally long ===== */
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.feature-marquee {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  overflow: hidden;
+  position: relative;
+  isolation: isolate;
+}
+
+.feature-marquee::before,
+.feature-marquee::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: min(120px, 12vw);
+  height: 100%;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.feature-marquee::before {
+  left: 0;
+  background: linear-gradient(to right, #fff 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.feature-marquee::after {
+  right: 0;
+  background: linear-gradient(to left, #fff 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+/* ===== Bookmark button + saved clubs list ===== */
+.bookmark-btn {
+  width: 24px;
+  height: 28px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.bookmark-feature-back {
+  flex-direction: column;
+}
+
+.feature-back h3 {
+  margin: 0 0 18px;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.saved-club-list {
+  width: 100%;
+  max-height: 190px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+  display: grid;
+  gap: 10px;
+}
+
+.saved-club-list li {
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.45);
+  font-size: 18px;
+  font-weight: 800;
+}
+
+
+/* ===== FeatureSection 자연스럽게 보이도록 최종 수정 ===== */
+/* 넓은 모니터에서 카드가 화면 끝까지 길게 펼쳐져 보이지 않게 1440px 안에서만 흐르게 처리 */
+.feature-marquee {
+  --feature-start: -121px;
+  --feature-slide-distance: 1895px;
+
+  width: min(1440px, 100vw);
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  position: relative;
+  isolation: isolate;
+}
+
+/* 이전에 full viewport로 강제로 빼던 값 제거 */
+.feature-marquee {
+  margin-left: auto;
+}
+
+.feature-track {
+  animation: featureMarquee 32s linear infinite;
+}
+
+@keyframes featureMarquee {
+  from {
+    transform: translateX(var(--feature-start));
+  }
+
+  to {
+    transform: translateX(calc(var(--feature-start) - var(--feature-slide-distance)));
+  }
+}
+
+/* 양쪽 끝을 살짝 흐리게 해서 잘려 보이는 느낌을 자연스럽게 만듦 */
+.feature-marquee::before,
+.feature-marquee::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 120px;
+  height: 100%;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.feature-marquee::before {
+  left: 0;
+  background: linear-gradient(to right, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.feature-marquee::after {
+  right: 0;
+  background: linear-gradient(to left, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+@media (max-width: 860px) {
+  .feature-marquee {
+    --feature-start: -80px;
+    --feature-slide-distance: 1530px;
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .feature-marquee::before,
+  .feature-marquee::after {
+    width: 44px;
+  }
+}
+
+@media (max-width: 560px) {
+  .feature-marquee {
+    --feature-start: -70px;
+    --feature-slide-distance: 1405px;
+  }
+
+  .feature-marquee::before,
+  .feature-marquee::after {
+    width: 28px;
+  }
+}
+
+
+/* ===== Status badge: 운영진 관리 페이지/API 연동 대비 ===== */
+/* 화면에서는 badge로 보이지만, 실제 상태는 club-card의 data-status 값 또는 백엔드 status 값으로 결정됨 */
+.tag {
+  transition: background-color 0.15s ease;
+}
+
+.tag.status-open {
+  background: var(--green);
+}
+
+.tag.status-closed {
+  background: var(--blue-muted);
+}
+
+.tag.status-always {
+  background: var(--yellow-light);
+}
+
+
+/* =========================================================
+   MyPage - Figma 04_MyPage 일반회원
+   나중에 API 연결할 부분은 js/mypage.js의 state만 교체하면 됨
+========================================================= */
+.mypage-page {
+  min-height: calc(100vh - 82px);
+  background: #ffffff;
+}
+
+.mypage-container {
+  width: min(1280px, 88vw);
+  margin: 0 auto;
+  padding: 52px 0 255px;
+  display: grid;
+  grid-template-columns: 183px minmax(0, 1fr);
+  gap: 63px;
+  align-items: start;
+}
+
+.mypage-sidebar {
+  width: 183px;
+  min-height: 431px;
+  border-radius: 16px;
+  background: #f5f5f5;
+  padding: 39px 0 28px;
+  text-align: center;
+  position: sticky;
+  top: 108px;
+}
+
+.mypage-sidebar h2 {
+  margin: 0 0 32px;
+  color: var(--yellow);
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.mypage-sidebar-menu {
+  display: grid;
+  gap: 25px;
+}
+
+.mypage-sidebar-menu button {
+  border: 0;
+  background: transparent;
+  color: #000000;
+  font-size: 22px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.mypage-sidebar-menu button.is-active {
+  color: var(--blue);
+  font-weight: 900;
+}
+
+.mypage-content {
+  display: grid;
+  gap: 36px;
+}
+
+.mypage-card {
+  border: 1px solid #d9d9d9;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.profile-card {
+  min-height: 175px;
+  padding: 34px 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.profile-left {
+  display: flex;
+  align-items: center;
+  gap: 27px;
+}
+
+.profile-avatar {
+  width: 105px;
+  height: 105px;
+  border-radius: 50%;
+  background: #f2f2f2;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.profile-avatar::before {
+  content: "";
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #777777;
+  position: absolute;
+  left: 50%;
+  top: 23px;
+  transform: translateX(-50%);
+}
+
+.profile-avatar::after {
+  content: "";
+  width: 68px;
+  height: 34px;
+  border-radius: 40px 40px 0 0;
+  background: #777777;
+  position: absolute;
+  left: 50%;
+  bottom: 23px;
+  transform: translateX(-50%);
+}
+
+.profile-info h1 {
+  margin: 0 0 6px;
+  color: #000000;
+  font-size: 35px;
+  line-height: 1.1;
+  font-weight: 900;
+}
+
+.profile-info p {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 20px;
+  line-height: 1.35;
+  font-weight: 500;
+}
+
+.profile-edit-btn {
+  align-self: flex-start;
+  min-width: 109px;
+  height: 37px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  background: #ffffff;
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.content-section {
+  padding: 26px 42px 43px;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 34px;
+}
+
+.section-head h2 {
+  margin: 0;
+  color: #000000;
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.more-link {
+  border: 0;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.joined-club-list {
+  display: grid;
+}
+
+.joined-club-item {
+  display: grid;
+  grid-template-columns: 69px 1fr 16px;
+  gap: 17px;
+  align-items: center;
+  min-height: 112px;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.joined-club-item:last-child {
+  border-bottom: 0;
+}
+
+.joined-club-logo {
+  width: 69px;
+  height: 69px;
+  border-radius: 8px;
+  background: #ffffff;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.joined-club-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.logo-placeholder {
+  width: 58px;
+  height: 41px;
+  background: linear-gradient(90deg, #ff5f17 0 34%, #000 34% 70%, transparent 70%);
+}
+
+.joined-club-info h3 {
+  margin: 0 0 7px;
+  color: #000000;
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.joined-club-info p {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.arrow-icon {
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 34px;
+  font-weight: 300;
+}
+
+.activity-section {
+  min-height: 417px;
+}
+
+.activity-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 197px));
+  gap: 29px;
+  justify-content: center;
+}
+
+.activity-card {
+  height: 282px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 50px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.activity-icon {
+  width: 42px;
+  height: 42px;
+  margin-bottom: 25px;
+  color: #000000;
+}
+
+.activity-card h3 {
+  margin: 0;
+  color: #000000;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.activity-count {
+  margin: 34px 0 11px;
+  color: var(--yellow);
+  font-size: 35px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.activity-unit {
+  color: #000000;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.notification-section {
+  min-height: 417px;
+}
+
+.notification-list {
+  display: grid;
+  gap: 8px;
+  padding: 0 35px;
+}
+
+.notification-item {
+  min-height: 70px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  display: grid;
+  grid-template-columns: 25px 1fr auto;
+  gap: 22px;
+  align-items: center;
+  padding: 0 42px 0 27px;
+}
+
+.notification-icon {
+  width: 21px;
+  height: 21px;
+}
+
+.notification-item p {
+  margin: 0;
+  color: #000000;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.notification-date {
+  min-width: 66px;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 4px;
+  background: #d9d9d9;
+  color: #000000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  white-space: nowrap;
+}
+
+.dynamic-panel {
+  display: none;
+}
+
+.dynamic-panel.is-active {
+  display: block;
+}
+
+.dynamic-empty {
+  padding: 82px 24px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.scrap-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 296px));
+  gap: 24px;
+  padding: 4px 0 10px;
+}
+
+.scrap-grid .club-card {
+  width: 100%;
+}
+
+@media (max-width: 1180px) {
+  .mypage-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .mypage-sidebar {
+    width: 100%;
+    min-height: auto;
+    position: static;
+    padding: 22px 18px;
+  }
+
+  .mypage-sidebar h2 {
+    margin-bottom: 18px;
+  }
+
+  .mypage-sidebar-menu {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px 28px;
+  }
+
+  .activity-grid {
+    grid-template-columns: repeat(2, minmax(0, 197px));
+  }
+
+  .scrap-grid {
+    grid-template-columns: repeat(2, minmax(0, 296px));
+    justify-content: center;
+  }
+}
+
+@media (max-width: 760px) {
+  .mypage-container {
+    width: min(92vw, 520px);
+    padding-top: 34px;
+  }
+
+  .profile-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .profile-left {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .profile-info h1 {
+    font-size: 30px;
+  }
+
+  .profile-info p {
+    font-size: 16px;
+  }
+
+  .content-section {
+    padding: 24px 22px 34px;
+  }
+
+  .joined-club-item {
+    grid-template-columns: 58px 1fr 14px;
+  }
+
+  .joined-club-logo {
+    width: 58px;
+    height: 58px;
+  }
+
+  .activity-grid,
+  .scrap-grid {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .notification-list {
+    padding: 0;
+  }
+
+  .notification-item {
+    grid-template-columns: 22px 1fr;
+    gap: 14px;
+    padding: 15px 18px;
+  }
+
+  .notification-date {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .notification-item p {
+    font-size: 16px;
+  }
+}
+
+
+/* =========================================================
+   Layout Fix
+   - 메인 영역은 고정 폭이 아니라 화면 너비에 맞게 유동적으로 조정
+   - footer는 내용이 적어도 화면 아래에 붙고, 내용이 많으면 자연스럽게 아래로 내려감
+========================================================= */
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+.site-footer {
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+/* 고정 느낌이 강한 메인 컨테이너들을 유동 폭으로 변경 */
+.club-section,
+.mypage-container,
+.mypage-main {
+  width: min(calc(100% - 80px), var(--container));
+  max-width: var(--container);
+}
+
+/* 마이페이지는 피그마 비율은 유지하되 화면 폭에 맞게 자연스럽게 줄어듦 */
+.mypage-container {
+  padding: clamp(36px, 4vw, 52px) 0 clamp(80px, 9vw, 150px);
+  grid-template-columns: minmax(150px, 183px) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 63px);
+}
+
+.mypage-content,
+.profile-card,
+.content-section,
+.mypage-card {
+  min-width: 0;
+}
+
+/* 카드 내부가 화면을 밀어내지 않도록 처리 */
+.profile-info,
+.joined-club-info,
+.notification-item p {
+  min-width: 0;
+}
+
+.profile-info p,
+.joined-club-info p,
+.notification-item p {
+  overflow-wrap: anywhere;
+}
+
+/* 큰 화면에서 너무 넓게 벌어지는 느낌 방지 + 작은 화면에서는 자동 축소 */
+.activity-grid {
+  grid-template-columns: repeat(4, minmax(150px, 197px));
+  justify-content: space-between;
+  gap: clamp(18px, 2.2vw, 29px);
+}
+
+.activity-card {
+  width: 100%;
+}
+
+/* 알림 영역도 고정 폭 대신 가용 폭에 맞게 */
+.notification-list {
+  padding: 0 clamp(0px, 3vw, 35px);
+}
+
+.notification-item {
+  grid-template-columns: 25px minmax(0, 1fr) auto;
+}
+
+/* 홈 카드 섹션도 화면 너비 기준으로 유동 조정 */
+.club-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.club-card {
+  width: 100%;
+}
+
+/* footer 내용이 좁은 화면에서 잘리지 않도록 */
+.site-footer {
+  width: 100%;
+  min-height: 169px;
+}
+
+.footer-brand,
+.footer-menu {
+  min-width: 0;
+}
+
+@media (max-width: 1180px) {
+  .club-section,
+  .mypage-container,
+  .mypage-main {
+    width: min(calc(100% - 48px), 900px);
+  }
+
+  .mypage-container {
+    grid-template-columns: 1fr;
+  }
+
+  .activity-grid {
+    grid-template-columns: repeat(2, minmax(150px, 1fr));
+    justify-content: stretch;
+  }
+
+  .club-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .club-section,
+  .mypage-container,
+  .mypage-main {
+    width: min(calc(100% - 32px), 520px);
+  }
+
+  .mypage-container {
+    padding-bottom: 72px;
+  }
+
+  .activity-grid,
+  .club-grid,
+  .scrap-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .site-footer {
+    padding-bottom: 34px;
+  }
+}
+
+
+/* =========================================================
+   Club Explore
+   - 중앙동아리 / 일반동아리 탭
+   - 스크랩 필터
+   - 카테고리 필터
+   - 나중에 GET /api/clubs와 GET /api/users/me/bookmarks 연결 가능
+========================================================= */
+.explore-page {
+  background: #ffffff;
+}
+
+.explore-container {
+  width: min(calc(100% - 160px), 1280px);
+  margin: 0 auto;
+  padding: 90px 0 180px;
+}
+
+.explore-tabs {
+  width: 286px;
+  height: 50px;
+  border-radius: 8px;
+  background: #f4f4f4;
+  margin: 0 auto 72px;
+  padding: 5px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.explore-tab {
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #000000;
+  font-size: 20px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.explore-tab.is-active {
+  background: #ffffff;
+  color: var(--blue);
+  font-weight: 900;
+}
+
+.explore-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 28px;
+  margin-bottom: 50px;
+}
+
+.explore-search {
+  width: min(639px, 100%);
+  height: 56px;
+  border: 2px solid var(--blue);
+  border-radius: 51.5px;
+  display: flex;
+  align-items: center;
+  padding: 0 18px 0 31px;
+}
+
+.explore-search input {
+  flex: 1;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  color: var(--blue);
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.explore-search input::placeholder {
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.explore-search button {
+  width: 31px;
+  height: 31px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.explore-search svg {
+  width: 31px;
+  height: 31px;
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.explore-filters {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.filter-chip {
+  min-height: 31px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 22.5px;
+  background: #ffffff;
+  color: rgba(0, 0, 0, 0.35);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 16px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.filter-chip img {
+  width: 16px;
+  height: 19px;
+  object-fit: contain;
+}
+
+.scrap-chip {
+  cursor: pointer;
+}
+
+.scrap-chip.is-active {
+  border-color: var(--blue);
+  color: var(--blue);
+  font-weight: 800;
+}
+
+.category-chip {
+  padding-right: 12px;
+}
+
+.category-chip select {
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.explore-result-info {
+  min-height: 24px;
+  margin-bottom: 22px;
+  color: rgba(0, 0, 0, 0.35);
+  font-size: 16px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.explore-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 296px));
+  gap: 28px 32px;
+  justify-content: center;
+}
+
+.explore-club-card {
+  position: relative;
+}
+
+.explore-card-link {
+  display: block;
+  height: 100%;
+}
+
+.explore-club-card .club-content {
+  padding-bottom: 48px;
+}
+
+.explore-club-card .club-content small {
+  display: block;
+  margin-top: 6px;
+  color: rgba(0, 0, 0, 0.35);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.explore-club-bottom {
+  position: absolute;
+  left: 19px;
+  right: 19px;
+  bottom: 13px;
+  margin-top: 0;
+}
+
+.explore-empty {
+  display: none;
+  padding: 90px 20px 160px;
+  color: rgba(0, 0, 0, 0.35);
+  font-size: 22px;
+  font-weight: 800;
+  text-align: center;
+}
+
+@media (max-width: 1180px) {
+  .explore-container {
+    width: min(calc(100% - 64px), 900px);
+  }
+
+  .explore-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .explore-search {
+    width: 100%;
+  }
+
+  .explore-filters {
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+
+  .explore-grid {
+    grid-template-columns: repeat(3, minmax(0, 296px));
+  }
+}
+
+@media (max-width: 860px) {
+  .explore-container {
+    width: min(calc(100% - 32px), 640px);
+    padding-top: 56px;
+  }
+
+  .explore-tabs {
+    margin-bottom: 44px;
+  }
+
+  .explore-grid {
+    grid-template-columns: repeat(2, minmax(0, 296px));
+    gap: 24px;
+  }
+}
+
+@media (max-width: 560px) {
+  .explore-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .explore-tabs {
+    width: 100%;
+  }
+
+  .explore-tab {
+    font-size: 17px;
+  }
+
+  .filter-chip,
+  .category-chip select {
+    font-size: 15px;
+  }
+}
+
+
+/* =========================================================
+   Category dropdown box
+   카테고리 칩을 누르면 네모 박스가 열리고, 선택한 카테고리로 필터링됨
+========================================================= */
+.category-dropdown {
+  position: relative;
+  z-index: 10;
+}
+
+.category-chip {
+  min-width: 143px;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.category-panel {
+  position: absolute;
+  top: 44px;
+  right: 0;
+  width: 579px;
+  min-height: 260px;
+  padding: 28px 40px 34px;
+  border: 1px solid #e2e2e2;
+  background: #ffffff;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.08);
+  display: none;
+}
+
+.category-dropdown.is-open .category-panel {
+  display: block;
+}
+
+.category-panel h3 {
+  margin: 0 0 26px;
+  color: #000000;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.category-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 23px;
+  column-gap: 90px;
+}
+
+.category-options button {
+  border: 0;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.35);
+  text-align: left;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.category-options button.is-active {
+  color: var(--yellow);
+}
+
+/* 카드 안에서는 카테고리를 굳이 보여주지 않음 */
+.explore-club-card .club-content small {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .category-panel {
+    right: auto;
+    left: 50%;
+    width: min(579px, calc(100vw - 32px));
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 560px) {
+  .category-panel {
+    padding: 24px 28px 30px;
+  }
+
+  .category-options {
+    column-gap: 36px;
+    row-gap: 20px;
+  }
+
+  .category-options button {
+    font-size: 16px;
+  }
+}
+
+
+/* =========================================================
+   Club Detail
+   - 소개 / 활동 / 게시판 / 멤버
+   - 일반 회원과 운영진 게시판 작성 권한 분리 준비
+========================================================= */
+.club-detail-page {
+  background: #ffffff;
+}
+
+.detail-container {
+  width: min(calc(100% - 160px), 1144px);
+  margin: 0 auto;
+  padding: 78px 0 180px;
+}
+
+.detail-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 118px;
+  color: #d9d9d9;
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.detail-breadcrumb a,
+.detail-breadcrumb strong {
+  color: #d9d9d9;
+  font-weight: 500;
+}
+
+.detail-hero-card {
+  border: 1px solid #d9d9d9;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.detail-cover {
+  height: 353px;
+  background: linear-gradient(180deg, #8d8d8d 0%, #eeeeee 100%);
+}
+
+.detail-hero-body {
+  min-height: 236px;
+  padding: 0 54px 28px;
+  position: relative;
+}
+
+.detail-logo-box {
+  width: 201px;
+  height: 201px;
+  border-radius: 8px;
+  background: #ffffff;
+  position: absolute;
+  top: -64px;
+  left: 49px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.detail-logo-box img {
+  width: 189px;
+  height: 189px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.detail-logo-box.is-empty::before {
+  content: "EU";
+  color: var(--blue);
+  font-size: 52px;
+  font-weight: 900;
+}
+
+.detail-title-area {
+  min-height: 120px;
+  padding-left: 240px;
+  padding-top: 30px;
+}
+
+.detail-title-area h1 {
+  margin: 0;
+  color: #000000;
+  font-size: clamp(42px, 5vw, 70px);
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -2px;
+}
+
+.detail-title-area p {
+  margin: 8px 0 0;
+  color: #000000;
+  font-size: clamp(22px, 2.4vw, 35px);
+  font-weight: 700;
+}
+
+.detail-actions {
+  position: absolute;
+  right: 54px;
+  bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.detail-scrap-btn {
+  min-width: 90px;
+  height: 31px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 22.5px;
+  background: #ffffff;
+  color: rgba(0, 0, 0, 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.detail-scrap-btn img {
+  width: 14px;
+  height: 18px;
+}
+
+.detail-scrap-btn.is-active {
+  color: var(--blue);
+  border-color: var(--yellow);
+}
+
+.detail-apply-btn {
+  width: 149px;
+  height: 44px;
+  border-radius: 8px;
+  background: var(--yellow);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.detail-summary {
+  display: flex;
+  gap: 34px;
+  margin: 16px 0 0;
+  padding-left: 34px;
+}
+
+.detail-summary div {
+  min-width: 82px;
+  padding-right: 31px;
+  border-right: 1px solid #d9d9d9;
+}
+
+.detail-summary div:last-child {
+  border-right: 0;
+}
+
+.detail-summary dt {
+  color: #d9d9d9;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.detail-summary dd {
+  margin: 8px 0 0;
+  color: #000000;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.admin-club-tools {
+  margin-top: 24px;
+  padding-left: 34px;
+  gap: 10px;
+  display: none;
+}
+
+.admin-club-tools button {
+  border: 0;
+  border-radius: 8px;
+  background: #f4f4f4;
+  color: #000000;
+  padding: 9px 12px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.detail-tabs {
+  height: 86px;
+  border-bottom: 1px solid #d9d9d9;
+  display: flex;
+  align-items: flex-end;
+  gap: 58px;
+  padding-left: 54px;
+}
+
+.detail-tabs button {
+  height: 48px;
+  border: 0;
+  border-bottom: 4px solid transparent;
+  background: transparent;
+  color: #000000;
+  font-size: 25px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.detail-tabs button.is-active {
+  color: var(--yellow);
+  border-bottom-color: var(--yellow);
+  font-weight: 900;
+}
+
+.detail-panel {
+  display: none;
+}
+
+.detail-panel.is-active {
+  display: block;
+}
+
+.detail-content-card {
+  border: 1px solid #d9d9d9;
+  border-radius: 16px;
+  background: #ffffff;
+  padding: 46px 60px 72px;
+}
+
+.detail-block {
+  padding-bottom: 48px;
+  margin-bottom: 48px;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.detail-block:last-child {
+  margin-bottom: 0;
+  border-bottom: 0;
+}
+
+.detail-block h2,
+.board-write-panel h2 {
+  margin: 0 0 28px;
+  color: #000000;
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.detail-block p,
+.detail-block li {
+  color: #000000;
+  font-size: 20px;
+  line-height: 1.55;
+  font-weight: 500;
+}
+
+.detail-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 32px;
+}
+
+.detail-tags span {
+  min-width: 54px;
+  height: 22px;
+  border-radius: 11px;
+  background: #f4f4f4;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.recruit-info dl {
+  display: grid;
+  gap: 18px;
+}
+
+.recruit-info div {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 28px;
+}
+
+.recruit-info dt,
+.recruit-info dd {
+  margin: 0;
+  color: #000000;
+  font-size: 20px;
+  line-height: 1.45;
+  font-weight: 500;
+}
+
+.d-day {
+  min-width: 54px;
+  height: 22px;
+  border-radius: 11px;
+  background: var(--yellow);
+  color: #ffffff;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.poster-large {
+  width: min(837px, 100%);
+  min-height: 520px;
+  margin: 0 auto;
+  background: #f4f4f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.poster-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.poster-large p {
+  display: none;
+  padding: 32px;
+  color: rgba(0,0,0,0.35);
+  text-align: center;
+}
+
+.poster-large.is-empty p {
+  display: block;
+}
+
+.activity-list {
+  margin: 0;
+  padding-left: 28px;
+}
+
+.muted-text {
+  color: #d9d9d9 !important;
+}
+
+.timeline {
+  margin-top: 36px;
+  padding-left: 40px;
+  position: relative;
+  display: grid;
+  gap: 36px;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 10px;
+  bottom: 10px;
+  width: 1px;
+  background: #000000;
+}
+
+.timeline div {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 46px;
+  position: relative;
+}
+
+.timeline div::before {
+  content: "";
+  position: absolute;
+  left: -38px;
+  top: 10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #000000;
+}
+
+.timeline strong,
+.timeline span {
+  font-size: 20px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.block-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.block-head h2 {
+  margin: 0;
+}
+
+.block-head button {
+  border: 0;
+  background: transparent;
+  color: #d9d9d9;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.activity-photo-grid,
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 36px;
+}
+
+.activity-photo {
+  height: 169px;
+  background: #d9d9d9;
+}
+
+.activity-photo-grid h3 {
+  margin: 14px 0 4px;
+  color: #000000;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.activity-photo-grid p {
+  margin: 0;
+  color: #d9d9d9;
+  font-size: 15px;
+}
+
+.review-grid article {
+  min-height: 94px;
+  border-radius: 16px;
+  background: #f4f4f4;
+  padding: 18px;
+}
+
+.review-grid strong {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.review-grid p {
+  margin: 10px 0 0;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.board-desc {
+  margin: 0 0 28px;
+  color: #000000;
+  font-size: 23px;
+  font-weight: 700;
+}
+
+.board-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.board-category-tabs,
+.post-category-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.board-category-tabs button,
+.post-category-tabs button {
+  min-width: 88px;
+  height: 47px;
+  border: 0.5px solid #000000;
+  border-radius: 23.5px;
+  background: #ffffff;
+  color: #000000;
+  font-size: 23px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.board-category-tabs button.is-active,
+.post-category-tabs button.is-active {
+  background: var(--yellow);
+  border-color: var(--yellow);
+  color: #ffffff;
+}
+
+.board-write-btn {
+  width: 128px;
+  height: 46px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--yellow);
+  color: #ffffff;
+  font-size: 23px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.board-search {
+  width: min(639px, 100%);
+  height: 56px;
+  border: 2px solid var(--blue);
+  border-radius: 51.5px;
+  display: flex;
+  align-items: center;
+  padding: 0 18px 0 31px;
+  margin-bottom: 52px;
+}
+
+.board-search input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  color: var(--blue);
+  font-size: 20px;
+}
+
+.board-search input::placeholder {
+  color: rgba(0,0,0,0.25);
+}
+
+.board-search button {
+  width: 31px;
+  height: 31px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.board-search svg {
+  width: 31px;
+  height: 31px;
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.board-table-wrap {
+  overflow-x: auto;
+}
+
+.board-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.board-table th,
+.board-table td {
+  border-top: 1px solid #d9d9d9;
+  padding: 22px 10px;
+  color: #000000;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.board-table th {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.board-table th:nth-child(1),
+.board-table td:nth-child(1) {
+  width: 70px;
+}
+
+.board-table th:nth-child(2),
+.board-table td:nth-child(2) {
+  width: 90px;
+}
+
+.board-table th:nth-child(3),
+.board-table td:nth-child(3) {
+  width: auto;
+}
+
+.post-link {
+  border: 0;
+  background: transparent;
+  color: #000000;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pagination {
+  margin-top: 55px;
+  text-align: center;
+  color: #000000;
+  font-size: 20px;
+}
+
+.board-write-panel,
+.board-post-panel {
+  display: none;
+}
+
+.back-link {
+  border: 0;
+  background: transparent;
+  margin-bottom: 28px;
+  color: #000000;
+  font-size: 23px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.board-form {
+  display: grid;
+  gap: 28px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.form-row label {
+  color: #000000;
+  font-size: 21px;
+  font-weight: 800;
+  padding-top: 10px;
+}
+
+.form-row label span {
+  color: red;
+}
+
+.form-row input,
+.form-row textarea {
+  width: 100%;
+  border: 1px solid #d9d9d9;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 12px 18px;
+  font-size: 18px;
+  outline: 0;
+}
+
+.form-row input:disabled {
+  background: #d9d9d9;
+  color: rgba(0,0,0,0.5);
+}
+
+.form-row textarea {
+  height: 317px;
+  resize: vertical;
+}
+
+.form-row small {
+  grid-column: 2;
+  justify-self: end;
+  margin-top: -25px;
+  color: #d9d9d9;
+  font-size: 15px;
+}
+
+.form-help {
+  grid-column: 2;
+  margin: 10px 0 0;
+  color: #d9d9d9;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.file-drop {
+  min-height: 101px;
+  border: 1px dashed #d9d9d9;
+  border-radius: 12px;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  color: #d9d9d9;
+}
+
+.file-drop p {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.file-drop span {
+  font-size: 12px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 70px;
+}
+
+.line-btn,
+.submit-btn-small {
+  width: 128px;
+  height: 46px;
+  border-radius: 8px;
+  font-size: 22px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.line-btn {
+  border: 1px solid rgba(0,0,0,0.25);
+  background: #ffffff;
+  color: #000000;
+}
+
+.submit-btn-small {
+  border: 0;
+  background: var(--yellow);
+  color: #ffffff;
+}
+
+.post-meta {
+  display: flex;
+  gap: 35px;
+  padding: 26px 0;
+  border-bottom: 1px solid #d9d9d9;
+  color: #000000;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.post-meta strong {
+  margin-left: 10px;
+  font-weight: 500;
+}
+
+.post-body {
+  padding-top: 34px;
+}
+
+.post-body p {
+  color: #000000;
+  font-size: 21px;
+  line-height: 1.6;
+}
+
+.post-poster {
+  margin-top: 48px;
+}
+
+.member-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.member-grid article {
+  border-radius: 16px;
+  background: #f4f4f4;
+  padding: 28px;
+  text-align: center;
+}
+
+.member-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #d9d9d9;
+  margin: 0 auto 18px;
+}
+
+.member-grid h3 {
+  margin: 0 0 8px;
+  color: #000000;
+  font-size: 22px;
+}
+
+.member-grid p {
+  margin: 0;
+  color: rgba(0,0,0,0.4);
+  font-size: 15px;
+}
+
+@media (max-width: 1180px) {
+  .detail-container {
+    width: min(calc(100% - 48px), 900px);
+  }
+
+  .detail-title-area {
+    padding-left: 230px;
+  }
+
+  .detail-title-area h1 {
+    font-size: 48px;
+  }
+
+  .detail-title-area p {
+    font-size: 24px;
+  }
+
+  .detail-actions {
+    position: static;
+    margin-top: 24px;
+    justify-content: flex-end;
+  }
+
+  .activity-photo-grid,
+  .review-grid,
+  .member-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .board-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 760px) {
+  .detail-container {
+    width: min(calc(100% - 32px), 520px);
+    padding-top: 42px;
+  }
+
+  .detail-breadcrumb {
+    margin-bottom: 48px;
+    font-size: 16px;
+    flex-wrap: wrap;
+  }
+
+  .detail-cover {
+    height: 220px;
+  }
+
+  .detail-hero-body {
+    padding: 0 22px 28px;
+  }
+
+  .detail-logo-box {
+    width: 132px;
+    height: 132px;
+    top: -44px;
+    left: 22px;
+  }
+
+  .detail-logo-box img {
+    width: 122px;
+    height: 122px;
+  }
+
+  .detail-title-area {
+    padding-left: 0;
+    padding-top: 105px;
+  }
+
+  .detail-title-area h1 {
+    font-size: 36px;
+  }
+
+  .detail-title-area p {
+    font-size: 18px;
+  }
+
+  .detail-summary {
+    padding-left: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .detail-summary div {
+    border-right: 0;
+  }
+
+  .detail-tabs {
+    padding-left: 0;
+    gap: 26px;
+    overflow-x: auto;
+  }
+
+  .detail-tabs button {
+    font-size: 21px;
+    flex: 0 0 auto;
+  }
+
+  .detail-content-card {
+    padding: 32px 22px 48px;
+  }
+
+  .recruit-info div,
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .form-row small,
+  .form-help {
+    grid-column: 1;
+  }
+
+  .timeline div {
+    grid-template-columns: 88px 1fr;
+    gap: 20px;
+  }
+
+  .activity-photo-grid,
+  .review-grid,
+  .member-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .board-table {
+    min-width: 850px;
+  }
+
+  .post-meta {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+
+/* =========================================================
+   Auth modal
+========================================================= */
+body.modal-open {
+  overflow: hidden;
+}
+
+.login-required-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.login-required-overlay.is-open {
+  display: flex;
+}
+
+.login-required-modal {
+  width: min(580px, calc(100vw - 32px));
+  min-height: 463px;
+  border: 1px solid #000000;
+  border-radius: 16px;
+  background: #ffffff;
+  position: relative;
+  padding: 66px 40px 56px;
+  text-align: center;
+}
+
+.login-required-close {
+  position: absolute;
+  right: 31px;
+  top: 24px;
+  border: 0;
+  background: transparent;
+  color: #000000;
+  font-size: 54px;
+  line-height: 0.8;
+  font-weight: 300;
+  cursor: pointer;
+}
+
+.login-required-visual {
+  height: 133px;
+  margin-bottom: 27px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 17px;
+}
+
+.login-required-visual strong {
+  color: #ff1f1f;
+  font-size: 145px;
+  line-height: 1;
+  font-weight: 900;
+  text-shadow: 0 1px 0 #000000;
+}
+
+.login-required-visual span {
+  width: 94px;
+  height: 115px;
+  border: 4px solid var(--blue);
+  border-radius: 48% 48% 36% 36%;
+  position: relative;
+  background: #ffffff;
+}
+
+.login-required-visual span::before {
+  content: "";
+  position: absolute;
+  left: -16px;
+  top: 14px;
+  width: 126px;
+  height: 58px;
+  border-radius: 60px 60px 8px 8px;
+  background: var(--blue);
+  z-index: -1;
+}
+
+.login-required-visual span::after {
+  content: "•  •";
+  position: absolute;
+  left: 22px;
+  top: 34px;
+  color: var(--blue);
+  font-size: 28px;
+  letter-spacing: 10px;
+}
+
+.login-required-modal h2 {
+  margin: 0;
+  color: #000000;
+  font-size: 35px;
+  font-weight: 800;
+}
+
+.login-required-modal p {
+  margin: 20px 0 35px;
+  color: #d9d9d9;
+  font-size: 20px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.login-required-button {
+  width: 182px;
+  height: 43px;
+  border-radius: 8px;
+  background: var(--yellow);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   Login page
+========================================================= */
+.login-page {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: calc(100vh - 82px - 169px);
+  padding: 174px 24px 220px;
+}
+
+.login-section {
+  width: min(475px, 100%);
+  text-align: center;
+}
+
+.login-section h1 {
+  margin: 0 0 45px;
+  color: #000000;
+  font-size: 28px;
+  line-height: 1.45;
+  font-weight: 700;
+}
+
+.login-section h1 span {
+  color: var(--yellow);
+}
+
+.login-form {
+  display: grid;
+  gap: 15px;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+  width: 100%;
+  height: 56px;
+  border: 0;
+  border-radius: 16px;
+  background: #f4f4f4;
+  padding: 0 18px;
+  color: #000000;
+  font-size: 20px;
+  outline: 0;
+}
+
+.login-form input::placeholder {
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.login-form button {
+  width: 100%;
+  height: 56px;
+  border: 0;
+  border-radius: 16px;
+  background: var(--yellow);
+  color: #ffffff;
+  font-size: 25px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.login-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2px;
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.login-options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.login-options input {
+  width: 15px;
+  height: 15px;
+}
+
+.signup-link {
+  justify-self: center;
+  margin-top: 28px;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 18px;
+}
+
+.login-test-help {
+  margin-top: 32px;
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 14px;
+}
+
+/* =========================================================
+   Apply page
+========================================================= */
+.apply-page {
+  background: #ffffff;
+}
+
+.apply-layout {
+  width: min(calc(100% - 130px), 1310px);
+  min-height: 900px;
+  margin: 0 auto;
+  padding: 103px 0 230px;
+  display: grid;
+  grid-template-columns: 584px minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+}
+
+.apply-layout.is-locked {
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+.apply-club-list {
+  min-height: 877px;
+  border: 1px solid #000000;
+  border-radius: 16px;
+  padding: 58px 54px 42px;
+  background: #ffffff;
+}
+
+.apply-search {
+  width: 100%;
+  height: 56px;
+  border: 2px solid var(--blue);
+  border-radius: 51.5px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px 0 28px;
+}
+
+.apply-search input {
+  flex: 1;
+  height: 100%;
+  border: 0;
+  outline: 0;
+  color: var(--blue);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.apply-search input::placeholder {
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.apply-search button {
+  width: 31px;
+  height: 31px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.apply-search svg {
+  width: 31px;
+  height: 31px;
+  fill: none;
+  stroke: var(--blue);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.apply-filter-chips {
+  margin: 19px 0 36px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+}
+
+.apply-filter-chips button {
+  min-width: 90px;
+  height: 31px;
+  border: 1px solid rgba(7, 44, 108, 0.25);
+  border-radius: 22.5px;
+  background: #ffffff;
+  color: var(--blue);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 16px;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.apply-filter-chips button.is-active {
+  background: var(--yellow);
+  border-color: var(--yellow);
+  color: #ffffff;
+}
+
+.apply-filter-chips img {
+  width: 14px;
+  height: 18px;
+}
+
+.apply-list {
+  display: grid;
+  gap: 15px;
+}
+
+.apply-club-card {
+  width: 100%;
+  height: 134px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  background: #ffffff;
+  padding: 17px 27px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.apply-club-card.is-active {
+  background: rgba(255, 255, 255, 0.54);
+  border-color: #000000;
+}
+
+.apply-club-card strong {
+  display: block;
+  color: var(--blue);
+  font-size: 30px;
+  line-height: 1.1;
+  font-weight: 800;
+}
+
+.apply-club-card span {
+  display: block;
+  margin-top: 8px;
+  color: var(--blue);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.apply-club-card em {
+  width: 68px;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--green);
+  margin-top: 20px;
+  color: #ffffff;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.apply-form-panel {
+  min-height: 877px;
+  border: 1px solid #d9d9d9;
+  border-radius: 16px;
+  background: #ffffff;
+  padding: 46px 48px;
+}
+
+.apply-empty {
+  min-height: 760px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d9d9d9;
+  font-size: 22px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.club-application-form {
+  display: none;
+  gap: 24px;
+}
+
+.apply-form-head {
+  margin-bottom: 10px;
+}
+
+.apply-form-head h1 {
+  margin: 0;
+  color: #000000;
+  font-size: 34px;
+  font-weight: 900;
+}
+
+.apply-form-head p {
+  margin: 8px 0 0;
+  color: rgba(0, 0, 0, 0.35);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.application-row {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+.application-row label {
+  padding-top: 12px;
+  color: #000000;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.application-row input,
+.application-row textarea {
+  width: 100%;
+  border: 1px solid #d9d9d9;
+  border-radius: 12px;
+  padding: 12px 18px;
+  color: #000000;
+  font-size: 18px;
+  outline: 0;
+}
+
+.application-row textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.apply-form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 34px;
+}
+
+@media (max-width: 1180px) {
+  .apply-layout {
+    width: min(calc(100% - 48px), 900px);
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .apply-layout {
+    width: min(calc(100% - 32px), 520px);
+    padding-top: 56px;
+  }
+
+  .apply-club-list,
+  .apply-form-panel {
+    padding: 32px 24px;
+  }
+
+  .application-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+
+/* =========================================================
+   Fix 2026-07: 로그인 필요 모달 이미지 + 동아리 상세 배너
+========================================================= */
+
+/* 로그인 필요 모달: 업로드한 캐릭터 이미지 사용 */
+.login-required-visual {
+  height: 150px;
+  margin-bottom: 18px;
+}
+
+.login-required-visual img {
+  width: 175px;
+  height: 175px;
+  object-fit: contain;
+  display: block;
+}
+
+.login-required-visual strong,
+.login-required-visual span {
+  display: none;
+}
+
+/* 동아리 상세 배너: 피그마 디자인처럼 회색 배너 + 하단 정보 영역 */
+.detail-container {
+  padding-top: 72px;
+}
+
+.detail-breadcrumb {
+  margin-bottom: 52px;
+}
+
+.detail-hero-card {
+  width: min(100%, 1144px);
+  border: 1px solid #d9d9d9;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #ffffff;
+  position: relative;
+}
+
+.detail-cover {
+  height: 353px;
+  position: relative;
+  background:
+    linear-gradient(180deg, rgba(132, 132, 132, 0.95) 0%, rgba(178, 178, 178, 0.86) 58%, rgba(244, 244, 244, 0.94) 100%);
+}
+
+.detail-cover-title {
+  position: absolute;
+  left: 290px;
+  top: 105px;
+  color: #000000;
+}
+
+.detail-cover-title h1 {
+  margin: 0;
+  color: #000000;
+  font-size: clamp(48px, 5vw, 70px);
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -2px;
+}
+
+.detail-cover-title p {
+  margin: 22px 0 0;
+  color: #000000;
+  font-size: clamp(22px, 2.25vw, 35px);
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.detail-hero-body {
+  min-height: 148px;
+  padding: 51px 54px 30px 280px;
+  position: relative;
+  background: #ffffff;
+}
+
+.detail-logo-box {
+  width: 201px;
+  height: 146px;
+  border-radius: 8px;
+  background: #ffffff;
+  position: absolute;
+  top: -145px;
+  left: 49px;
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.detail-logo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 0;
+}
+
+.detail-logo-box.is-empty::before {
+  content: "EU";
+  color: var(--blue);
+  font-size: 54px;
+  font-weight: 900;
+}
+
+.detail-summary {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  margin: 0;
+  padding-left: 0;
+}
+
+.detail-summary div {
+  min-width: 142px;
+  padding: 0 37px;
+  border-right: 1px solid #d9d9d9;
+}
+
+.detail-summary div:first-child {
+  padding-left: 0;
+}
+
+.detail-summary div:last-child {
+  border-right: 0;
+}
+
+.detail-summary dt {
+  margin-bottom: 7px;
+  color: #d9d9d9;
+  font-size: 18px;
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+.detail-summary dd {
+  margin: 0;
+  color: #000000;
+  font-size: 20px;
+  line-height: 1.1;
+  font-weight: 800;
+}
+
+.detail-summary .sns-mark {
+  font-size: 23px;
+  line-height: 0.9;
+}
+
+.detail-actions {
+  position: absolute;
+  right: 54px;
+  bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.detail-apply-btn {
+  width: 149px;
+  height: 44px;
+  border-radius: 8px;
+  background: var(--yellow);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.detail-scrap-btn {
+  min-width: 90px;
+  height: 31px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 22.5px;
+  background: #ffffff;
+  color: rgba(0, 0, 0, 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.admin-club-tools {
+  padding-left: 0;
+  margin-top: 26px;
+}
+
+/* 이전 구조에서 쓰던 title area는 새 배너에서는 숨김 */
+.detail-title-area {
+  display: none;
+}
+
+@media (max-width: 1180px) {
+  .detail-cover-title {
+    left: 260px;
+    top: 106px;
+  }
+
+  .detail-cover-title h1 {
+    font-size: 50px;
+  }
+
+  .detail-cover-title p {
+    font-size: 24px;
+  }
+
+  .detail-hero-body {
+    padding-left: 260px;
+  }
+
+  .detail-actions {
+    position: static;
+    justify-content: flex-end;
+    margin-top: 26px;
+  }
+}
+
+@media (max-width: 760px) {
+  .detail-cover {
+    height: 300px;
+  }
+
+  .detail-cover-title {
+    left: 24px;
+    right: 24px;
+    top: 150px;
+  }
+
+  .detail-cover-title h1 {
+    font-size: 38px;
+  }
+
+  .detail-cover-title p {
+    margin-top: 12px;
+    font-size: 19px;
+  }
+
+  .detail-hero-body {
+    padding: 82px 22px 30px;
+  }
+
+  .detail-logo-box {
+    width: 140px;
+    height: 102px;
+    top: -115px;
+    left: 22px;
+  }
+
+  .detail-summary {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 24px;
+  }
+
+  .detail-summary div,
+  .detail-summary div:first-child {
+    min-width: 0;
+    padding: 0;
+    border-right: 0;
+  }
+
+  .detail-actions {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
+
+
+/* =========================================================
+   Final Fix: detail banner info left alignment + inquiry page
+========================================================= */
+
+/* 상세 배너 하단 정보들을 왼쪽 한쪽으로 모음 */
+.detail-hero-body {
+  min-height: 148px;
+  padding: 51px 54px 30px 60px;
+  position: relative;
+  background: #ffffff;
+}
+
+.detail-summary {
+  width: auto;
+  max-width: 560px;
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  margin: 0;
+  padding-left: 0;
+}
+
+.detail-summary div {
+  min-width: auto;
+  padding: 0 34px;
+  border-right: 1px solid #d9d9d9;
+}
+
+.detail-summary div:first-child {
+  padding-left: 0;
+}
+
+.detail-summary div:last-child {
+  border-right: 0;
+}
+
+.detail-actions {
+  position: absolute;
+  right: 54px;
+  bottom: 32px;
+}
+
+.admin-club-tools {
+  padding-left: 0;
+}
+
+/* 문의 페이지 */
+.inquiry-page {
+  background: #ffffff;
+}
+
+.inquiry-container {
+  width: min(calc(100% - 160px), 1260px);
+  margin: 0 auto;
+  padding: 92px 0 180px;
+}
+
+.inquiry-title {
+  margin-bottom: 76px;
+}
+
+.inquiry-title h1 {
+  margin: 0;
+  color: #000000;
+  font-size: 35px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.inquiry-title p {
+  margin: 12px 0 0;
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.inquiry-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 813px) minmax(320px, 394px);
+  gap: 86px 51px;
+  align-items: start;
+}
+
+.inquiry-card {
+  border: 1px solid #d9d9d9;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.inquiry-card h2 {
+  margin: 0;
+  color: #000000;
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.inquiry-form-card {
+  min-height: 844px;
+  padding: 39px 45px 33px;
+}
+
+.inquiry-form-card h2 {
+  margin-bottom: 67px;
+}
+
+.inquiry-form-card form {
+  display: grid;
+  gap: 20px;
+}
+
+.inquiry-row {
+  display: grid;
+  grid-template-columns: 126px 1fr;
+  gap: 26px;
+  align-items: start;
+}
+
+.inquiry-row label {
+  color: #000000;
+  font-size: 25px;
+  line-height: 52px;
+  font-weight: 700;
+}
+
+.inquiry-row label span {
+  color: red;
+  font-size: 20px;
+}
+
+.inquiry-row input,
+.inquiry-row select,
+.inquiry-row textarea {
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  background: #ffffff;
+  color: #000000;
+  font-size: 18px;
+  outline: 0;
+}
+
+.inquiry-row input,
+.inquiry-row select {
+  height: 52px;
+  padding: 0 18px;
+}
+
+.inquiry-textarea-wrap {
+  position: relative;
+}
+
+.inquiry-row textarea {
+  height: 320px;
+  padding: 16px 18px 36px;
+  resize: vertical;
+}
+
+.inquiry-textarea-wrap small {
+  position: absolute;
+  right: 15px;
+  bottom: 11px;
+  color: #d9d9d9;
+  font-size: 15px;
+}
+
+.inquiry-file-btn {
+  width: 134px;
+  height: 52px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  background: #ffffff;
+  color: rgba(0, 0, 0, 0.25);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.inquiry-submit {
+  width: 221px;
+  height: 52px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--yellow);
+  color: #ffffff;
+  justify-self: end;
+  margin-top: 54px;
+  font-size: 35px;
+  line-height: 1;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.faq-card {
+  min-height: 844px;
+  padding: 32px 0 33px;
+  position: relative;
+}
+
+.faq-card h2 {
+  padding: 0 29px 31px;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.faq-list {
+  padding: 0 25px;
+}
+
+.faq-item {
+  width: 100%;
+  min-height: 71px;
+  border: 0;
+  border-bottom: 1px solid #d9d9d9;
+  background: transparent;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  font-size: 23px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.faq-item b {
+  color: #d9d9d9;
+  font-size: 26px;
+  font-weight: 300;
+}
+
+.more-qna-btn {
+  position: absolute;
+  left: 25px;
+  right: 25px;
+  bottom: 33px;
+  height: 52px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  background: #ffffff;
+  color: #000000;
+  font-size: 23px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.contact-method-card {
+  min-height: 225px;
+  padding: 30px 43px;
+}
+
+.contact-method-card h2 {
+  margin-bottom: 70px;
+}
+
+.sns-contact {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sns-icon {
+  width: 53px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+  font-size: 44px;
+}
+
+.sns-contact h3 {
+  margin: 0 0 4px;
+  color: #000000;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.sns-contact p {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.operating-card {
+  min-height: 225px;
+  padding: 30px 33px;
+}
+
+.operating-card h2 {
+  margin-bottom: 65px;
+}
+
+.operating-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 17px;
+}
+
+.chat-icon {
+  width: 39px;
+  height: 39px;
+  color: #000000;
+  font-size: 32px;
+  line-height: 1;
+}
+
+.operating-info strong {
+  color: #000000;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.operating-info p {
+  margin: 6px 0 0;
+  color: #d9d9d9;
+  font-size: 18px;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+@media (max-width: 1180px) {
+  .detail-hero-body {
+    padding-left: 48px;
+  }
+
+  .detail-summary {
+    max-width: 100%;
+  }
+
+  .detail-actions {
+    position: static;
+    margin-top: 26px;
+    justify-content: flex-end;
+  }
+
+  .inquiry-container {
+    width: min(calc(100% - 48px), 900px);
+  }
+
+  .inquiry-layout {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .faq-card,
+  .inquiry-form-card {
+    min-height: auto;
+  }
+
+  .more-qna-btn {
+    position: static;
+    width: calc(100% - 50px);
+    margin: 50px 25px 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .detail-hero-body {
+    padding: 82px 22px 30px;
+  }
+
+  .detail-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .detail-summary div,
+  .detail-summary div:first-child {
+    padding: 0;
+    border-right: 0;
+  }
+
+  .inquiry-container {
+    width: min(calc(100% - 32px), 520px);
+    padding-top: 56px;
+  }
+
+  .inquiry-title {
+    margin-bottom: 40px;
+  }
+
+  .inquiry-form-card,
+  .contact-method-card,
+  .operating-card {
+    padding: 28px 22px;
+  }
+
+  .inquiry-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .inquiry-row label {
+    line-height: 1.2;
+  }
+
+  .inquiry-submit {
+    width: 100%;
+    font-size: 28px;
+  }
+
+  .faq-item {
+    font-size: 18px;
+  }
+}
+
+
+/* =========================================================
+   Member tab - Figma style
+   멤버 탭은 운영진 연락 정보 카드 형태로 표시
+========================================================= */
+.member-contact-panel {
+  min-height: 284px;
+  padding: 49px 60px 56px;
+}
+
+.member-contact-panel h2 {
+  margin: 0 0 38px;
+  color: #000000;
+  font-size: 23px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.member-contact-list {
+  margin: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.member-contact-list div {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  align-items: center;
+}
+
+.member-contact-list dt,
+.member-contact-list dd {
+  margin: 0;
+  color: #000000;
+  font-size: 20px;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+@media (max-width: 760px) {
+  .member-contact-panel {
+    min-height: 240px;
+    padding: 34px 28px 42px;
+  }
+
+  .member-contact-list div {
+    grid-template-columns: 86px 1fr;
+  }
+
+  .member-contact-list dt,
+  .member-contact-list dd {
+    font-size: 17px;
+  }
+}
+
+
+/* =========================================================
+   SNS icon + Inquiry operating hours fix
+========================================================= */
+
+/* 동아리 상세 배너 SNS에 업로드한 Instagram.svg 사용 */
+.detail-summary .sns-mark img {
+  width: 23px;
+  height: 23px;
+  object-fit: contain;
+  display: block;
+}
+
+/* 문의 페이지 운영 시간 안내에서 아이콘 제거 후 텍스트만 자연스럽게 정렬 */
+.operating-info {
+  gap: 0;
+}
+
+.chat-icon {
+  display: none;
+}
+
+
+/* 기타 문의 방법 SNS 아이콘도 Instagram.svg 사용 */
+.sns-icon {
+  width: 53px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sns-icon img {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+  display: block;
+}
+
+
+/* =========================================================
+   Guide page - 이용 안내
+========================================================= */
+.guide-page {
+  background: #ffffff;
+}
+
+.guide-container {
+  width: min(calc(100% - 160px), 982px);
+  margin: 0 auto;
+  padding: 82px 0 180px;
+}
+
+.guide-section {
+  color: #000000;
+}
+
+.guide-section + .guide-section {
+  margin-top: 132px;
+}
+
+.guide-section h1 {
+  margin: 0 0 64px;
+  color: #000000;
+  font-size: 35px;
+  line-height: 1.25;
+  font-weight: 800;
+}
+
+.guide-block {
+  padding-bottom: 58px;
+  margin-bottom: 58px;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.guide-block:last-child {
+  margin-bottom: 0;
+}
+
+.guide-block h2 {
+  margin: 0 0 30px;
+  color: #000000;
+  font-size: 30px;
+  line-height: 1.3;
+  font-weight: 800;
+}
+
+.guide-block p,
+.guide-block li {
+  color: #000000;
+  font-size: 25px;
+  line-height: 1.4;
+  font-weight: 400;
+}
+
+.guide-block p {
+  margin: 0 0 24px;
+}
+
+.guide-block p:last-child {
+  margin-bottom: 0;
+}
+
+.guide-block ul {
+  margin: 0 0 30px;
+  padding-left: 38px;
+}
+
+.guide-block li {
+  margin-bottom: 6px;
+}
+
+.guide-rule-section {
+  padding-top: 4px;
+}
+
+@media (max-width: 1180px) {
+  .guide-container {
+    width: min(calc(100% - 48px), 900px);
+  }
+}
+
+@media (max-width: 760px) {
+  .guide-container {
+    width: min(calc(100% - 32px), 520px);
+    padding-top: 54px;
+  }
+
+  .guide-section h1 {
+    margin-bottom: 42px;
+    font-size: 30px;
+  }
+
+  .guide-block {
+    padding-bottom: 42px;
+    margin-bottom: 42px;
+  }
+
+  .guide-block h2 {
+    font-size: 24px;
+  }
+
+  .guide-block p,
+  .guide-block li {
+    font-size: 17px;
+    line-height: 1.65;
+  }
+}
+
+
+/* =========================================================
+   Signup Flow
+   학교 인증 → 기본정보 → 약관동의 → 회원유형 → 완료
+========================================================= */
+.signup-page {
+  background: #ffffff;
+}
+
+.signup-card {
+  width: min(854px, calc(100% - 48px));
+  min-height: 794px;
+  margin: 124px auto 270px;
+  border: 1px solid #d9d9d9;
+  border-radius: 16px;
+  background: #ffffff;
+  padding: 64px 95px 55px;
+  transition: min-height 0.2s ease;
+}
+
+.signup-card.is-operator-form {
+  min-height: 1243px;
+}
+
+.signup-card.is-complete {
+  min-height: 794px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.signup-stepper {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin: 0 0 58px;
+  padding: 0;
+  list-style: none;
+}
+
+.signup-stepper li {
+  color: #d9d9d9;
+  font-size: 13px;
+  font-weight: 800;
+  position: relative;
+  padding-top: 22px;
+  text-align: center;
+}
+
+.signup-stepper li::before {
+  content: attr(data-step-dot);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #d9d9d9;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.signup-stepper li.is-active,
+.signup-stepper li.is-done {
+  color: var(--yellow);
+}
+
+.signup-stepper li.is-active::before,
+.signup-stepper li.is-done::before {
+  background: var(--yellow);
+}
+
+.signup-form {
+  width: 100%;
+}
+
+.signup-step {
+  display: none;
+}
+
+.signup-step.is-active {
+  display: block;
+}
+
+.signup-step h1 {
+  margin: 0 0 83px;
+  color: #000000;
+  font-size: 35px;
+  line-height: 1.2;
+  font-weight: 800;
+  text-align: center;
+}
+
+.signup-field {
+  margin-bottom: 38px;
+}
+
+.signup-field label {
+  display: block;
+  margin-bottom: 14px;
+  color: #000000;
+  font-size: 25px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.signup-field label span {
+  color: red;
+  font-size: 15px;
+  vertical-align: top;
+}
+
+.signup-field input,
+.signup-field select {
+  width: 100%;
+  height: 42px;
+  border: 1px solid #d9d9d9;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 0 14px;
+  color: #000000;
+  font-size: 16px;
+  outline: none;
+}
+
+.signup-field input::placeholder {
+  color: #d9d9d9;
+}
+
+.email-send-row {
+  display: grid;
+  grid-template-columns: minmax(0, 462px) 173px;
+  gap: 19px;
+}
+
+.line-action-btn {
+  height: 42px;
+  border: 1px solid #d9d9d9;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #000000;
+  font-size: 22px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.verification-field {
+  margin-top: 28px;
+}
+
+.resend-text {
+  margin: 14px 0 0;
+  color: #000000;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.resend-text button {
+  border: 0;
+  background: transparent;
+  color: var(--yellow);
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.signup-next-btn,
+.signup-prev-btn {
+  width: 180px;
+  height: 45px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  line-height: 1;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.signup-next-btn {
+  border: 0;
+  background: var(--yellow);
+  color: #ffffff;
+}
+
+.signup-prev-btn {
+  border: 1px solid #d9d9d9;
+  background: #ffffff;
+  color: #000000;
+}
+
+.single-next {
+  display: flex;
+  margin: 176px auto 0;
+}
+
+.signup-buttons {
+  margin-top: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.terms-box {
+  border: 1px solid #d9d9d9;
+  border-radius: 16px;
+  padding: 28px 35px;
+}
+
+.terms-all {
+  min-height: 58px;
+  border-bottom: 1px solid #d9d9d9;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  color: #000000;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.terms-item {
+  min-height: 68px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.terms-item:last-child {
+  border-bottom: 0;
+}
+
+.terms-item label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #000000;
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.terms-box input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--yellow);
+}
+
+.terms-item button {
+  border: 0;
+  background: transparent;
+  color: #d9d9d9;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.signup-role-step h1 {
+  margin-bottom: 48px;
+}
+
+.member-type-list {
+  display: grid;
+  gap: 13px;
+}
+
+.member-type-card {
+  width: 100%;
+  min-height: 127px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  background: #ffffff;
+  padding: 30px 38px;
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 17px;
+  align-items: center;
+  text-align: left;
+  cursor: pointer;
+}
+
+.member-type-card.is-selected {
+  border-color: var(--yellow);
+  background: rgba(248, 211, 147, 0.54);
+}
+
+.radio-circle {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #d9d9d9;
+  border-radius: 50%;
+  background: #ffffff;
+  position: relative;
+}
+
+.member-type-card.is-selected .radio-circle {
+  border-color: var(--yellow);
+}
+
+.member-type-card.is-selected .radio-circle::after {
+  content: "";
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--yellow);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.member-type-card strong {
+  display: block;
+  color: #000000;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.member-type-card em {
+  color: #000000;
+  font-size: 20px;
+  line-height: 1.25;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.operator-request-box {
+  display: none;
+  margin-top: 50px;
+}
+
+.operator-request-box.is-open {
+  display: block;
+}
+
+.operator-request-box h2 {
+  margin: 0 0 28px;
+  color: #000000;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.operator-form-grid {
+  width: 355px;
+  display: grid;
+  gap: 24px;
+}
+
+.operator-form-grid .signup-field {
+  margin-bottom: 0;
+}
+
+.operator-form-grid .signup-field label {
+  margin-bottom: 9px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.operator-form-grid .signup-field input,
+.operator-form-grid .signup-field select {
+  height: 38px;
+  border-color: rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+}
+
+.operator-notice {
+  margin-top: 41px;
+  min-height: 192px;
+  border-radius: 16px;
+  background: var(--yellow-light);
+  padding: 20px 34px;
+  color: #ffffff;
+}
+
+.operator-notice strong {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.operator-notice ul {
+  margin: 0;
+  padding-left: 28px;
+}
+
+.operator-notice li {
+  color: #ffffff;
+  font-size: 22px;
+  line-height: 1.6;
+  font-weight: 600;
+}
+
+.role-buttons {
+  margin-top: 60px;
+}
+
+.signup-complete-step {
+  text-align: center;
+}
+
+.complete-visual {
+  height: 217px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.complete-visual img {
+  width: 217px;
+  height: 217px;
+  object-fit: contain;
+}
+
+.signup-complete-mascot {
+  width: 154px;
+  height: 154px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44px;
+  font-weight: 900;
+}
+
+.signup-complete-step h1 {
+  margin: 0 0 13px;
+  font-size: 35px;
+}
+
+.signup-complete-step p {
+  margin: 0;
+  color: #000000;
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.operator-pending-notice {
+  width: min(434px, 100%);
+  min-height: 147px;
+  margin: 54px auto 52px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  background: #ffffff;
+  padding: 18px 24px;
+  text-align: left;
+}
+
+.operator-pending-notice strong {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--yellow);
+  font-size: 23px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.operator-pending-notice p {
+  color: #000000;
+  font-size: 20px;
+  line-height: 1.25;
+  font-weight: 400;
+  text-align: left;
+}
+
+.complete-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+@media (max-width: 760px) {
+  .signup-card {
+    width: min(calc(100% - 32px), 520px);
+    margin-top: 56px;
+    margin-bottom: 120px;
+    padding: 42px 24px;
+  }
+
+  .signup-stepper {
+    flex-wrap: wrap;
+    row-gap: 16px;
+  }
+
+  .signup-step h1 {
+    margin-bottom: 46px;
+    font-size: 28px;
+  }
+
+  .email-send-row {
+    grid-template-columns: 1fr;
+  }
+
+  .single-next {
+    margin-top: 80px;
+  }
+
+  .member-type-card {
+    padding: 22px 20px;
+  }
+
+  .member-type-card em {
+    font-size: 16px;
+  }
+
+  .operator-form-grid {
+    width: 100%;
+  }
+
+  .operator-notice li {
+    font-size: 16px;
+  }
+
+  .signup-buttons,
+  .complete-buttons {
+    flex-direction: column;
+  }
+
+  .signup-next-btn,
+  .signup-prev-btn {
+    width: 100%;
+  }
+}
+
+
+/* =========================================================
+   Signup complete screen split
+   - 일반 회원: 기본 완료 화면
+   - 동아리 운영자 신청: 승인 안내 포함 완료 화면
+========================================================= */
+.signup-card.is-complete {
+  min-height: 794px;
+  padding: 0;
+  position: relative;
+  display: block;
+}
+
+.signup-card.is-complete .signup-stepper {
+  display: none;
+}
+
+.signup-card.is-complete .signup-form,
+.signup-card.is-complete .signup-complete-step {
+  width: 100%;
+  height: 100%;
+}
+
+.signup-card.is-complete .signup-complete-step {
+  position: relative;
+  text-align: center;
+}
+
+/* 일반 회원 완료 화면: Figma 94-2817 */
+.signup-card.is-student-complete .complete-visual {
+  position: absolute;
+  left: 50%;
+  top: 172px;
+  width: 217px;
+  height: 217px;
+  margin: 0;
+  transform: translateX(-50%);
+}
+
+.signup-card.is-student-complete .signup-complete-step h1 {
+  position: absolute;
+  left: 50%;
+  top: 389px;
+  margin: 0;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.signup-card.is-student-complete .signup-complete-step > p {
+  position: absolute;
+  left: 50%;
+  top: 442px;
+  margin: 0;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.signup-card.is-student-complete .operator-pending-notice {
+  display: none !important;
+}
+
+/* 운영자 신청 완료 화면: Figma 94-2831 */
+.signup-card.is-operator-complete .complete-visual {
+  position: absolute;
+  left: 50%;
+  top: 60px;
+  width: 217px;
+  height: 217px;
+  margin: 0;
+  transform: translateX(-50%);
+}
+
+.signup-card.is-operator-complete .signup-complete-step h1 {
+  position: absolute;
+  left: 50%;
+  top: 277px;
+  margin: 0;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.signup-card.is-operator-complete .signup-complete-step > p {
+  position: absolute;
+  left: 50%;
+  top: 330px;
+  margin: 0;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.signup-card.is-operator-complete .operator-pending-notice {
+  position: absolute;
+  left: 50%;
+  top: 439px;
+  margin: 0;
+  transform: translateX(-50%);
+}
+
+/* 두 완료 화면 공통 버튼 위치 */
+.signup-card.is-complete .complete-buttons {
+  position: absolute;
+  left: 50%;
+  top: 662px;
+  margin: 0;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.signup-card.is-complete .complete-buttons .signup-prev-btn,
+.signup-card.is-complete .complete-buttons .signup-next-btn {
+  width: 180px;
+  height: 45px;
+}
+
+@media (max-width: 760px) {
+  .signup-card.is-complete {
+    min-height: 720px;
+    padding: 0 20px;
+  }
+
+  .signup-card.is-student-complete .complete-visual,
+  .signup-card.is-operator-complete .complete-visual {
+    top: 72px;
+    width: 160px;
+    height: 160px;
+  }
+
+  .signup-card.is-student-complete .signup-complete-step h1,
+  .signup-card.is-operator-complete .signup-complete-step h1 {
+    top: 260px;
+    width: 100%;
+    font-size: 27px;
+    white-space: normal;
+  }
+
+  .signup-card.is-student-complete .signup-complete-step > p,
+  .signup-card.is-operator-complete .signup-complete-step > p {
+    top: 310px;
+    width: calc(100% - 40px);
+    font-size: 17px;
+    line-height: 1.5;
+    white-space: normal;
+  }
+
+  .signup-card.is-operator-complete .operator-pending-notice {
+    top: 400px;
+    width: calc(100% - 40px);
+  }
+
+  .signup-card.is-complete .complete-buttons {
+    top: auto;
+    bottom: 42px;
+    width: calc(100% - 40px);
+    flex-direction: column;
+  }
+
+  .signup-card.is-complete .complete-buttons .signup-prev-btn,
+  .signup-card.is-complete .complete-buttons .signup-next-btn {
+    width: 100%;
+  }
+}
+
+
+/* =========================================================
+   Signup final behavior fix
+   - 일반 회원: 다음 버튼 클릭 시 기본 완료 화면
+   - 운영자 신청: 다음 버튼 클릭 시 승인 대기 안내 포함 완료 화면
+========================================================= */
+.signup-role-step .signup-next-btn {
+  font-size: 26px;
+}
+
+.signup-card.is-student-complete .operator-pending-notice {
+  display: none !important;
+}
+
+.signup-card.is-operator-complete .operator-pending-notice {
+  display: block !important;
+}
+
+/* 완료 화면 문구가 피그마처럼 중앙에 안정적으로 보이도록 */
+.signup-card.is-complete #completeTitle {
+  color: #000000;
+  font-weight: 800;
+}
+
+.signup-card.is-complete #completeMessage {
+  color: #000000;
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   Signup complete button fixed
+   - 회원 유형 단계의 “다음” 버튼을 누르면 완료 화면으로 이동
+========================================================= */
+#completeSignupBtn {
+  font-size: 30px;
+}
+
+.signup-card.is-student-complete .operator-pending-notice {
+  display: none !important;
+}
+
+.signup-card.is-operator-complete .operator-pending-notice {
+  display: block !important;
+}
+
+
+/* profile info user data wrap fix */
+.profile-info p {
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   Login required modal fix
+   - 로그인 전 마이페이지 접근 시 뒤 화면이 보이지 않게 처리
+   - 로그인하러 가기 버튼을 button으로 바꿔 클릭 안정화
+========================================================= */
+body.protected-page-locked main,
+body.protected-page-locked .site-footer {
+  visibility: hidden;
+}
+
+body.protected-page-locked .login-required-overlay {
+  background: #ffffff;
+}
+
+.login-required-overlay {
+  pointer-events: auto;
+}
+
+.login-required-modal {
+  z-index: 10000;
+  pointer-events: auto;
+}
+
+.login-required-button {
+  width: 182px;
+  height: 43px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--yellow);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+
+/* Home club card clickable */
+.club-card {
+  cursor: pointer;
+}
+
+.club-card .bookmark-btn {
+  cursor: pointer;
+}
+
+.club-card:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 4px;
+}
+
+
+/* Detail scrap button: 선택 시 텍스트는 그대로 두고 색만 변경 */
+.detail-scrap-btn.is-active {
+  color: var(--blue);
+  border-color: var(--yellow);
+  background: #ffffff;
+}
+
+
+/* =========================================================
+   MyPage spacing + joined club clickable
+========================================================= */
+.dynamic-panel[data-panel="overview"].is-active {
+  display: grid;
+  gap: 28px;
+}
+
+.dynamic-panel[data-panel="clubs"].is-active,
+.dynamic-panel[data-panel="scraps"].is-active,
+.dynamic-panel[data-panel="applications"].is-active,
+.dynamic-panel[data-panel="posts"].is-active,
+.dynamic-panel[data-panel="settings"].is-active {
+  display: block;
+}
+
+.joined-club-item {
+  cursor: pointer;
+}
+
+.joined-club-item:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 4px;
+}
+
+/* 지원 페이지의 중앙/일반 필터는 선택 해제도 가능 */
+.apply-filter-chips button:not(.is-active) {
+  background: #ffffff;
+  color: var(--blue);
+  border-color: rgba(7, 44, 108, 0.25);
+}
+
+
+/* =========================================================
+   MyPage empty default data
+========================================================= */
+.mypage-empty-line {
+  min-height: 112px;
+  display: flex;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.35);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.notification-list .mypage-empty-line {
+  min-height: 120px;
+  justify-content: center;
+  text-align: center;
+}
+
+
+/* Login page helper text removed */
+.login-test-help {
+  display: none;
+}
+
+
+/* MyPage logout button */
+.logout-btn {
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   MyPage profile edit panel
+   내 프로필 탭: 기본 정보 / 계정 보안
+========================================================= */
+.profile-info-section {
+  min-height: 389px;
+  padding: 32px 42px 40px;
+}
+
+.account-security-section {
+  min-height: 281px;
+  padding: 32px 42px 40px;
+}
+
+.profile-info-section .section-head,
+.account-security-section .section-head {
+  margin-bottom: 28px;
+}
+
+.profile-info-edit-btn,
+.security-action-btn,
+.withdraw-btn {
+  height: 37px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 0 16px;
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.withdraw-btn {
+  color: red;
+  font-size: 15px;
+}
+
+.profile-info-list,
+.account-security-list {
+  width: min(798px, 100%);
+  margin: 0 auto;
+}
+
+.profile-info-list div,
+.account-security-list div {
+  min-height: 56px;
+  border-bottom: 1px solid #d9d9d9;
+  display: grid;
+  align-items: center;
+  gap: 28px;
+}
+
+.profile-info-list div {
+  grid-template-columns: 72px minmax(0, 1fr);
+}
+
+.account-security-list div {
+  grid-template-columns: 110px minmax(0, 1fr) auto;
+}
+
+.profile-info-list div:last-child,
+.account-security-list div:last-child {
+  border-bottom: 0;
+}
+
+.profile-info-list dt,
+.account-security-list dt {
+  color: #000000;
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.profile-info-list dd,
+.account-security-list dd {
+  margin: 0;
+  color: #000000;
+  font-size: 21px;
+  font-weight: 500;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.account-security-list .muted-value {
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.profile-edit-input {
+  width: 100%;
+  height: 38px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  padding: 0 12px;
+  color: #000000;
+  font-size: 18px;
+  outline: none;
+}
+
+.profile-edit-input:focus {
+  border-color: var(--yellow);
+}
+
+@media (max-width: 760px) {
+  .profile-info-section,
+  .account-security-section {
+    padding: 28px 22px 34px;
+  }
+
+  .profile-info-list div,
+  .account-security-list div {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 15px 0;
+  }
+
+  .security-action-btn,
+  .withdraw-btn {
+    width: fit-content;
+  }
+}
+
+
+/* =========================================================
+   MyPage split: 일반회원 기본 화면 + 운영자 메뉴 + 내 프로필 수정 화면
+========================================================= */
+.mypage-sidebar-wrap {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+  position: sticky;
+  top: 104px;
+}
+
+.mypage-sidebar-wrap .mypage-sidebar {
+  position: static;
+}
+
+.operator-sidebar-menu {
+  display: none;
+  width: 183px;
+  min-height: 139px;
+  border-radius: 16px;
+  background: #f5f5f5;
+  padding: 24px 18px;
+  text-align: center;
+}
+
+.operator-sidebar-menu h2 {
+  margin: 0 0 24px;
+  color: var(--yellow);
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.operator-sidebar-menu nav {
+  display: grid;
+  gap: 18px;
+}
+
+.operator-sidebar-menu button {
+  border: 0;
+  background: transparent;
+  color: #000000;
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.operator-sidebar-menu button.is-active {
+  color: var(--yellow);
+  font-weight: 900;
+}
+
+.dynamic-panel[data-panel="dashboard"].is-active {
+  display: grid;
+  gap: 28px;
+}
+
+.dynamic-panel[data-panel="profile"].is-active,
+.dynamic-panel[data-panel="clubs"].is-active,
+.dynamic-panel[data-panel="scraps"].is-active,
+.dynamic-panel[data-panel="applications"].is-active,
+.dynamic-panel[data-panel="posts"].is-active,
+.dynamic-panel[data-panel="settings"].is-active,
+.dynamic-panel[data-panel="operator-club-info"].is-active,
+.dynamic-panel[data-panel="operator-board"].is-active,
+.dynamic-panel[data-panel="operator-members"].is-active {
+  display: block;
+}
+
+/* 이전 overview 전용 보정보다 dashboard/profile을 우선 적용 */
+.dynamic-panel[data-panel="overview"].is-active {
+  display: none;
+}
+
+.profile-info-section {
+  min-height: 389px;
+  padding: 32px 42px 40px;
+}
+
+.account-security-section {
+  min-height: 281px;
+  padding: 32px 42px 40px;
+}
+
+.profile-info-section .section-head,
+.account-security-section .section-head {
+  margin-bottom: 28px;
+}
+
+.profile-info-edit-btn,
+.security-action-btn,
+.withdraw-btn {
+  height: 37px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 0 16px;
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.withdraw-btn {
+  color: red;
+  font-size: 15px;
+}
+
+.profile-info-list,
+.account-security-list {
+  width: min(798px, 100%);
+  margin: 0 auto;
+}
+
+.profile-info-list div,
+.account-security-list div {
+  min-height: 56px;
+  border-bottom: 1px solid #d9d9d9;
+  display: grid;
+  align-items: center;
+  gap: 28px;
+}
+
+.profile-info-list div {
+  grid-template-columns: 72px minmax(0, 1fr);
+}
+
+.account-security-list div {
+  grid-template-columns: 110px minmax(0, 1fr) auto;
+}
+
+.profile-info-list div:last-child,
+.account-security-list div:last-child {
+  border-bottom: 0;
+}
+
+.profile-info-list dt,
+.account-security-list dt {
+  color: #000000;
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.profile-info-list dd,
+.account-security-list dd {
+  margin: 0;
+  color: #000000;
+  font-size: 21px;
+  font-weight: 500;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.account-security-list .muted-value {
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.profile-edit-input {
+  width: 100%;
+  height: 38px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  padding: 0 12px;
+  color: #000000;
+  font-size: 18px;
+  outline: none;
+}
+
+.profile-edit-input:focus {
+  border-color: var(--yellow);
+}
+
+.operator-manage-section {
+  min-height: 320px;
+}
+
+.operator-manage-box {
+  min-height: 170px;
+  border: 1px solid #d9d9d9;
+  border-radius: 16px;
+  background: #ffffff;
+  padding: 32px;
+}
+
+.operator-manage-box h3 {
+  margin: 0 0 12px;
+  color: #000000;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.operator-manage-box p {
+  margin: 0 0 28px;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 18px;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.operator-manage-box button {
+  height: 42px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--yellow);
+  color: #ffffff;
+  padding: 0 20px;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.mypage-empty-line {
+  min-height: 112px;
+  display: flex;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.35);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.notification-list .mypage-empty-line {
+  min-height: 120px;
+  justify-content: center;
+  text-align: center;
+}
+
+@media (max-width: 1180px) {
+  .mypage-sidebar-wrap {
+    position: static;
+  }
+
+  .operator-sidebar-menu {
+    width: 100%;
+  }
+
+  .operator-sidebar-menu nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 760px) {
+  .profile-info-section,
+  .account-security-section {
+    padding: 28px 22px 34px;
+  }
+
+  .profile-info-list div,
+  .account-security-list div {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 15px 0;
+  }
+
+  .security-action-btn,
+  .withdraw-btn {
+    width: fit-content;
+  }
+}
+
+
+/* MyPage sidebar duplicate title removed */
+.mypage-sidebar > h2 {
+  display: none;
+}
+
+.mypage-sidebar {
+  padding-top: 34px;
+}
+
+
+/* Board create + view count */
+.board-empty-row {
+  height: 120px;
+  color: rgba(0, 0, 0, 0.35) !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+}
+
+.board-table tbody tr {
+  cursor: pointer;
+}
+
+.board-table tbody tr:hover {
+  background: #fff8ec;
+}
+
+.post-body p {
+  white-space: normal;
+}
+
+
+/* =========================================================
+   Operator sidebar + operator club dashboard
+========================================================= */
+.operator-sidebar-menu {
+  display: none;
+  width: 183px;
+  min-height: 264px;
+  border-radius: 16px;
+  background: #f5f5f5;
+  padding: 30px 10px;
+  text-align: center;
+}
+
+.operator-sidebar-menu h2 {
+  display: none;
+}
+
+.operator-sidebar-menu nav {
+  display: grid;
+  gap: 27px;
+}
+
+.operator-sidebar-menu button {
+  border: 0;
+  background: transparent;
+  color: #000000;
+  font-size: 16px;
+  line-height: 1.2;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.operator-sidebar-menu .operator-menu-title,
+.operator-sidebar-menu button.is-active {
+  color: var(--yellow);
+  font-weight: 900;
+}
+
+.dynamic-panel[data-panel="operator-dashboard"].is-active {
+  display: grid;
+  gap: 32px;
+}
+
+.operator-dashboard-header {
+  padding: 8px 0 0;
+}
+
+.operator-dashboard-header h2 {
+  margin: 0 0 10px;
+  color: #000000;
+  font-size: 35px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.operator-dashboard-header p {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.operator-club-summary {
+  min-height: 313px;
+  padding: 38px 42px 25px;
+}
+
+.operator-club-top {
+  display: grid;
+  grid-template-columns: 121px 1fr auto;
+  align-items: start;
+  gap: 22px;
+}
+
+.operator-club-logo {
+  width: 121px;
+  height: 121px;
+  border-radius: 8px;
+  background: #ffffff;
+  overflow: hidden;
+  position: relative;
+}
+
+.operator-club-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.operator-club-logo.is-empty::before {
+  content: "ON";
+  color: var(--blue);
+  font-size: 34px;
+  font-weight: 900;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.operator-club-title h3 {
+  margin: 24px 0 8px;
+  color: #000000;
+  font-size: 35px;
+  line-height: 1.15;
+  font-weight: 800;
+}
+
+.operator-club-title p {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.operator-outline-btn {
+  height: 37px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 0 20px;
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.operator-summary-line {
+  height: 1px;
+  background: #d9d9d9;
+  margin: 38px 0 22px;
+}
+
+.operator-summary-bottom {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.operator-recruit-summary {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 8px 18px;
+  align-items: center;
+}
+
+.operator-recruit-summary strong {
+  color: #000000;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.operator-recruit-summary span {
+  color: rgba(0, 0, 0, 0.25);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.operator-recruit-summary b {
+  color: rgba(0, 0, 0, 0.25);
+}
+
+.operator-recruit-summary em {
+  width: 68px;
+  height: 26px;
+  border-radius: 8px;
+  background: #74b79e;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.operator-stats {
+  border-left: 1px solid #d9d9d9;
+  padding-left: 62px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.operator-stats span {
+  display: block;
+  margin-bottom: 24px;
+  color: #000000;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.operator-stats strong {
+  color: #000000;
+  font-size: 23px;
+  font-weight: 800;
+}
+
+.operator-two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.operator-mini-section {
+  min-height: 648px;
+  padding: 30px 32px;
+}
+
+.operator-mini-section .section-head {
+  margin-bottom: 36px;
+}
+
+.operator-applicant-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.operator-applicant-table thead {
+  background: #f4f4f4;
+}
+
+.operator-applicant-table th,
+.operator-applicant-table td {
+  height: 48px;
+  border-bottom: 1px solid #d9d9d9;
+  text-align: center;
+  color: #000000;
+  font-weight: 600;
+}
+
+.operator-status {
+  min-width: 41px;
+  height: 19px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.operator-status.wait {
+  background: #d9d9d9;
+}
+
+.operator-status.interview {
+  background: var(--yellow);
+}
+
+.operator-write-btn {
+  width: 128px;
+  height: 46px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--yellow);
+  color: #ffffff;
+  font-size: 23px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.operator-post-list {
+  display: grid;
+}
+
+.operator-post-list article {
+  min-height: 77px;
+  border-bottom: 1px solid #d9d9d9;
+  display: grid;
+  grid-template-columns: 68px 1fr 86px;
+  align-items: center;
+  gap: 16px;
+}
+
+.operator-post-list span {
+  height: 29px;
+  border: 1px solid #000000;
+  border-radius: 23.5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.operator-post-list strong {
+  color: #000000;
+  font-size: 18px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.operator-post-list em {
+  color: #000000;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.operator-board-link {
+  width: 100%;
+  height: 49px;
+  margin-top: 44px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  background: #ffffff;
+  color: #000000;
+  font-size: 25px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.operator-log-section,
+.operator-notification-section {
+  padding: 30px 42px;
+}
+
+.operator-log-list {
+  margin-top: 32px;
+  display: grid;
+}
+
+.operator-log-list article {
+  min-height: 58px;
+  border-bottom: 1px solid #d9d9d9;
+  display: grid;
+  grid-template-columns: 10px 1fr auto;
+  align-items: center;
+  gap: 20px;
+}
+
+.operator-log-list span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--yellow);
+}
+
+.operator-log-list p {
+  margin: 0;
+  color: #000000;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.operator-log-list em {
+  color: #000000;
+  font-size: 15px;
+  font-style: normal;
+}
+
+.operator-notice-list {
+  margin: 32px auto 0;
+  width: min(841px, 100%);
+  display: grid;
+  gap: 8px;
+}
+
+.operator-notice-list article {
+  min-height: 70px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  align-items: center;
+  gap: 20px;
+  padding: 0 34px;
+}
+
+.operator-notice-list span {
+  color: var(--blue);
+}
+
+.operator-notice-list p {
+  margin: 0;
+  color: #000000;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.operator-notice-list em {
+  min-width: 66px;
+  height: 26px;
+  border-radius: 4px;
+  background: #d9d9d9;
+  color: #000000;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  font-size: 13px;
+  font-style: normal;
+}
+
+@media (max-width: 1180px) {
+  .operator-two-column {
+    grid-template-columns: 1fr;
+  }
+
+  .operator-summary-bottom {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .operator-stats {
+    border-left: 0;
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .operator-club-top {
+    grid-template-columns: 1fr;
+  }
+
+  .operator-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .operator-post-list article,
+  .operator-log-list article,
+  .operator-notice-list article {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 18px;
+  }
+}
+
+
+/* final operator sidebar override */
+.operator-sidebar-menu {
+  min-height: 264px !important;
+  padding: 30px 10px !important;
+}
+.operator-sidebar-menu nav {
+  display: grid !important;
+  gap: 27px !important;
+}
+.operator-sidebar-menu .operator-menu-title {
+  color: var(--yellow) !important;
+}
+
+
+/* =========================================================
+   MyPage sidebar color fix
+   - 기본 글자색: 검정
+   - 클릭/선택된 메뉴만 노란색
+   - 클릭 시 생기는 기본 테두리/밑줄 제거
+========================================================= */
+.mypage-sidebar-menu button,
+.operator-sidebar-menu button {
+  color: #000000 !important;
+  text-decoration: none !important;
+  outline: none;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.mypage-sidebar-menu button.is-active,
+.operator-sidebar-menu button.is-active {
+  color: var(--yellow) !important;
+  font-weight: 900;
+}
+
+.operator-sidebar-menu .operator-menu-title {
+  color: #000000 !important;
+}
+
+.operator-sidebar-menu .operator-menu-title.is-active {
+  color: var(--yellow) !important;
+}
+
+.mypage-sidebar-menu button:focus,
+.operator-sidebar-menu button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.mypage-sidebar-menu button:focus-visible,
+.operator-sidebar-menu button:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   Signup basic info layout fix
+   - 학과/학번/이름/비밀번호/비밀번호 확인
+========================================================= */
+.signup-basic-step h1 {
+  margin-bottom: 42px;
+}
+
+.signup-basic-box {
+  width: min(100%, 610px);
+  margin: 0 auto;
+  padding-top: 6px;
+}
+
+.signup-basic-box .signup-field {
+  min-height: 51px;
+  margin-bottom: 27px;
+  display: grid;
+  grid-template-columns: 118px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.signup-basic-box .signup-field label {
+  margin: 0;
+  color: #000000;
+  font-size: 18px;
+  line-height: 38px;
+  font-weight: 800;
+}
+
+.signup-basic-box .signup-field label span {
+  color: red;
+  font-size: 15px;
+}
+
+.signup-basic-box .signup-field input,
+.signup-basic-box .signup-field select {
+  height: 38px;
+  border-radius: 8px;
+}
+
+.signup-basic-box .password-rule-text {
+  grid-column: 2;
+  margin-top: -20px;
+  color: #d9d9d9;
+  font-size: 12px;
+  line-height: 1.3;
+  font-weight: 500;
+}
+
+.signup-basic-step .signup-buttons {
+  margin-top: 132px;
+}
+
+/* Apply form removed textarea spacing fix */
+.application-form textarea,
+.apply-form textarea {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .signup-basic-box .signup-field {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .signup-basic-box .password-rule-text {
+    grid-column: 1;
+    margin-top: -12px;
+  }
+
+  .signup-basic-step .signup-buttons {
+    margin-top: 72px;
+  }
+}
+
+
+/* Club detail dynamic empty logo */
+.detail-logo-box.is-empty::before {
+  content: attr(data-initial);
+}
+
+.poster-large.is-empty {
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* Figma club images + detail cover */
+.club-thumb {
+  overflow: hidden;
+}
+
+.club-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-cover.has-cover-image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.detail-cover.has-cover-image .detail-cover-title {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.poster-large img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.intro-panel .detail-block:first-child p {
+  white-space: normal;
+}
+
+
+/* =========================================================
+   Empty club image fix
+   이미지가 없는 동아리 카드는 체크무늬가 아니라 흰색 빈 영역으로 표시
+========================================================= */
+.club-thumb,
+.club-thumb.is-empty,
+.club-card .club-thumb,
+.club-card .club-thumb.is-empty,
+.club-image,
+.club-image.is-empty,
+.club-card-image,
+.club-card-image.is-empty,
+.detail-logo-box.is-empty,
+.poster-large.is-empty,
+.operator-club-logo.is-empty {
+  background: #ffffff !important;
+  background-image: none !important;
+}
+
+.club-thumb::before,
+.club-thumb::after,
+.club-thumb.is-empty::before,
+.club-thumb.is-empty::after,
+.club-image.is-empty::before,
+.club-image.is-empty::after,
+.club-card-image.is-empty::before,
+.club-card-image.is-empty::after,
+.poster-large.is-empty::before,
+.poster-large.is-empty::after {
+  content: none !important;
+  display: none !important;
+}
+
+.club-thumb img[src=""],
+.club-image img[src=""],
+.club-card-image img[src=""],
+.detail-logo-box img[src=""],
+.poster-large img[src=""] {
+  display: none !important;
+}
+
+
+/* =========================================================
+   Club card image size fix
+   - 카드 이미지를 카드 상단에 꽉 채우지 않고 피그마처럼 여백을 두고 표시
+   - 이미지가 없는 카드는 체크무늬 없이 흰색으로 비움
+========================================================= */
+.club-card {
+  overflow: hidden;
+}
+
+.club-card .club-thumb {
+  height: 178px !important;
+  padding: 16px 32px 0 !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  box-sizing: border-box;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.club-card .club-thumb img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 231px !important;
+  max-height: 178px !important;
+  object-fit: contain !important;
+  border-radius: 0 !important;
+  display: block;
+  background: #ffffff !important;
+}
+
+.club-card .club-thumb:empty,
+.club-card .club-thumb.is-empty {
+  background: #ffffff !important;
+  background-image: none !important;
+}
+
+.club-card .club-thumb:empty::before,
+.club-card .club-thumb:empty::after,
+.club-card .club-thumb.is-empty::before,
+.club-card .club-thumb.is-empty::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* 동아리 탐색 화면 카드 이미지도 같은 비율 유지 */
+.club-list-page .club-card .club-thumb,
+.home-page .club-card .club-thumb,
+.main-page .club-card .club-thumb {
+  height: 178px !important;
+  padding: 16px 32px 0 !important;
+}
+
+@media (max-width: 760px) {
+  .club-card .club-thumb {
+    height: 150px !important;
+    padding: 14px 24px 0 !important;
+  }
+
+  .club-card .club-thumb img {
+    max-width: 100% !important;
+    max-height: 150px !important;
+  }
+}
+
+
+/* =========================================================
+   Club card image uniform frame fix
+   - 이미지 비율마다 여백이 달라지지 않게 모든 카드 이미지 영역을 같은 크기로 통일
+   - 카드 안쪽 여백도 동일하게 유지
+========================================================= */
+.club-card .club-thumb {
+  height: 194px !important;
+  padding: 16px 32px 0 !important;
+  background: #ffffff !important;
+  background-image: none !important;
+  box-sizing: border-box;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+}
+
+.club-card .club-thumb img {
+  width: 231px !important;
+  height: 178px !important;
+  max-width: 231px !important;
+  max-height: 178px !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: 0 !important;
+  background: #ffffff !important;
+  display: block !important;
+}
+
+.club-card .club-thumb:empty,
+.club-card .club-thumb.is-empty {
+  height: 194px !important;
+  padding: 16px 32px 0 !important;
+  background: #ffffff !important;
+  background-image: none !important;
+}
+
+@media (max-width: 760px) {
+  .club-card .club-thumb {
+    height: 164px !important;
+    padding: 14px 22px 0 !important;
+  }
+
+  .club-card .club-thumb img {
+    width: 100% !important;
+    height: 150px !important;
+    max-width: 231px !important;
+    max-height: 150px !important;
+    object-fit: cover !important;
+  }
+}
+
+
+/* =========================================================
+   Mobile Responsive CSS
+   PC 화면은 유지하고, 768px 이하 모바일에서만 비율/크기/간격 조정
+========================================================= */
+@media (max-width: 768px) {
+  html, body {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-size: 14px;
+  }
+
+  .site-header {
+    min-height: 64px;
+    height: auto;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-wrap {
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .logo-wrap span {
+    font-size: 18px;
+    white-space: nowrap;
+  }
+
+  .header-emblem {
+    width: 34px;
+    height: 34px;
+  }
+
+  .gnb {
+    flex: 1;
+    justify-content: flex-end;
+    gap: 12px;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+
+  .gnb::-webkit-scrollbar {
+    display: none;
+  }
+
+  .gnb a {
+    font-size: 13px;
+    padding: 6px 0;
+  }
+
+  .hero {
+    min-height: auto;
+    padding: 74px 20px 52px;
+  }
+
+  .hero-title,
+  .hero h1 {
+    font-size: clamp(38px, 10vw, 52px) !important;
+    line-height: 1.16 !important;
+    letter-spacing: -2px;
+  }
+
+  .hero-desc,
+  .hero p {
+    width: min(100%, 320px);
+    margin: 16px auto 0;
+    font-size: 13px !important;
+    line-height: 1.5;
+  }
+
+  .hero-glow:first-child {
+    width: 150px;
+    height: 150px;
+    left: 8%;
+    top: 70px;
+  }
+
+  .hero-glow:last-child {
+    width: 150px;
+    height: 150px;
+    right: 4%;
+    top: 150px;
+  }
+
+  .feature-section,
+  .feature-slider,
+  .feature-marquee {
+    margin: 22px 0 48px;
+    overflow: hidden;
+  }
+
+  .feature-track {
+    gap: 14px;
+  }
+
+  .feature-card,
+  .feature-item {
+    width: 132px !important;
+    height: 132px !important;
+    border-radius: 12px;
+    flex: 0 0 132px;
+  }
+
+  .feature-card h3,
+  .feature-item h3 {
+    font-size: 15px !important;
+    margin-top: 14px;
+  }
+
+  .feature-card img,
+  .feature-card svg,
+  .feature-item img,
+  .feature-item svg {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  .main-content,
+  .home-content,
+  .page-container,
+  .club-section,
+  .club-list-page,
+  .apply-page,
+  .detail-page,
+  .mypage-page {
+    width: 100% !important;
+    max-width: none !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    box-sizing: border-box;
+  }
+
+  .search-wrap,
+  .search-bar {
+    width: 100% !important;
+    max-width: 360px;
+    height: 42px;
+    margin: 0 auto 32px;
+  }
+
+  .search-bar input,
+  .search-wrap input {
+    height: 42px;
+    font-size: 13px;
+    padding: 0 42px 0 18px;
+  }
+
+  .section-title-row,
+  .club-section-head,
+  .club-list-head {
+    display: grid !important;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    align-items: center;
+    margin: 34px 0 18px;
+  }
+
+  .section-title-row h2,
+  .club-section-head h2,
+  .club-list-head h2 {
+    font-size: 22px !important;
+    white-space: nowrap;
+  }
+
+  .section-line,
+  .club-section-line {
+    min-width: 0;
+  }
+
+  .more-link,
+  .more-btn {
+    font-size: 16px !important;
+    white-space: nowrap;
+  }
+
+  .club-grid,
+  .home-club-grid,
+  .club-list-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+  }
+
+  .club-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: auto !important;
+    min-height: 250px;
+    border-radius: 14px;
+  }
+
+  .club-card .club-thumb {
+    height: 142px !important;
+    padding: 12px 14px 0 !important;
+  }
+
+  .club-card .club-thumb img {
+    width: 100% !important;
+    height: 130px !important;
+    max-width: 100% !important;
+    max-height: 130px !important;
+    object-fit: cover !important;
+  }
+
+  .club-content {
+    padding: 10px 12px 12px !important;
+  }
+
+  .club-content h3,
+  .club-card h3 {
+    font-size: 22px !important;
+    line-height: 1.15;
+    margin-bottom: 6px;
+  }
+
+  .club-content p,
+  .club-card p {
+    font-size: 11px !important;
+    line-height: 1.35;
+  }
+
+  .club-bottom {
+    margin-top: 10px;
+  }
+
+  .tag,
+  .status-badge {
+    min-width: 54px;
+    height: 24px;
+    font-size: 11px;
+  }
+
+  .bookmark-btn {
+    width: 26px;
+    height: 26px;
+  }
+
+  .site-footer {
+    min-height: auto;
+    padding: 28px 18px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .footer-brand img {
+    width: 80px;
+  }
+
+  .footer-brand h2 {
+    font-size: 26px;
+  }
+
+  .footer-brand p {
+    font-size: 10px;
+  }
+
+  .footer-menu {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 20px;
+  }
+
+  .footer-menu a {
+    font-size: 12px;
+  }
+
+  .club-list-layout,
+  .explore-layout {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 24px;
+  }
+
+  .category-panel,
+  .filter-panel {
+    width: 100% !important;
+    position: static !important;
+    padding: 22px 20px;
+    border-radius: 16px;
+  }
+
+  .category-list,
+  .filter-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .category-list button,
+  .filter-list button {
+    width: 100%;
+    min-height: 42px;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+
+  .filter-chips,
+  .apply-filter-chips {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filter-chips button,
+  .apply-filter-chips button {
+    height: 34px;
+    padding: 0 14px;
+    font-size: 14px;
+  }
+
+  .detail-container,
+  .club-detail-container {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  .breadcrumb {
+    margin: 28px 0 20px;
+    font-size: 13px;
+  }
+
+  .detail-hero,
+  .club-detail-hero {
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .detail-cover {
+    height: 170px !important;
+  }
+
+  .detail-hero-bottom {
+    min-height: auto;
+    padding: 22px 18px;
+    display: grid !important;
+    grid-template-columns: 88px 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+
+  .detail-logo-box {
+    width: 88px !important;
+    height: 88px !important;
+    border-radius: 8px;
+  }
+
+  .detail-title-group h1,
+  #detailClubName {
+    font-size: 32px !important;
+    line-height: 1.15;
+    word-break: keep-all;
+  }
+
+  .detail-title-group p,
+  #detailShortDescription {
+    font-size: 16px !important;
+    line-height: 1.4;
+    margin-top: 6px;
+  }
+
+  .detail-summary {
+    grid-column: 1 / -1;
+    width: 100%;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px 10px;
+    margin-top: 8px;
+  }
+
+  .detail-summary > div {
+    border-right: 0 !important;
+    padding: 0 !important;
+  }
+
+  .detail-summary dt {
+    font-size: 12px !important;
+  }
+
+  .detail-summary dd {
+    font-size: 14px !important;
+  }
+
+  .detail-actions,
+  .detail-button-wrap {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  .detail-apply-btn {
+    height: 38px !important;
+    padding: 0 16px !important;
+    font-size: 18px !important;
+  }
+
+  .detail-scrap-btn {
+    height: 34px !important;
+    padding: 0 12px !important;
+    font-size: 14px !important;
+  }
+
+  .detail-tabs {
+    margin-top: 30px;
+    overflow-x: auto;
+    gap: 28px;
+    scrollbar-width: none;
+  }
+
+  .detail-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .detail-tabs button {
+    font-size: 18px !important;
+    white-space: nowrap;
+  }
+
+  .detail-panel,
+  .intro-panel,
+  .activity-panel,
+  .board-panel,
+  .member-panel {
+    padding: 24px 18px !important;
+    border-radius: 14px;
+  }
+
+  .detail-block h2,
+  .detail-block h3 {
+    font-size: 20px !important;
+  }
+
+  .detail-block p,
+  .recruit-info dd,
+  .recruit-info dt {
+    font-size: 14px !important;
+    line-height: 1.7;
+  }
+
+  .detail-tags {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .detail-tags span {
+    font-size: 11px;
+  }
+
+  .recruit-info dl {
+    display: grid;
+    gap: 16px;
+  }
+
+  .recruit-info dl > div {
+    display: grid !important;
+    grid-template-columns: 92px 1fr !important;
+    gap: 12px;
+  }
+
+  .poster-large {
+    width: 100% !important;
+    max-width: 100%;
+    min-height: 260px;
+  }
+
+  .poster-large img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain;
+  }
+
+  .board-table-wrap {
+    overflow-x: auto;
+  }
+
+  .board-table {
+    min-width: 680px;
+  }
+
+  .board-top,
+  .board-filter-row {
+    display: grid !important;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .board-search,
+  .board-search input {
+    width: 100%;
+  }
+
+  .apply-layout {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 24px;
+  }
+
+  .apply-club-list,
+  .apply-form-panel,
+  .application-panel {
+    width: 100% !important;
+  }
+
+  .apply-card,
+  .apply-club-card {
+    min-height: 118px;
+    padding: 18px;
+  }
+
+  .apply-form-card {
+    padding: 24px 18px !important;
+  }
+
+  .apply-form-row,
+  .form-row {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 8px;
+  }
+
+  .apply-form-row input,
+  .apply-form-row select,
+  .form-row input,
+  .form-row select {
+    width: 100%;
+    height: 42px;
+  }
+
+  .login-page,
+  .signup-page {
+    padding: 54px 16px 80px !important;
+  }
+
+  .login-card,
+  .signup-card {
+    width: 100% !important;
+    max-width: 560px;
+    padding: 42px 24px !important;
+    border-radius: 18px;
+  }
+
+  .login-card h1,
+  .signup-card h1 {
+    font-size: 28px !important;
+    line-height: 1.35;
+  }
+
+  .login-card input,
+  .signup-card input,
+  .signup-card select {
+    width: 100% !important;
+    height: 48px !important;
+    font-size: 16px;
+  }
+
+  .login-submit-btn,
+  .signup-next-btn,
+  .signup-prev-btn {
+    height: 48px !important;
+    font-size: 18px !important;
+  }
+
+  .signup-basic-box {
+    width: 100% !important;
+  }
+
+  .signup-basic-box .signup-field {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    margin-bottom: 18px !important;
+  }
+
+  .signup-basic-box .signup-field label {
+    font-size: 15px !important;
+    line-height: 1.4 !important;
+  }
+
+  .signup-basic-box .password-rule-text {
+    grid-column: 1 !important;
+    margin-top: -8px !important;
+  }
+
+  .signup-buttons {
+    margin-top: 46px !important;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .role-select-grid,
+  .signup-role-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+
+  .mypage-container {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 22px;
+  }
+
+  .mypage-sidebar-wrap {
+    position: static !important;
+    display: grid;
+    gap: 12px;
+  }
+
+  .mypage-sidebar,
+  .operator-sidebar-menu {
+    width: 100% !important;
+    min-height: auto !important;
+    padding: 18px 14px !important;
+    border-radius: 16px;
+  }
+
+  .mypage-sidebar-menu,
+  .operator-sidebar-menu nav {
+    display: flex !important;
+    gap: 16px !important;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+
+  .mypage-sidebar-menu::-webkit-scrollbar,
+  .operator-sidebar-menu nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mypage-sidebar-menu button,
+  .operator-sidebar-menu button {
+    flex: 0 0 auto;
+    font-size: 15px !important;
+  }
+
+  .profile-card {
+    display: grid !important;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding: 24px 20px !important;
+  }
+
+  .profile-left {
+    gap: 16px;
+  }
+
+  .profile-avatar {
+    width: 78px !important;
+    height: 78px !important;
+  }
+
+  .profile-info h1 {
+    font-size: 28px !important;
+  }
+
+  .profile-info p {
+    font-size: 14px !important;
+  }
+
+  .logout-btn,
+  .profile-edit-btn {
+    justify-self: end;
+    height: 36px !important;
+    font-size: 14px !important;
+  }
+
+  .content-section,
+  .mypage-card {
+    padding: 24px 20px !important;
+    border-radius: 16px;
+  }
+
+  .section-head h2 {
+    font-size: 22px !important;
+  }
+
+  .joined-club-item {
+    grid-template-columns: 54px 1fr 20px !important;
+    gap: 14px;
+    min-height: 86px;
+  }
+
+  .joined-club-logo {
+    width: 54px !important;
+    height: 54px !important;
+  }
+
+  .joined-club-info h3 {
+    font-size: 18px !important;
+  }
+
+  .joined-club-info p {
+    font-size: 12px !important;
+  }
+
+  .activity-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 14px !important;
+  }
+
+  .activity-card {
+    min-height: 146px !important;
+    padding: 18px 10px !important;
+  }
+
+  .activity-card h3 {
+    font-size: 15px !important;
+  }
+
+  .activity-count {
+    font-size: 28px !important;
+  }
+
+  .notification-item {
+    grid-template-columns: 24px 1fr !important;
+    gap: 12px;
+    padding: 16px !important;
+  }
+
+  .notification-date {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .profile-info-list div,
+  .account-security-list div {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    padding: 14px 0;
+  }
+
+  .profile-info-list dt,
+  .account-security-list dt,
+  .profile-info-list dd,
+  .account-security-list dd {
+    font-size: 16px !important;
+  }
+
+  .operator-club-top {
+    grid-template-columns: 80px 1fr !important;
+    gap: 16px;
+  }
+
+  .operator-outline-btn {
+    grid-column: 1 / -1;
+    justify-self: end;
+  }
+
+  .operator-summary-bottom,
+  .operator-two-column {
+    grid-template-columns: 1fr !important;
+  }
+
+  .operator-stats {
+    grid-template-columns: repeat(2, 1fr) !important;
+    border-left: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  .operator-post-list article,
+  .operator-log-list article,
+  .operator-notice-list article {
+    grid-template-columns: 1fr !important;
+    gap: 8px;
+    padding: 14px 0;
+  }
+
+  .operator-notice-list article {
+    padding: 18px !important;
+  }
+
+  .login-required-modal {
+    width: calc(100% - 32px) !important;
+    max-width: 420px;
+    padding: 34px 22px !important;
+  }
+
+  .login-required-modal h2 {
+    font-size: 24px !important;
+  }
+
+  .login-required-modal p {
+    font-size: 14px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .club-grid,
+  .home-club-grid,
+  .club-list-grid {
+    gap: 12px !important;
+  }
+
+  .club-card {
+    min-height: 232px;
+  }
+
+  .club-card .club-thumb {
+    height: 124px !important;
+    padding: 10px 12px 0 !important;
+  }
+
+  .club-card .club-thumb img {
+    height: 114px !important;
+  }
+
+  .club-content h3,
+  .club-card h3 {
+    font-size: 19px !important;
+  }
+
+  .club-content p,
+  .club-card p {
+    font-size: 10px !important;
+  }
+
+  .hero-title,
+  .hero h1 {
+    font-size: 36px !important;
+  }
+
+  .activity-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+
+/* =========================================================
+   Final placeholder image removal
+   - 체크무늬 placeholder 이미지는 화면에 표시하지 않음
+   - 이미지 없는 동아리는 흰색 빈 공간만 유지
+========================================================= */
+.club-thumb,
+.club-card .club-thumb,
+.club-thumb.is-empty,
+.club-image,
+.club-card-image {
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+.club-thumb img[src=""],
+.club-thumb img:not([src]),
+.club-card-image img[src=""],
+.club-card-image img:not([src]),
+.club-image img[src=""],
+.club-image img:not([src]) {
+  display: none !important;
+}
+
+.club-card[data-club-id="7"] .club-thumb img,
+.club-card[data-club-id="8"] .club-thumb img,
+.club-card[data-id="7"] .club-thumb img,
+.club-card[data-id="8"] .club-thumb img,
+[data-club-id="7"] .club-thumb img,
+[data-club-id="8"] .club-thumb img,
+[data-id="7"] .club-thumb img,
+[data-id="8"] .club-thumb img {
+  display: none !important;
+}
+
+.club-card[data-club-id="7"] .club-thumb,
+.club-card[data-club-id="8"] .club-thumb,
+.club-card[data-id="7"] .club-thumb,
+.club-card[data-id="8"] .club-thumb,
+[data-club-id="7"] .club-thumb,
+[data-club-id="8"] .club-thumb,
+[data-id="7"] .club-thumb,
+[data-id="8"] .club-thumb {
+  background: #ffffff !important;
+  background-image: none !important;
+}
+
+
+/* =========================================================
+   Final Mobile CSS v2
+   - 모바일에서만 전체 비율/크기 재정리
+   - PC 레이아웃은 유지
+========================================================= */
+@media (max-width: 900px) {
+  html,
+  body {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  body {
+    min-width: 0 !important;
+  }
+
+  .site-header {
+    min-height: 62px !important;
+    height: auto !important;
+    padding: 10px 14px !important;
+    flex-direction: row !important;
+    justify-content: flex-start !important;
+    gap: 14px !important;
+  }
+
+  .logo-wrap {
+    gap: 8px !important;
+    flex: 0 0 auto !important;
+  }
+
+  .header-emblem {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .logo-wrap span {
+    font-size: 18px !important;
+    letter-spacing: -0.4px !important;
+  }
+
+  .gnb {
+    min-width: 0 !important;
+    height: 42px !important;
+    flex: 1 1 auto !important;
+    justify-content: flex-start !important;
+    gap: 18px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    white-space: nowrap !important;
+    font-size: 13px !important;
+    scrollbar-width: none !important;
+  }
+
+  .gnb::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .gnb a {
+    height: 42px !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+  }
+
+  .gnb a.is-active::after {
+    width: 24px !important;
+    height: 2px !important;
+  }
+
+  /* HOME */
+  .hero-section {
+    height: 355px !important;
+    min-height: 355px !important;
+    padding: 0 16px !important;
+    align-items: flex-start !important;
+  }
+
+  .hero-copy {
+    width: 100% !important;
+    margin-top: 88px !important;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(36px, 10.6vw, 48px) !important;
+    line-height: 1.14 !important;
+    letter-spacing: -1.8px !important;
+  }
+
+  .hero-copy p {
+    width: min(330px, 90vw) !important;
+    margin: 16px auto 0 !important;
+    font-size: 12px !important;
+    line-height: 1.55 !important;
+    word-break: keep-all !important;
+  }
+
+  .glow-1 {
+    width: 225px !important;
+    top: 42px !important;
+    left: calc(50% - 190px) !important;
+  }
+
+  .glow-2 {
+    width: 215px !important;
+    top: 128px !important;
+    left: calc(50% - 15px) !important;
+  }
+
+  .feature-marquee {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin: 0 0 0 calc(50% - 50vw) !important;
+    padding: 8px 0 18px !important;
+  }
+
+  .feature-track,
+  .feature-set {
+    gap: 16px !important;
+  }
+
+  .feature-card {
+    width: 148px !important;
+    height: 154px !important;
+    border-radius: 12px !important;
+  }
+
+  .feature-face {
+    border-radius: 12px !important;
+  }
+
+  .feature-front {
+    padding-top: 16px !important;
+  }
+
+  .feature-front h2 {
+    font-size: 16px !important;
+    line-height: 1.2 !important;
+    letter-spacing: -0.4px !important;
+  }
+
+  .feature-front img {
+    width: 54px !important;
+    height: 54px !important;
+    margin-top: 34px !important;
+  }
+
+  .feature-back {
+    padding: 18px !important;
+  }
+
+  .feature-back p {
+    font-size: 14px !important;
+    line-height: 1.45 !important;
+    word-break: keep-all !important;
+  }
+
+  .search-section {
+    margin-top: 52px !important;
+    padding: 0 16px !important;
+  }
+
+  .search-bar,
+  .explore-search,
+  .apply-search {
+    width: 100% !important;
+    max-width: 420px !important;
+    height: 42px !important;
+    padding: 0 14px 0 18px !important;
+    border-width: 1.5px !important;
+  }
+
+  .search-bar input,
+  .explore-search input,
+  .apply-search input {
+    font-size: 13px !important;
+  }
+
+  .search-bar button,
+  .explore-search button,
+  .apply-search button {
+    width: 25px !important;
+    height: 25px !important;
+  }
+
+  .search-bar svg,
+  .explore-search svg,
+  .apply-search svg {
+    width: 23px !important;
+    height: 23px !important;
+  }
+
+  .club-section {
+    width: min(100% - 28px, 680px) !important;
+    margin: 54px auto 0 !important;
+  }
+
+  .general-section {
+    margin-top: 68px !important;
+    margin-bottom: 90px !important;
+  }
+
+  .section-title-row {
+    gap: 14px !important;
+    margin-bottom: 22px !important;
+  }
+
+  .section-title-row h2 {
+    font-size: 23px !important;
+    letter-spacing: -0.6px !important;
+  }
+
+  .section-title-row span {
+    height: 2px !important;
+    min-width: 40px !important;
+  }
+
+  .section-title-row a {
+    font-size: 16px !important;
+  }
+
+  .section-title-row b {
+    font-size: 25px !important;
+    margin-left: 4px !important;
+    top: 2px !important;
+  }
+
+  .club-grid,
+  .explore-grid {
+    grid-template-columns: repeat(2, minmax(0, 296px)) !important;
+    justify-content: center !important;
+    gap: 20px !important;
+  }
+
+  .club-card,
+  .explore-club-card {
+    width: 100% !important;
+    max-width: 296px !important;
+    height: 312px !important;
+    min-height: 312px !important;
+    border-radius: 16px !important;
+    margin: 0 auto !important;
+  }
+
+  .club-card .club-thumb,
+  .explore-club-card .club-thumb {
+    height: 194px !important;
+    padding: 16px 32px 0 !important;
+    background: #ffffff !important;
+    background-image: none !important;
+  }
+
+  .club-card .club-thumb img,
+  .explore-club-card .club-thumb img {
+    width: min(231px, 100%) !important;
+    height: 178px !important;
+    max-width: 231px !important;
+    max-height: 178px !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    display: block !important;
+  }
+
+  .club-card[data-club-id="7"] .club-thumb img,
+  .club-card[data-club-id="8"] .club-thumb img,
+  .explore-club-card[data-club-id="7"] .club-thumb img,
+  .explore-club-card[data-club-id="8"] .club-thumb img {
+    display: none !important;
+  }
+
+  .club-card[data-club-id="7"] .club-thumb,
+  .club-card[data-club-id="8"] .club-thumb,
+  .explore-club-card[data-club-id="7"] .club-thumb,
+  .explore-club-card[data-club-id="8"] .club-thumb {
+    background: #ffffff !important;
+    background-image: none !important;
+  }
+
+  .club-content {
+    height: 118px !important;
+    padding: 12px 26px 14px !important;
+  }
+
+  .club-content h3 {
+    font-size: 29px !important;
+    line-height: 1.08 !important;
+    letter-spacing: -1px !important;
+  }
+
+  .club-content p {
+    margin-top: 7px !important;
+    font-size: 14px !important;
+    line-height: 1.15 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .club-bottom,
+  .explore-club-bottom {
+    margin-top: 17px !important;
+  }
+
+  .tag {
+    width: 68px !important;
+    height: 26px !important;
+    font-size: 12px !important;
+  }
+
+  .bookmark-btn {
+    width: 28px !important;
+    height: 28px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .bookmark-icon {
+    width: 16px !important;
+    height: 20px !important;
+  }
+
+  /* Explore page */
+  .explore-container {
+    width: min(100% - 28px, 680px) !important;
+    padding-top: 38px !important;
+  }
+
+  .explore-tabs {
+    width: 100% !important;
+    max-width: 360px !important;
+    height: 44px !important;
+    margin: 0 auto 28px !important;
+  }
+
+  .explore-tab {
+    font-size: 16px !important;
+  }
+
+  .explore-toolbar {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    margin-bottom: 28px !important;
+  }
+
+  .explore-search {
+    justify-self: center !important;
+  }
+
+  .explore-filters {
+    width: 100% !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+  }
+
+  .filter-chip {
+    min-height: 32px !important;
+    padding: 0 13px !important;
+    font-size: 14px !important;
+  }
+
+  .category-panel {
+    width: min(100vw - 28px, 420px) !important;
+    min-height: auto !important;
+    padding: 22px 24px 26px !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+  }
+
+  .category-panel h3 {
+    font-size: 22px !important;
+    margin-bottom: 18px !important;
+  }
+
+  .category-options {
+    column-gap: 34px !important;
+    row-gap: 16px !important;
+  }
+
+  .category-options button {
+    font-size: 15px !important;
+  }
+
+  /* Detail page */
+  .detail-container {
+    width: min(100% - 24px, 560px) !important;
+    padding: 32px 0 72px !important;
+  }
+
+  .detail-breadcrumb {
+    margin-bottom: 28px !important;
+    gap: 8px !important;
+    font-size: 13px !important;
+    flex-wrap: wrap !important;
+  }
+
+  .detail-cover {
+    height: 190px !important;
+  }
+
+  .detail-cover-title {
+    left: 120px !important;
+    right: 18px !important;
+    top: 58px !important;
+  }
+
+  .detail-cover-title h1 {
+    font-size: 30px !important;
+    line-height: 1.08 !important;
+    letter-spacing: -1px !important;
+  }
+
+  .detail-cover-title p {
+    margin-top: 8px !important;
+    font-size: 14px !important;
+    line-height: 1.35 !important;
+    word-break: keep-all !important;
+  }
+
+  .detail-hero-body {
+    min-height: auto !important;
+    padding: 22px 18px 76px !important;
+  }
+
+  .detail-logo-box {
+    width: 82px !important;
+    height: 82px !important;
+    top: -106px !important;
+    left: 22px !important;
+    border-radius: 8px !important;
+  }
+
+  .detail-logo-box img {
+    width: 74px !important;
+    height: 74px !important;
+    object-fit: contain !important;
+  }
+
+  .detail-summary {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px 10px !important;
+    padding-left: 0 !important;
+    margin: 0 !important;
+  }
+
+  .detail-summary div,
+  .detail-summary div:first-child {
+    min-width: 0 !important;
+    padding: 0 !important;
+    border-right: 0 !important;
+  }
+
+  .detail-summary dt {
+    font-size: 12px !important;
+    margin-bottom: 5px !important;
+  }
+
+  .detail-summary dd {
+    font-size: 14px !important;
+    line-height: 1.2 !important;
+  }
+
+  .detail-actions {
+    position: absolute !important;
+    right: 18px !important;
+    bottom: 20px !important;
+    margin-top: 0 !important;
+    justify-content: flex-end !important;
+    gap: 8px !important;
+  }
+
+  .detail-scrap-btn {
+    min-width: 74px !important;
+    height: 29px !important;
+    font-size: 12px !important;
+    padding: 0 8px !important;
+  }
+
+  .detail-scrap-btn img {
+    width: 12px !important;
+    height: 15px !important;
+  }
+
+  .detail-apply-btn {
+    width: 92px !important;
+    height: 34px !important;
+    font-size: 16px !important;
+    border-radius: 8px !important;
+  }
+
+  .admin-club-tools {
+    margin-top: 18px !important;
+    display: none;
+    flex-wrap: wrap !important;
+  }
+
+  .detail-tabs {
+    height: 60px !important;
+    padding-left: 12px !important;
+    gap: 24px !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+  }
+
+  .detail-tabs::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .detail-tabs button {
+    height: 40px !important;
+    font-size: 17px !important;
+    flex: 0 0 auto !important;
+  }
+
+  .detail-content-card {
+    padding: 26px 18px 34px !important;
+    border-radius: 14px !important;
+  }
+
+  .detail-block {
+    padding-bottom: 30px !important;
+    margin-bottom: 30px !important;
+  }
+
+  .detail-block h2,
+  .board-write-panel h2 {
+    margin-bottom: 16px !important;
+    font-size: 18px !important;
+  }
+
+  .detail-block p,
+  .detail-block li,
+  .recruit-info dt,
+  .recruit-info dd {
+    font-size: 14px !important;
+    line-height: 1.65 !important;
+  }
+
+  .recruit-info div {
+    grid-template-columns: 82px 1fr !important;
+    gap: 12px !important;
+  }
+
+  .d-day {
+    min-width: 45px !important;
+    height: 20px !important;
+    margin-right: 8px !important;
+    font-size: 12px !important;
+  }
+
+  .poster-large {
+    width: 100% !important;
+    min-height: auto !important;
+    background: #ffffff !important;
+  }
+
+  .poster-large img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 520px !important;
+    object-fit: contain !important;
+  }
+
+  .activity-photo-grid,
+  .review-grid,
+  .member-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .board-toolbar,
+  .board-top,
+  .board-filter-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .board-table-wrap,
+  .board-table-container {
+    overflow-x: auto !important;
+  }
+
+  .board-table {
+    min-width: 640px !important;
+  }
+
+  /* Apply page */
+  .apply-layout {
+    width: min(100% - 24px, 560px) !important;
+    padding-top: 38px !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  .apply-club-list,
+  .apply-form-panel {
+    width: 100% !important;
+    padding: 22px 18px !important;
+    border-radius: 16px !important;
+  }
+
+  .apply-filter-chips {
+    gap: 8px !important;
+    justify-content: center !important;
+  }
+
+  .apply-filter-chips button {
+    height: 32px !important;
+    padding: 0 12px !important;
+    font-size: 13px !important;
+  }
+
+  .apply-list {
+    gap: 12px !important;
+  }
+
+  .apply-club-card {
+    padding: 16px !important;
+    min-height: 104px !important;
+  }
+
+  .apply-club-card strong {
+    font-size: 19px !important;
+  }
+
+  .apply-club-card span {
+    font-size: 12px !important;
+  }
+
+  .club-application-form {
+    gap: 14px !important;
+  }
+
+  .application-row {
+    grid-template-columns: 1fr !important;
+    gap: 7px !important;
+  }
+
+  .application-row input,
+  .application-row select {
+    width: 100% !important;
+    height: 40px !important;
+    font-size: 14px !important;
+  }
+
+  .application-row textarea {
+    display: none !important;
+  }
+
+  .file-drop {
+    min-height: 90px !important;
+    padding: 18px !important;
+  }
+
+  .apply-form-buttons {
+    justify-content: stretch !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+
+  .apply-form-buttons button {
+    width: 100% !important;
+  }
+
+  /* Login / Signup */
+  .login-page,
+  .signup-page {
+    padding: 44px 14px 70px !important;
+  }
+
+  .login-card,
+  .signup-card {
+    width: 100% !important;
+    max-width: 520px !important;
+    padding: 36px 22px !important;
+    border-radius: 18px !important;
+  }
+
+  .login-card h1,
+  .signup-card h1 {
+    font-size: 26px !important;
+    line-height: 1.35 !important;
+    word-break: keep-all !important;
+  }
+
+  .login-card input,
+  .signup-card input,
+  .signup-card select {
+    width: 100% !important;
+    height: 46px !important;
+    font-size: 15px !important;
+  }
+
+  .login-submit-btn,
+  .signup-next-btn,
+  .signup-prev-btn,
+  .submit-btn-small,
+  .line-btn {
+    height: 46px !important;
+    font-size: 16px !important;
+  }
+
+  .signup-stepper {
+    gap: 8px !important;
+    font-size: 12px !important;
+  }
+
+  .signup-basic-box {
+    width: 100% !important;
+  }
+
+  .signup-basic-box .signup-field,
+  .signup-field {
+    grid-template-columns: 1fr !important;
+    gap: 7px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .signup-basic-box .signup-field label,
+  .signup-field label {
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+  }
+
+  .signup-basic-box .password-rule-text {
+    grid-column: 1 !important;
+    margin-top: -8px !important;
+  }
+
+  .signup-buttons {
+    margin-top: 40px !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+
+  .role-select-grid,
+  .signup-role-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* MyPage */
+  .mypage-page {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .mypage-container {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .mypage-sidebar-wrap {
+    position: static !important;
+    display: grid !important;
+    gap: 12px !important;
+  }
+
+  .mypage-sidebar,
+  .operator-sidebar-menu {
+    width: 100% !important;
+    min-height: auto !important;
+    padding: 16px 12px !important;
+    border-radius: 16px !important;
+  }
+
+  .mypage-sidebar-menu,
+  .operator-sidebar-menu nav {
+    display: flex !important;
+    gap: 18px !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    scrollbar-width: none !important;
+  }
+
+  .mypage-sidebar-menu::-webkit-scrollbar,
+  .operator-sidebar-menu nav::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .mypage-sidebar-menu button,
+  .operator-sidebar-menu button {
+    flex: 0 0 auto !important;
+    font-size: 14px !important;
+  }
+
+  .profile-card,
+  .mypage-card,
+  .content-section {
+    padding: 22px 18px !important;
+    border-radius: 16px !important;
+  }
+
+  .profile-card {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .profile-left {
+    gap: 14px !important;
+  }
+
+  .profile-avatar {
+    width: 70px !important;
+    height: 70px !important;
+  }
+
+  .profile-info h1 {
+    font-size: 24px !important;
+  }
+
+  .profile-info p {
+    font-size: 13px !important;
+  }
+
+  .logout-btn,
+  .profile-edit-btn {
+    justify-self: end !important;
+    height: 34px !important;
+    font-size: 13px !important;
+  }
+
+  .section-head h2 {
+    font-size: 20px !important;
+  }
+
+  .joined-club-item {
+    grid-template-columns: 48px 1fr 18px !important;
+    gap: 12px !important;
+    min-height: 78px !important;
+  }
+
+  .joined-club-logo {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .joined-club-info h3 {
+    font-size: 17px !important;
+  }
+
+  .joined-club-info p {
+    font-size: 11px !important;
+  }
+
+  .activity-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .activity-card {
+    min-height: 138px !important;
+    padding: 16px 8px !important;
+  }
+
+  .activity-card h3 {
+    font-size: 14px !important;
+  }
+
+  .activity-count {
+    font-size: 26px !important;
+  }
+
+  .profile-info-list div,
+  .account-security-list div {
+    grid-template-columns: 1fr !important;
+    gap: 7px !important;
+    padding: 12px 0 !important;
+  }
+
+  .profile-info-list dt,
+  .profile-info-list dd,
+  .account-security-list dt,
+  .account-security-list dd {
+    font-size: 15px !important;
+  }
+
+  /* Footer */
+  .site-footer {
+    min-height: auto !important;
+    padding: 26px 18px !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  .footer-brand img {
+    width: 96px !important;
+    height: auto !important;
+  }
+
+  .footer-brand h2 {
+    margin: 12px 0 16px !important;
+    font-size: 26px !important;
+  }
+
+  .footer-brand p,
+  .footer-menu {
+    font-size: 11px !important;
+  }
+
+  .footer-brand span {
+    margin-left: 0 !important;
+    display: block !important;
+    margin-top: 6px !important;
+  }
+
+  .footer-menu {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 16px !important;
+    padding-top: 0 !important;
+  }
+
+  .login-required-modal {
+    width: calc(100% - 28px) !important;
+    max-width: 420px !important;
+    padding: 34px 20px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .club-grid,
+  .explore-grid {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  .club-card,
+  .explore-club-card {
+    width: min(296px, 100%) !important;
+  }
+
+  .site-header {
+    gap: 10px !important;
+  }
+
+  .gnb {
+    gap: 14px !important;
+    font-size: 12px !important;
+  }
+
+  .hero-section {
+    height: 330px !important;
+  }
+
+  .hero-copy {
+    margin-top: 78px !important;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(34px, 10.5vw, 42px) !important;
+  }
+
+  .feature-card {
+    width: 132px !important;
+    height: 138px !important;
+  }
+
+  .feature-front h2 {
+    font-size: 14px !important;
+  }
+
+  .feature-front img {
+    width: 48px !important;
+    height: 48px !important;
+    margin-top: 28px !important;
+  }
+
+  .section-title-row {
+    gap: 10px !important;
+  }
+
+  .section-title-row h2 {
+    font-size: 21px !important;
+  }
+
+  .section-title-row a {
+    font-size: 15px !important;
+  }
+
+  .detail-cover-title {
+    left: 112px !important;
+    top: 54px !important;
+  }
+
+  .detail-cover-title h1 {
+    font-size: 27px !important;
+  }
+
+  .detail-cover-title p {
+    font-size: 13px !important;
+  }
+
+  .detail-logo-box {
+    width: 74px !important;
+    height: 74px !important;
+    left: 20px !important;
+  }
+
+  .detail-logo-box img {
+    width: 66px !important;
+    height: 66px !important;
+  }
+
+  .detail-summary {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .activity-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .logo-wrap span {
+    font-size: 16px !important;
+  }
+
+  .header-emblem {
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  .gnb {
+    font-size: 11px !important;
+    gap: 12px !important;
+  }
+
+  .club-card .club-thumb,
+  .explore-club-card .club-thumb {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+
+  .club-content {
+    padding-left: 22px !important;
+    padding-right: 22px !important;
+  }
+}
+
+
+/* =========================================================
+   Apply page restore + mobile search border fix
+   - 동아리 지원 페이지는 기존 피그마처럼 좌우 패널 구조 유지
+   - 지원동기/자기소개 textarea 다시 표시
+   - 모바일 홈 검색창 테두리 선명하게 표시
+========================================================= */
+.application-textarea-row textarea,
+#applicantReason,
+#applicantIntro {
+  display: block !important;
+  width: 100% !important;
+  min-height: 170px !important;
+  resize: vertical !important;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 8px !important;
+  background: #ffffff !important;
+  padding: 14px 16px !important;
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+  box-sizing: border-box !important;
+}
+
+.application-textarea-row textarea:focus,
+#applicantReason:focus,
+#applicantIntro:focus {
+  outline: none !important;
+  border-color: var(--blue) !important;
+}
+
+/* 이전 모바일 CSS가 textarea를 숨기던 규칙 덮어쓰기 */
+@media (max-width: 900px) {
+  .application-row textarea,
+  .apply-form textarea,
+  .club-application-form textarea {
+    display: block !important;
+  }
+
+  .apply-layout {
+    width: min(100% - 24px, 720px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr) !important;
+    gap: 12px !important;
+    align-items: start !important;
+  }
+
+  .apply-club-list,
+  .apply-form-panel {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 18px 14px !important;
+    border-radius: 12px !important;
+  }
+
+  .apply-form-panel h1,
+  .apply-form-panel h2 {
+    font-size: 18px !important;
+    line-height: 1.3 !important;
+    margin-bottom: 22px !important;
+  }
+
+  .application-row {
+    display: grid !important;
+    grid-template-columns: 82px minmax(0, 1fr) !important;
+    gap: 12px !important;
+    align-items: start !important;
+    margin-bottom: 16px !important;
+  }
+
+  .application-row label {
+    font-size: 14px !important;
+    line-height: 38px !important;
+    white-space: nowrap !important;
+  }
+
+  .application-row input,
+  .application-row select {
+    height: 38px !important;
+    font-size: 13px !important;
+  }
+
+  .application-textarea-row textarea,
+  #applicantReason,
+  #applicantIntro {
+    min-height: 146px !important;
+    font-size: 13px !important;
+  }
+
+  .apply-form-buttons {
+    display: grid !important;
+    grid-template-columns: 1fr 1.25fr !important;
+    gap: 10px !important;
+  }
+
+  .apply-form-buttons button {
+    height: 38px !important;
+    font-size: 14px !important;
+  }
+
+  .apply-search,
+  .search-bar,
+  .home-search,
+  .search-section .search-bar {
+    border: 2px solid var(--blue) !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .apply-layout {
+    width: min(100% - 24px, 420px) !important;
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .application-row {
+    grid-template-columns: 1fr !important;
+    gap: 7px !important;
+  }
+
+  .application-row label {
+    line-height: 1.35 !important;
+  }
+
+  .application-textarea-row textarea,
+  #applicantReason,
+  #applicantIntro {
+    min-height: 140px !important;
+  }
+}
+
+/* 홈 검색창 테두리 최종 보정 */
+@media (max-width: 768px) {
+  .search-section .search-bar,
+  .home-search,
+  .search-bar {
+    border: 2px solid #072c6c !important;
+    outline: none !important;
+    background-color: #ffffff !important;
+    border-radius: 999px !important;
+  }
+}
+
+/* 모집 상태 뱃지 */
+.explore-club-bottom .tag,
+.club-bottom .tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  height: 28px;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  color: #ffffff;
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+  border: none;
+}
+
+/* 모집 중 - 초록 */
+.explore-club-bottom .tag.status-open,
+.club-bottom .tag.status-open {
+  background: #79bea3;
+}
+
+/* 모집 마감 / 모집 종료 - 파란보라 */
+.explore-club-bottom .tag.status-closed,
+.club-bottom .tag.status-closed {
+  background: #7d8dbb;
+}
+
+/* 상시 모집 - 노랑 */
+.explore-club-bottom .tag.status-always,
+.club-bottom .tag.status-always {
+  background: #f8d489;
+}
+
+/* 모집 정보 없음 */
+.explore-club-bottom .tag.status-unknown,
+.club-bottom .tag.status-unknown {
+  background: #b8b8b8;
+}
+
+.department-select {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid #d8d8d8;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #111;
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+}
+
+.department-select:focus {
+  border-color: #f4b400;
+  box-shadow: 0 0 0 3px rgba(244, 180, 0, 0.15);
+}
+
+/* 홈 + 동아리 탐색 카드 하단 정렬 통합 수정 */
+.club-card {
+  position: relative !important;
+}
+
+/* 카드 안 설명이 모집 뱃지/스크랩 아이콘을 침범하지 않게 */
+.club-card .club-content {
+  position: relative !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  padding-bottom: 54px !important;
+}
+
+/* 설명이 길면 한 줄 말줄임 */
+.club-card .club-content p {
+  display: block !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* 홈 카드 하단 */
+.club-card .club-content .club-bottom {
+  position: absolute !important;
+  left: 27px !important;
+  right: 27px !important;
+  bottom: 14px !important;
+  margin-top: 0 !important;
+  z-index: 20 !important;
+}
+
+/* 탐색 페이지 카드 하단 */
+.explore-club-card > .club-bottom,
+.explore-club-card > .explore-club-bottom {
+  position: absolute !important;
+  left: 24px !important;
+  right: 24px !important;
+  bottom: 20px !important;
+  margin-top: 0 !important;
+  z-index: 30 !important;
+}
+
+/* 모집 상태 뱃지 */
+.club-card .tag,
+.explore-club-card .tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 72px !important;
+  height: 27px !important;
+  padding: 0 13px !important;
+  border-radius: 8px !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  color: #fff !important;
+  white-space: nowrap !important;
+  border: none !important;
+  transform: none !important;
+}
+
+/* 스크랩 버튼 */
+.club-card .bookmark-btn,
+.explore-club-card .bookmark-btn {
+  position: relative !important;
+  z-index: 50 !important;
+  width: 28px !important;
+  height: 30px !important;
+  pointer-events: auto !important;
+}
+
+/* 모집 상태 색상 */
+.club-card .tag.status-open,
+.explore-club-card .tag.status-open {
+  background: #79bea3 !important;
+}
+
+.club-card .tag.status-closed,
+.explore-club-card .tag.status-closed {
+  background: #7d8dbb !important;
+}
+
+.club-card .tag.status-always,
+.explore-club-card .tag.status-always {
+  background: #f8d489 !important;
+}
+
+.club-card .tag.status-unknown,
+.explore-club-card .tag.status-unknown {
+  background: #b8b8b8 !important;
+}
+
+/* 동아리 탐색 페이지 카드 레이아웃 수정 */
+.explore-club-card {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  height: 260px !important;
+  padding: 24px 24px 18px !important;
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+/* 카드 클릭 영역 */
+.explore-club-card .explore-card-link {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+/* 이미지 영역 */
+.explore-club-card .club-thumb {
+  width: 100% !important;
+  height: 130px !important;
+  flex: 0 0 130px !important;
+  margin-bottom: 14px !important;
+  overflow: hidden !important;
+}
+
+.explore-club-card .club-thumb img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+/* 텍스트 영역 */
+.explore-club-card .club-content {
+  padding: 0 !important;
+  margin: 0 !important;
+  flex: 1 !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+.explore-club-card .club-content h3 {
+  margin: 0 0 5px !important;
+  font-size: 24px !important;
+  line-height: 1.15 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.explore-club-card .club-content p {
+  margin: 0 !important;
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* 모집 뱃지 + 스크랩 버튼 */
+.explore-club-card .explore-club-bottom,
+.explore-club-card .club-bottom {
+  position: static !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-top: 10px !important;
+  padding: 0 !important;
+  width: 100% !important;
+  z-index: 10 !important;
+}
+
+/* 모집 상태 뱃지 */
+.explore-club-card .tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 70px !important;
+  height: 26px !important;
+  padding: 0 12px !important;
+  border-radius: 7px !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  color: #fff !important;
+  white-space: nowrap !important;
+}
+
+/* 스크랩 아이콘 */
+.explore-club-card .bookmark-btn {
+  width: 28px !important;
+  height: 30px !important;
+  flex-shrink: 0 !important;
+  position: relative !important;
+  z-index: 20 !important;
+}
+
+.explore-club-card .bookmark-icon {
+  width: 17px !important;
+  height: 22px !important;
+}
+
+/* 홈 + 동아리 탐색 카드 이미지 비율 유지 */
+.club-card .club-thumb,
+.explore-club-card .club-thumb {
+  width: 100% !important;
+  height: 150px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  background: #fff !important;
+  border-radius: 0 !important;
+}
+
+/* 이미지 원본 비율 유지 */
+.club-card .club-thumb img,
+.explore-club-card .club-thumb img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  display: block !important;
+}
+
+/* 홈 카드와 탐색 카드 이미지 크기 통일 */
+.club-card,
+.explore-club-card {
+  overflow: hidden !important;
+}
+
+/* 이미지 없는 카드도 같은 높이 유지 */
+.club-card .club-thumb:empty,
+.explore-club-card .club-thumb:empty {
+  height: 150px !important;
+}
+
+/* 탐색 페이지에서 텍스트가 이미지랑 너무 붙지 않게 */
+.explore-club-card .club-content {
+  margin-top: 14px !important;
+}
+
+/* 홈 카드도 동일하게 */
+.club-card .club-content {
+  margin-top: 14px !important;
+}
+
+@media (min-width: 901px) {
+  .club-grid,
+  .explore-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 296px) !important;
+    gap: 31px !important;
+    align-items: start !important;
+  }
+
+  .club-card,
+  .club-card.explore-club-card {
+    width: 296px !important;
+    height: 312px !important;
+    min-height: 312px !important;
+    max-height: 312px !important;
+    position: relative !important;
+    display: block !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(0, 0, 0, 0.25) !important;
+    border-radius: 16px !important;
+    background: #ffffff !important;
+  }
+
+  .club-card .explore-card-link {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    color: inherit !important;
+    text-decoration: none !important;
+  }
+
+  .club-card .club-thumb,
+  .club-card.explore-club-card .club-thumb {
+    position: absolute !important;
+    left: 33px !important;
+    top: 12px !important;
+    width: 231px !important;
+    height: 178px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    background: #ffffff !important;
+    border-radius: 0 !important;
+  }
+
+  .club-card .club-thumb img,
+  .club-card.explore-club-card .club-thumb img {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    display: block !important;
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+
+  .club-card .club-content,
+  .club-card.explore-club-card .club-content {
+    position: absolute !important;
+    left: 19px !important;
+    right: 19px !important;
+    top: 200px !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  .club-card .club-content h3,
+  .club-card.explore-club-card .club-content h3 {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 30px !important;
+    line-height: 1.15 !important;
+    font-weight: 800 !important;
+    letter-spacing: -1px !important;
+    color: #072c6c !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .club-card .club-content p,
+  .club-card.explore-club-card .club-content p {
+    margin: 6px 0 0 !important;
+    padding: 0 !important;
+    font-size: 15px !important;
+    line-height: 1.2 !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.3px !important;
+    color: #072c6c !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  /* 홈 카드: club-bottom이 club-content 안에 있음 */
+  .club-card .club-content > .club-bottom {
+    position: absolute !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 74px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    z-index: 20 !important;
+  }
+
+  /* 탐색 카드: club-bottom이 article 바로 아래에 있음 */
+  .club-card.explore-club-card > .club-bottom,
+  .club-card.explore-club-card > .explore-club-bottom {
+    position: absolute !important;
+    left: 19px !important;
+    right: 19px !important;
+    bottom: 13px !important;
+    top: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    z-index: 20 !important;
+  }
+
+  .club-card .tag,
+  .club-card.explore-club-card .tag {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 68px !important;
+    height: 26px !important;
+    padding: 0 12px !important;
+    border-radius: 8px !important;
+    border: none !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    color: #ffffff !important;
+    white-space: nowrap !important;
+    letter-spacing: -0.3px !important;
+  }
+
+  .club-card .tag.status-open,
+  .club-card.explore-club-card .tag.status-open {
+    background: #79bea3 !important;
+  }
+
+  .club-card .tag.status-closed,
+  .club-card.explore-club-card .tag.status-closed {
+    background: #6c7aa4 !important;
+  }
+
+  .club-card .tag.status-always,
+  .club-card.explore-club-card .tag.status-always {
+    background: #f8d489 !important;
+  }
+
+  .club-card .tag.status-unknown,
+  .club-card.explore-club-card .tag.status-unknown {
+    background: #b8b8b8 !important;
+  }
+
+  .club-card .bookmark-btn,
+  .club-card.explore-club-card .bookmark-btn {
+    width: 28px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    position: relative !important;
+    z-index: 50 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+  }
+
+  .club-card .bookmark-icon,
+  .club-card.explore-club-card .bookmark-icon {
+    width: 14px !important;
+    height: 18px !important;
+    display: block !important;
+  }
+}
+
+.club-card .tag.status-open,
+.explore-club-card .tag.status-open {
+  background: #79bea3 !important;
+}
+
+.club-card .tag.status-closed,
+.explore-club-card .tag.status-closed {
+  background: #6c7aa4 !important;
+}
+
+.club-card .tag.status-always,
+.explore-club-card .tag.status-always {
+  background: #f8d489 !important;
+}
+
+/* =========================================================
+   최종 ClubCard 통일 CSS
+   홈 / 동아리 탐색 카드 동일 비율 적용
+   Figma 기준: 카드 296x312, 이미지 231x178
+========================================================= */
+
+@media (min-width: 901px) {
+  .club-card,
+  .club-card.explore-club-card {
+    width: 296px !important;
+    height: 312px !important;
+    min-width: 296px !important;
+    min-height: 312px !important;
+    max-width: 296px !important;
+    max-height: 312px !important;
+    position: relative !important;
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    border: 1px solid rgba(0, 0, 0, 0.25) !important;
+    border-radius: 16px !important;
+    background: #fff !important;
+  }
+
+  .club-card a,
+  .club-card .explore-card-link {
+    position: static !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+
+  .club-card .club-thumb,
+  .club-card.explore-club-card .club-thumb {
+    position: absolute !important;
+    left: 33px !important;
+    top: 12px !important;
+    width: 231px !important;
+    height: 178px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    background: #fff !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .club-card .club-thumb img,
+  .club-card.explore-club-card .club-thumb img {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    display: block !important;
+  }
+
+  .club-card .club-content,
+  .club-card.explore-club-card .club-content {
+    position: static !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  .club-card .club-content h3,
+  .club-card.explore-club-card .club-content h3 {
+    position: absolute !important;
+    left: 19px !important;
+    right: 19px !important;
+    top: 200px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 30px !important;
+    line-height: 1.15 !important;
+    font-weight: 800 !important;
+    color: #072c6c !important;
+    letter-spacing: -1px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .club-card .club-content p,
+  .club-card.explore-club-card .club-content p {
+    position: absolute !important;
+    left: 19px !important;
+    right: 19px !important;
+    top: 241px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 15px !important;
+    line-height: 1.2 !important;
+    font-weight: 700 !important;
+    color: #072c6c !important;
+    letter-spacing: -0.3px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .club-card .club-bottom,
+  .club-card .club-content .club-bottom,
+  .club-card.explore-club-card .club-bottom,
+  .club-card.explore-club-card .explore-club-bottom {
+    position: absolute !important;
+    left: 19px !important;
+    right: 19px !important;
+    bottom: 13px !important;
+    top: auto !important;
+    width: auto !important;
+    height: 26px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    z-index: 30 !important;
+    pointer-events: auto !important;
+  }
+
+  .club-card .tag,
+  .club-card.explore-club-card .tag {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 68px !important;
+    height: 26px !important;
+    padding: 0 12px !important;
+    border-radius: 8px !important;
+    border: none !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    color: #fff !important;
+    white-space: nowrap !important;
+    letter-spacing: -0.3px !important;
+  }
+
+  .club-card .tag.status-open,
+  .club-card.explore-club-card .tag.status-open {
+    background: #79bea3 !important;
+  }
+
+  .club-card .tag.status-closed,
+  .club-card.explore-club-card .tag.status-closed {
+    background: #6c7aa4 !important;
+  }
+
+  .club-card .tag.status-always,
+  .club-card.explore-club-card .tag.status-always {
+    background: #f8d489 !important;
+  }
+
+  .club-card .bookmark-btn,
+  .club-card.explore-club-card .bookmark-btn {
+    position: relative !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 28px !important;
+    height: 26px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    z-index: 50 !important;
+    cursor: pointer !important;
+  }
+
+  .club-card .bookmark-icon,
+  .club-card.explore-club-card .bookmark-icon {
+    width: 14px !important;
+    height: 18px !important;
+    display: block !important;
+  }
+}
+
+/* =========================================================
+   운영진 지원자 목록 + 게시판 API 연결 페이지
+   - operator-applications.html
+   - board.html
+========================================================= */
+
+.operator-api-page {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 72px 0 100px;
+}
+
+.operator-api-hero {
+  margin-bottom: 28px;
+}
+
+.operator-api-hero .eyebrow {
+  margin: 0 0 8px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #f4b400;
+}
+
+.operator-api-hero h1 {
+  margin: 0 0 10px;
+  font-size: 36px;
+  line-height: 1.2;
+  color: #072c6c;
+  letter-spacing: -1px;
+}
+
+.operator-api-hero p {
+  margin: 0;
+  color: #555;
+  font-size: 16px;
+}
+
+.operator-api-panel {
+  background: #fff;
+  border: 1px solid #e7e7e7;
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 16px 40px rgba(7, 44, 108, 0.08);
+}
+
+.operator-api-toolbar {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.operator-api-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 180px;
+  flex: 1;
+}
+
+.operator-api-field span,
+.post-api-form label span {
+  font-size: 13px;
+  font-weight: 800;
+  color: #072c6c;
+}
+
+.operator-api-field select,
+.operator-api-field input,
+.post-api-form input,
+.post-api-form select,
+.post-api-form textarea {
+  width: 100%;
+  height: 46px;
+  border: 1px solid #d8d8d8;
+  border-radius: 12px;
+  padding: 0 14px;
+  font: inherit;
+  outline: none;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.post-api-form textarea {
+  height: auto;
+  padding: 14px;
+  resize: vertical;
+}
+
+.operator-api-field select:focus,
+.operator-api-field input:focus,
+.post-api-form input:focus,
+.post-api-form select:focus,
+.post-api-form textarea:focus {
+  border-color: #f4b400;
+  box-shadow: 0 0 0 3px rgba(244, 180, 0, 0.14);
+}
+
+.operator-api-btn {
+  height: 46px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  background: #f0f0f0;
+  color: #222;
+  white-space: nowrap;
+}
+
+.operator-api-btn.primary {
+  background: #072c6c;
+  color: #fff;
+}
+
+.operator-api-btn.approve {
+  background: #79bea3;
+  color: #fff;
+}
+
+.operator-api-btn.reject {
+  background: #6c7aa4;
+  color: #fff;
+}
+
+.operator-api-btn.full {
+  width: 100%;
+}
+
+.operator-api-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.operator-api-summary {
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  background: #f7f8fb;
+  color: #444;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.operator-api-empty {
+  padding: 32px;
+  border-radius: 16px;
+  background: #f8f8f8;
+  color: #777;
+  text-align: center;
+  font-weight: 700;
+}
+
+.operator-api-empty.error {
+  background: #fff2f2;
+  color: #d33;
+}
+
+.application-api-list {
+  display: grid;
+  gap: 16px;
+}
+
+.application-api-card {
+  border: 1px solid #e8e8e8;
+  border-radius: 18px;
+  padding: 20px;
+  background: #fff;
+}
+
+.application-api-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.application-api-card h3 {
+  margin: 0 0 5px;
+  font-size: 22px;
+  color: #072c6c;
+}
+
+.application-api-card p {
+  margin: 0;
+  color: #555;
+}
+
+.operator-api-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 62px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.status-pending {
+  background: #f8d489;
+}
+
+.status-approved {
+  background: #79bea3;
+}
+
+.status-rejected {
+  background: #6c7aa4;
+}
+
+.application-api-info {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 14px;
+  font-size: 14px;
+}
+
+.application-api-content {
+  padding: 14px;
+  border-radius: 14px;
+  background: #f7f8fb;
+  margin-bottom: 16px;
+}
+
+.application-api-content strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #072c6c;
+}
+
+.application-api-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.board-api-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.7fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.board-api-write-area {
+  border: 1px solid #e8e8e8;
+  border-radius: 18px;
+  padding: 20px;
+  background: #fbfbfb;
+}
+
+.board-api-write-area h2 {
+  margin: 0 0 16px;
+  font-size: 22px;
+  color: #072c6c;
+}
+
+.post-api-form {
+  display: grid;
+  gap: 14px;
+}
+
+.post-api-form label {
+  display: grid;
+  gap: 8px;
+}
+
+.post-api-list {
+  display: grid;
+  gap: 12px;
+}
+
+.post-api-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid #e8e8e8;
+  border-radius: 16px;
+  background: #fff;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.post-api-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(7, 44, 108, 0.08);
+}
+
+.post-api-category {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 10px;
+  margin-bottom: 8px;
+  border-radius: 999px;
+  background: #f8d489;
+  color: #072c6c;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.post-api-main h3 {
+  margin: 0 0 6px;
+  color: #072c6c;
+  font-size: 19px;
+}
+
+.post-api-main p {
+  margin: 0;
+  color: #777;
+  font-size: 13px;
+}
+
+.post-api-meta {
+  min-width: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  color: #777;
+  font-size: 12px;
+}
+
+.post-api-meta strong {
+  font-size: 22px;
+  color: #072c6c;
+}
+
+.post-api-meta.large strong {
+  font-size: 28px;
+}
+
+.post-api-detail {
+  margin-top: 24px;
+  padding: 24px;
+  border: 1px solid #e8e8e8;
+  border-radius: 18px;
+  background: #fff;
+}
+
+.post-api-detail.hidden {
+  display: none;
+}
+
+.post-api-detail-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 18px;
+}
+
+.post-api-detail-head h2 {
+  margin: 0 0 8px;
+  color: #072c6c;
+  font-size: 26px;
+}
+
+.post-api-detail-head p {
+  margin: 0;
+  color: #777;
+}
+
+.post-api-detail-content {
+  color: #333;
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+.post-api-attachments {
+  margin-top: 20px;
+  display: grid;
+  gap: 8px;
+}
+
+.post-api-attachments a {
+  color: #072c6c;
+  font-weight: 700;
+  word-break: break-all;
+}
+
+.operator-quick-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 12px;
+  background: #072c6c;
+  color: #fff;
+  font-weight: 800;
+}
+
+.operator-quick-link.secondary {
+  background: #f8d489;
+  color: #072c6c;
+}
+
+.operator-manage-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+@media (max-width: 900px) {
+  .operator-api-page {
+    width: min(100% - 24px, 620px);
+    padding: 40px 0 80px;
+  }
+
+  .operator-api-hero h1 {
+    font-size: 28px;
+  }
+
+  .operator-api-panel {
+    padding: 18px;
+    border-radius: 18px;
+  }
+
+  .operator-api-toolbar {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .operator-api-field {
+    min-width: 0;
+  }
+
+  .board-api-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .post-api-item {
+    align-items: flex-start;
+  }
+
+  .post-api-detail-head {
+    flex-direction: column;
+  }
+
+  .post-api-meta {
+    align-items: flex-start;
+  }
+
+  .application-api-head {
+    flex-direction: column;
+  }
+
+  .application-api-actions {
+    justify-content: stretch;
+  }
+
+  .application-api-actions .operator-api-btn {
+    flex: 1;
+  }
+}

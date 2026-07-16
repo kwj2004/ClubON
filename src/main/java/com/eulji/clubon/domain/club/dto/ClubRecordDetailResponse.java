@@ -26,4 +26,10 @@ public record ClubRecordDetailResponse(
             record.getCreatedAt()
         );
     }
+
+    public static ClubRecordDetailResponse from(ClubRecord record, List<String> imageUrls) {
+        return new ClubRecordDetailResponse(
+            record.getId(), record.getClub().getId(), record.getTitle(), record.getContent(), imageUrls, record.getCreatedAt()
+        );
+    }
 }

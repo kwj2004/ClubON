@@ -76,6 +76,7 @@ public class AuthService {
     }
 
     // 로그인 정보가 맞으면 JWT 토큰 응답을 생성합니다.
+    @Transactional
     public LoginResponse login(LoginRequest request) {
         Member member = memberRepository.findByEmail(request.email())
                 .orElseThrow(LoginFailedException::new);

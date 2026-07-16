@@ -29,6 +29,13 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                "/",
+                                "/index.html",
+                                "/*.html",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**",
+                                "/favicon.ico",
                                 "/api/auth/signup",
                                 "/api/auth/login",
                                 "/api/auth/email-verifications/send",
@@ -61,6 +68,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/api/clubs").hasRole("CLUB_ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/api/clubs/*").hasRole("CLUB_ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/clubs/*/records").hasRole("CLUB_ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/clubs/*/record-images/presigned-url").hasRole("CLUB_ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/api/clubs/*/records/*").hasRole("CLUB_ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/clubs/*/records/*").hasRole("CLUB_ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/clubs/*/applications").hasRole("CLUB_ADMIN")

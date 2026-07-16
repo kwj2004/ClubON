@@ -21,12 +21,30 @@ import com.eulji.clubon.domain.club.dto.ClubRecordDetailResponse;
 import com.eulji.clubon.domain.club.dto.UpdateClubRecordRequest;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import com.eulji.clubon.domain.club.dto.RecordImageUploadRequest;
+import com.eulji.clubon.domain.club.dto.RecordImageUploadResponse;
+import com.eulji.clubon.domain.club.service.ClubRecordImageService;
 
 @RestController
 @RequiredArgsConstructor
 public class ClubRecordController {
 
     private final ClubRecordService clubRecordService;
+    private final ClubRecordImageService clubRecordImageService;
+
+    @PostMapping("/api/clubs/{clubId}/record-images/presigned-url")
+    public ResponseEntity<ApiResponse<RecordImageUploadResponse>> createRecordImageUploadUrl(
+        @PathVariable Long clubId,
+        Authentication authentication,
+        @Valid @RequestBody RecordImageUploadRequest request
+    ) {
+        RecordImageUploadResponse response = clubRecordImageService.createUploadUrl(
+            clubId, authentication.getName(), request
+        );
+        return ResponseEntity.ok(ApiResponse.of(
+            HttpStatus.OK.value(), "활동 기록 이미지 업로드 URL이 발급되었습니다.", response
+        ));
+    }
 
     @PostMapping("/api/clubs/{clubId}/records")
     public ResponseEntity<ApiResponse<CreateClubRecordResponse>> createRecord(

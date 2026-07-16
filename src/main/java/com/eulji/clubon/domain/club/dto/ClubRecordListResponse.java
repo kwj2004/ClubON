@@ -21,4 +21,8 @@ public record ClubRecordListResponse(
             record.getCreatedAt()
         );
     }
+
+    public static ClubRecordListResponse from(ClubRecord record, String thumbnailUrl) {
+        return new ClubRecordListResponse(record.getId(), record.getTitle(), thumbnailUrl, record.getCreatedAt());
+    }
 }
