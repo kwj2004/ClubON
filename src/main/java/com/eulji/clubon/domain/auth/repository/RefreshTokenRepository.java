@@ -9,4 +9,5 @@ import com.eulji.clubon.domain.member.entity.Member;
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
     Optional<RefreshToken> findByTokenHash(String tokenHash);
     List<RefreshToken> findAllByMemberAndRevokedFalse(Member member);
+    void deleteAllByMember(Member member);
 }

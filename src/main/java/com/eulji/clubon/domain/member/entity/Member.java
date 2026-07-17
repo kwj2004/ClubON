@@ -44,6 +44,12 @@ public class Member {
     @Column(nullable = false, length = 30)
     private Role role;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20, columnDefinition = "varchar(20) default 'ACTIVE'")
+    private MemberStatus status;
+
+    private LocalDateTime withdrawnAt;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -58,6 +64,7 @@ public class Member {
         this.studentId = studentId;
         this.department = department;
         this.role = role;
+        this.status = MemberStatus.ACTIVE;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = this.createdAt;
     }
@@ -81,5 +88,20 @@ public class Member {
     public void changePassword(String encodedPassword) {
         this.password = encodedPassword;
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public boolean isActive() {
+        return status == MemberStatus.ACTIVE;
+    }
+
+    public void withdraw(String anonymizedEmail, String anonymizedStudentId, String encodedPassword) {
+        this.email = anonymizedEmail;
+        this.studentId = anonymizedStudentId;
+        this.password = encodedPassword;
+        this.name = "탈퇴회원";
+        this.department = "탈퇴";
+        this.status = MemberStatus.WITHDRAWN;
+        this.withdrawnAt = LocalDateTime.now();
+        this.updatedAt = this.withdrawnAt;
     }
 }

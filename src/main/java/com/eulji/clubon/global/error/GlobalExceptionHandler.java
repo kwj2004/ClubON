@@ -160,6 +160,26 @@ public class GlobalExceptionHandler {
                 ));
     }
 
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidPasswordException(InvalidPasswordException e) {
+        return ResponseEntity.badRequest()
+                .body(ErrorResponse.of(
+                        HttpStatus.BAD_REQUEST.value(),
+                        "INVALID_PASSWORD",
+                        e.getMessage()
+                ));
+    }
+
+    @ExceptionHandler(LastClubAdminException.class)
+    public ResponseEntity<ErrorResponse> handleLastClubAdminException(LastClubAdminException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ErrorResponse.of(
+                        HttpStatus.CONFLICT.value(),
+                        "LAST_CLUB_ADMIN",
+                        e.getMessage()
+                ));
+    }
+
     @ExceptionHandler(InvalidDepartmentException.class)
     public ResponseEntity<ErrorResponse> handleInvalidDepartmentException(InvalidDepartmentException e) {
         return ResponseEntity.badRequest()

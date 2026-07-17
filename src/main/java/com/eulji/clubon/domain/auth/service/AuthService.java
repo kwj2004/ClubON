@@ -81,7 +81,7 @@ public class AuthService {
         Member member = memberRepository.findByEmail(request.email())
                 .orElseThrow(LoginFailedException::new);
 
-        if (!passwordEncoder.matches(request.password(), member.getPassword())) {
+        if (!member.isActive() || !passwordEncoder.matches(request.password(), member.getPassword())) {
             throw new LoginFailedException();
         }
 
@@ -96,6 +96,7 @@ public class AuthService {
             .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 Refresh Token입니다."));
         if (!saved.isUsable(LocalDateTime.now()))
             throw new IllegalArgumentException("Refresh Token이 만료되었거나 폐기되었습니다.");
+        if (!saved.getMember().isActive()) throw new LoginFailedException();
         saved.revoke();
         return addRefreshToken(saved.getMember(), jwtTokenProvider.createToken(saved.getMember().getEmail(), saved.getMember().getRole()));
     }

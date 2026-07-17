@@ -14,6 +14,7 @@ import com.eulji.clubon.domain.club.service.ClubReviewService;
 import com.eulji.clubon.domain.member.dto.MyProfileResponse;
 import com.eulji.clubon.domain.member.dto.UpdateMyProfileRequest;
 import com.eulji.clubon.domain.member.dto.UpdateMyProfileResponse;
+import com.eulji.clubon.domain.member.dto.WithdrawMemberRequest;
 import com.eulji.clubon.domain.member.service.MemberService;
 import com.eulji.clubon.global.response.ApiResponse;
 import jakarta.validation.Valid;
@@ -22,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,6 +43,19 @@ public class MemberController {
     private final ClubApplicationService clubApplicationService;
     private final MyClubPostService myClubPostService;
     private final ClubReviewService clubReviewService;
+
+    @DeleteMapping("/me")
+    public ResponseEntity<ApiResponse<Void>> withdraw(
+            Authentication authentication,
+            @Valid @RequestBody WithdrawMemberRequest request
+    ) {
+        memberService.withdraw(authentication.getName(), request);
+        return ResponseEntity.ok(ApiResponse.of(
+                HttpStatus.OK.value(),
+                "회원 탈퇴가 완료되었습니다.",
+                null
+        ));
+    }
 
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<MyProfileResponse>> getMyProfile(Authentication authentication) {

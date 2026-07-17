@@ -26,6 +26,8 @@ public interface ClubMembershipRepository extends JpaRepository<ClubMembership, 
     boolean existsByClub_IdAndMember_Email(Long clubId, String email);
     long countByClub_Id(Long clubId);
     long countByClub_IdAndRole(Long clubId, ClubMemberRole role);
+    List<ClubMembership> findAllByMemberAndRole(Member member, ClubMemberRole role);
+    void deleteAllByMember(Member member);
 
     @Query("""
             select cm

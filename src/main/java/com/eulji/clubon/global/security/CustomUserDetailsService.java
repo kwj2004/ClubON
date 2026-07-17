@@ -20,6 +20,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("회원을 찾을 수 없습니다."));
 
+        if (!member.isActive()) {
+            throw new UsernameNotFoundException("탈퇴한 회원입니다.");
+        }
+
         return User.builder()
                 .username(member.getEmail())
                 .password(member.getPassword())
