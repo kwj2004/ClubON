@@ -3,6 +3,10 @@ const CHECKBOX_ON = "./images/checkbox-on.svg";
 const STORAGE_KEY = "bookmarkedClubs";
 
 const STATUS_MAP = {
+  RECRUITING: {
+    text: "모집 중",
+    className: "status-open",
+  },
   OPEN: {
     text: "모집 중",
     className: "status-open",
@@ -25,6 +29,21 @@ const STATUS_MAP = {
   },
 };
 
+const RECRUITMENT_STATUS_ORDER = {
+  RECRUITING: 0,
+  OPEN: 0,
+  ALWAYS_OPEN: 1,
+  ALWAYS: 1,
+  CLOSED: 2,
+  UNKNOWN: 3,
+};
+
+function compareByRecruitmentStatus(a, b) {
+  const aOrder = RECRUITMENT_STATUS_ORDER[a.status] ?? RECRUITMENT_STATUS_ORDER.UNKNOWN;
+  const bOrder = RECRUITMENT_STATUS_ORDER[b.status] ?? RECRUITMENT_STATUS_ORDER.UNKNOWN;
+  return aOrder - bOrder;
+}
+
 const CATEGORY_MAP = {
   RELIGION: "종교",
   CULTURE_ART: "문화/예술/공연",
@@ -40,6 +59,12 @@ const CATEGORY_ALIAS = {
 };
 
 const LOCAL_CLUB_IMAGES = {
+  CAM: "./images/clubs/CAM.jpg",
+  IPPD: "./images/clubs/IPPD.jpg",
+  "소낙비": "./images/clubs/소낙비.jpg",
+  "오리자": "./images/clubs/오리자.jpg",
+  "오션홀릭": "./images/clubs/오션홀릭.jpg",
+  "호크": "./images/clubs/호크.jpg",
   "멋쟁이사자처럼": "https://www.figma.com/api/mcp/asset/e921dd97-70c7-4765-bb0a-04f289afba3a",
   DNG: "https://www.figma.com/api/mcp/asset/53774021-3314-489d-bd50-640ee7e952c9",
   "새밝소리": "https://www.figma.com/api/mcp/asset/44e7b3ad-9b5d-4803-ab23-40f486228699",
@@ -133,6 +158,14 @@ async function loadClubsFromApi() {
 
     clubs = result.data.map(convertClubFromApi);
 
+    try {
+      if (typeof syncBookmarksFromServer === "function") {
+        await syncBookmarksFromServer();
+      }
+    } catch (error) {
+      console.warn("동아리 탐색 스크랩 동기화 실패:", error);
+    }
+
     renderClubs();
   } catch (error) {
     console.error(error);
@@ -170,7 +203,7 @@ function getFilteredClubs() {
       (CATEGORY_MAP[club.category] || "").toLowerCase().includes(keyword);
 
     return matchesType && matchesScrap && matchesCategory && matchesKeyword;
-  });
+  }).sort(compareByRecruitmentStatus);
 }
 
 function createClubCard(club) {
@@ -256,32 +289,36 @@ function bindBookmarkButtons() {
         return;
       }
 
+      const shouldSave = !isSaved(clubId);
       button.disabled = true;
 
       try {
-        await apiRequest(`/api/clubs/${clubId}/bookmarks`, {
-          method: "POST",
-        });
-
-        let savedClubs = getSavedClubs();
-
-        if (isSaved(clubId)) {
-          savedClubs = savedClubs.filter(
-            (savedClub) => String(savedClub.id) !== String(clubId)
-          );
+        if (typeof setBookmarkOnServer === "function") {
+          await setBookmarkOnServer(club, shouldSave);
         } else {
-          savedClubs.push({
-            id: club.id,
-            name: club.name,
-            description: club.description,
-            status: club.status,
-            image: club.image,
-            category: club.category,
-            type: club.type,
+          await apiRequest(`/api/clubs/${clubId}/bookmarks`, {
+            method: shouldSave ? "POST" : "DELETE",
           });
+
+          let savedClubs = getSavedClubs();
+          if (shouldSave) {
+            savedClubs.push({
+              id: club.id,
+              name: club.name,
+              description: club.description,
+              status: club.status,
+              image: club.image,
+              category: club.category,
+              type: club.type,
+            });
+          } else {
+            savedClubs = savedClubs.filter(
+              (savedClub) => String(savedClub.id) !== String(clubId)
+            );
+          }
+          saveClubs(savedClubs);
         }
 
-        saveClubs(savedClubs);
         renderClubs();
       } catch (error) {
         console.error(error);

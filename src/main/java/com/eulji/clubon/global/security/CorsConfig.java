@@ -20,6 +20,8 @@ public class CorsConfig {
             "http://localhost:5173",
             "http://127.0.0.1:3000",
             "http://127.0.0.1:5173",
+            "http://clubon.duckdns.org",
+            "https://clubon.duckdns.org",
             "https://dongarion.netlify.app"
         ));
         configuration.setAllowedMethods(List.of(

@@ -3,6 +3,10 @@ const CHECKBOX_ON = "./images/checkbox-on.svg";
 const STORAGE_KEY = "bookmarkedClubs";
 
 const STATUS_MAP = {
+  RECRUITING: {
+    text: "모집 중",
+    className: "status-open",
+  },
   OPEN: {
     text: "모집 중",
     className: "status-open",
@@ -26,6 +30,12 @@ const STATUS_MAP = {
 };
 
 const LOCAL_CLUB_IMAGES = {
+  CAM: "./images/clubs/CAM.jpg",
+  IPPD: "./images/clubs/IPPD.jpg",
+  "소낙비": "./images/clubs/소낙비.jpg",
+  "오리자": "./images/clubs/오리자.jpg",
+  "오션홀릭": "./images/clubs/오션홀릭.jpg",
+  "호크": "./images/clubs/호크.jpg",
   "멋쟁이사자처럼": "https://www.figma.com/api/mcp/asset/e921dd97-70c7-4765-bb0a-04f289afba3a",
   DNG: "https://www.figma.com/api/mcp/asset/53774021-3314-489d-bd50-640ee7e952c9",
   "새밝소리": "https://www.figma.com/api/mcp/asset/44e7b3ad-9b5d-4803-ab23-40f486228699",
@@ -211,24 +221,28 @@ function bindBookmarkButtons() {
         return;
       }
 
+      const shouldSave = !isSaved(club.id);
       button.disabled = true;
 
       try {
-        await apiRequest(`/api/clubs/${club.id}/bookmarks`, {
-          method: "POST",
-        });
-
-        let savedClubs = getSavedClubs();
-
-        if (isSaved(club.id)) {
-          savedClubs = savedClubs.filter(
-            (savedClub) => String(savedClub.id) !== String(club.id)
-          );
+        if (typeof setBookmarkOnServer === "function") {
+          await setBookmarkOnServer(club, shouldSave);
         } else {
-          savedClubs.push(club);
+          await apiRequest(`/api/clubs/${club.id}/bookmarks`, {
+            method: shouldSave ? "POST" : "DELETE",
+          });
+
+          let savedClubs = getSavedClubs();
+          if (shouldSave) {
+            savedClubs.push(club);
+          } else {
+            savedClubs = savedClubs.filter(
+              (savedClub) => String(savedClub.id) !== String(club.id)
+            );
+          }
+          saveClubs(savedClubs);
         }
 
-        saveClubs(savedClubs);
         updateBookmarkButtons();
       } catch (error) {
         console.error(error);
@@ -348,6 +362,14 @@ function initHomeClubCardLinks() {
 
 async function initHomePage() {
   await loadHomeClubsFromApi();
+
+  try {
+    if (typeof syncBookmarksFromServer === "function") {
+      await syncBookmarksFromServer();
+    }
+  } catch (error) {
+    console.warn("홈 스크랩 동기화 실패:", error);
+  }
 
   bindBookmarkButtons();
   updateBookmarkButtons();

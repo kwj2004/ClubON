@@ -29,6 +29,8 @@ import com.eulji.clubon.global.error.ClubNotFoundException;
 import com.eulji.clubon.global.error.DuplicateClubApplicationException;
 import com.eulji.clubon.global.error.MemberNotFoundException;
 import com.eulji.clubon.global.error.ClubApplicationNotFoundException;
+import com.eulji.clubon.global.error.ClubRecruitmentClosedException;
+import com.eulji.clubon.domain.club.util.RecruitmentStatusResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,6 +65,8 @@ public class ClubApplicationService {
         Club club = clubRepository.findById(clubId)
             .orElseThrow(ClubNotFoundException::new);
 
+        validateRecruiting(club);
+
         Member member = memberRepository.findByEmail(email)
             .orElseThrow(MemberNotFoundException::new);
 
@@ -89,6 +93,8 @@ public class ClubApplicationService {
     ) {
         Club club = clubRepository.findById(clubId)
             .orElseThrow(ClubNotFoundException::new);
+
+        validateRecruiting(club);
 
         Member member = memberRepository.findByEmail(email)
             .orElseThrow(MemberNotFoundException::new);
@@ -283,6 +289,12 @@ public class ClubApplicationService {
 
         throw new IllegalArgumentException("가입 신청 처리는 APPROVED 또는 REJECTED만 가능합니다.");
     }
+    private void validateRecruiting(Club club) {
+        if (!RecruitmentStatusResolver.resolve(club.getStatus(), club.getRecruitPeriod()).isRecruiting()) {
+            throw new ClubRecruitmentClosedException();
+        }
+    }
+
     private void validateAnswers(
         List<ApplicationAnswerRequest> answers,
         List<ClubApplicationQuestion> questions,

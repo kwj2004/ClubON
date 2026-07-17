@@ -41,7 +41,10 @@ public class ClubService {
 
     public ClubDetailResponse getClubDetail(Long clubId, String email) {
         return clubRepository.findById(clubId)
-                .map(club -> ClubDetailResponse.of(club, clubBookmarkService.isBookmarked(clubId, email)))
+                .map(club -> ClubDetailResponse.of(
+                        club,
+                        email != null && clubBookmarkService.isBookmarked(clubId, email)
+                ))
                 .orElseThrow(ClubNotFoundException::new);
     }
 

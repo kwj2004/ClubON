@@ -170,6 +170,16 @@ public class GlobalExceptionHandler {
                 ));
     }
 
+    @ExceptionHandler(ClubRecruitmentClosedException.class)
+    public ResponseEntity<ErrorResponse> handleClubRecruitmentClosedException(ClubRecruitmentClosedException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+            .body(ErrorResponse.of(
+                HttpStatus.CONFLICT.value(),
+                "CLUB_RECRUITMENT_CLOSED",
+                e.getMessage()
+            ));
+    }
+
     @ExceptionHandler(LastClubAdminException.class)
     public ResponseEntity<ErrorResponse> handleLastClubAdminException(LastClubAdminException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
@@ -349,5 +359,15 @@ public class GlobalExceptionHandler {
                 "ALREADY_PROCESSED_CLUB_CREATION_REQUEST",
                 e.getMessage()
             ));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleUnexpectedException(Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ErrorResponse.of(
+                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        "INTERNAL_SERVER_ERROR",
+                        "서버 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요."
+                ));
     }
 }

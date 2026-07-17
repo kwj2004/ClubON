@@ -37,8 +37,8 @@
         <div class="apply-filter-chips">
           <button type="button" data-apply-type="CENTRAL">중앙동아리</button>
           <button type="button" data-apply-type="GENERAL">일반동아리</button>
-          <button type="button" data-apply-status="OPEN">모집 중</button>
-          <button type="button" data-apply-status="ALWAYS">상시 모집</button>
+          <button type="button" data-apply-status="RECRUITING">모집 중</button>
+          <button type="button" data-apply-status="ALWAYS_OPEN">상시 모집</button>
           <button type="button" data-apply-scrap="true">
             <img src="./images/checkbox.svg" alt="" />
             스크랩
@@ -61,22 +61,22 @@
 
           <div class="application-row">
             <label for="applicantName">이름</label>
-            <input type="text" id="applicantName" value="김지현" />
+            <input type="text" id="applicantName" readonly aria-readonly="true" />
           </div>
 
           <div class="application-row">
             <label for="applicantStudentId">학번</label>
-            <input type="text" id="applicantStudentId" value="2024133035" />
+            <input type="text" id="applicantStudentId" readonly aria-readonly="true" />
           </div>
 
           <div class="application-row">
             <label for="applicantDepartment">학과</label>
-            <input type="text" id="applicantDepartment" value="휴먼서비스학부 시각디자인전공" />
+            <input type="text" id="applicantDepartment" readonly aria-readonly="true" />
           </div>
 
           <div class="application-row">
-            <label for="applicantPhone">연락처</label>
-            <input type="text" id="applicantPhone" placeholder="010-0000-0000" />
+            <label for="applicantPhone">연락처<span>*</span></label>
+            <input type="tel" id="applicantPhone" required inputmode="tel" autocomplete="tel" placeholder="010-0000-0000" />
           </div>
               <div class="application-row application-textarea-row">
                 <label for="applicantReason">지원동기<span>*</span></label>
@@ -87,6 +87,7 @@
                 <label for="applicantIntro">자기소개<span>*</span></label>
                 <textarea id="applicantIntro" placeholder="자기소개를 작성해주세요."></textarea>
               </div>
+
 
           <div class="apply-form-buttons">
             <button type="button" class="line-btn">임시저장</button>

@@ -11,6 +11,7 @@ public record ClubRecordDetailResponse(
     Long clubId,
     String title,
     String content,
+    List<String> imageKeys,
     List<String> imageUrls,
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     LocalDateTime createdAt
@@ -23,13 +24,15 @@ public record ClubRecordDetailResponse(
             record.getTitle(),
             record.getContent(),
             record.getImageUrls(),
+            record.getImageUrls(),
             record.getCreatedAt()
         );
     }
 
     public static ClubRecordDetailResponse from(ClubRecord record, List<String> imageUrls) {
         return new ClubRecordDetailResponse(
-            record.getId(), record.getClub().getId(), record.getTitle(), record.getContent(), imageUrls, record.getCreatedAt()
+            record.getId(), record.getClub().getId(), record.getTitle(), record.getContent(),
+            record.getImageUrls(), imageUrls, record.getCreatedAt()
         );
     }
 }

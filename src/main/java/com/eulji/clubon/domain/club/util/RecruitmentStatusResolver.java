@@ -19,6 +19,10 @@ public final class RecruitmentStatusResolver {
             return new RecruitmentStatusInfo("CLOSED", "모집 종료", false);
         }
 
+        if (recruitPeriod == null || recruitPeriod.isBlank()) {
+            return new RecruitmentStatusInfo("ALWAYS_OPEN", "상시 모집", true);
+        }
+
         LocalDate endDate = findLastDate(recruitPeriod);
         if (endDate == null) {
             return new RecruitmentStatusInfo("UNKNOWN", "모집 정보 없음", false);

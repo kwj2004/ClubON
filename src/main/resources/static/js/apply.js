@@ -48,19 +48,56 @@ function fillApplicantFromUser(user) {
   if (nameInput) nameInput.value = user.name || "";
   if (studentIdInput) studentIdInput.value = user.studentId || user.studentid || "";
   if (departmentInput) departmentInput.value = user.department || "";
+
+  [nameInput, studentIdInput, departmentInput].forEach((input) => {
+    if (!input) return;
+    input.readOnly = true;
+    input.setAttribute("aria-readonly", "true");
+  });
 }
 
 const APPLY_STORAGE_KEY = "bookmarkedClubs";
 
 const APPLY_STATUS_MAP = {
   OPEN: "모집 중",
+  RECRUITING: "모집 중",
   CLOSED: "모집 종료",
   ALWAYS: "상시 모집",
   ALWAYS_OPEN: "상시 모집",
   UNKNOWN: "모집 정보 없음",
 };
 
+const APPLY_STATUS_CLASS_MAP = {
+  OPEN: "status-open",
+  RECRUITING: "status-open",
+  CLOSED: "status-closed",
+  ALWAYS: "status-always",
+  ALWAYS_OPEN: "status-always",
+  UNKNOWN: "status-unknown",
+};
+
+const APPLY_RECRUITMENT_STATUS_ORDER = {
+  RECRUITING: 0,
+  OPEN: 0,
+  ALWAYS_OPEN: 1,
+  ALWAYS: 1,
+  CLOSED: 2,
+  UNKNOWN: 3,
+};
+
+function compareApplyClubsByRecruitmentStatus(a, b) {
+  const aOrder = APPLY_RECRUITMENT_STATUS_ORDER[a.status] ?? APPLY_RECRUITMENT_STATUS_ORDER.UNKNOWN;
+  const bOrder = APPLY_RECRUITMENT_STATUS_ORDER[b.status] ?? APPLY_RECRUITMENT_STATUS_ORDER.UNKNOWN;
+  return aOrder - bOrder;
+}
+
 const LOCAL_CLUB_IMAGES = {
+  CAM: "./images/clubs/CAM.jpg",
+  IPPD: "./images/clubs/IPPD.jpg",
+  "소낙비": "./images/clubs/소낙비.jpg",
+  "오리자": "./images/clubs/오리자.jpg",
+  "오션홀릭": "./images/clubs/오션홀릭.jpg",
+  "호크": "./images/clubs/호크.jpg",
   "멋쟁이사자처럼": "https://www.figma.com/api/mcp/asset/e921dd97-70c7-4765-bb0a-04f289afba3a",
   DNG: "https://www.figma.com/api/mcp/asset/53774021-3314-489d-bd50-640ee7e952c9",
   "새밝소리": "https://www.figma.com/api/mcp/asset/44e7b3ad-9b5d-4803-ab23-40f486228699",
@@ -78,6 +115,9 @@ const applyState = {
   status: "",
   scrapOnly: false,
   selectedClubId: null,
+  applicationForm: null,
+  applicationQuestions: [],
+  applicationFormLoading: false,
 };
 
 function getSavedClubs() {
@@ -139,7 +179,7 @@ function getFilteredApplyClubs() {
     const matchesScrap = applyState.scrapOnly ? isSavedClub(club.id) : true;
 
     return matchesType && matchesKeyword && matchesStatus && matchesScrap;
-  });
+  }).sort(compareApplyClubsByRecruitmentStatus);
 }
 
 function renderApplyClubs() {
@@ -156,10 +196,10 @@ function renderApplyClubs() {
   list.innerHTML = filteredClubs
     .map((club) => {
       return `
-        <button type="button" class="apply-club-card ${applyState.selectedClubId === club.id ? "is-active" : ""}" data-apply-club-id="${club.id}">
+        <button type="button" class="apply-club-card ${applyState.selectedClubId === club.id ? "is-active" : ""} ${club.isRecruiting ? "" : "is-recruitment-closed"}" data-apply-club-id="${club.id}" aria-disabled="${!club.isRecruiting}">
           <strong>${club.name}</strong>
           <span>${club.description}</span>
-          <em>${club.statusLabel || APPLY_STATUS_MAP[club.status] || "모집 정보 없음"}</em>
+          <em class="${APPLY_STATUS_CLASS_MAP[club.status] || "status-unknown"}">${club.statusLabel || APPLY_STATUS_MAP[club.status] || "모집 정보 없음"}</em>
         </button>
       `;
     })
@@ -172,11 +212,18 @@ function renderApplyClubs() {
   });
 }
 
-function selectApplyClub(clubId) {
+async function selectApplyClub(clubId) {
   const club = applyClubs.find((item) => String(item.id) === String(clubId));
   if (!club) return;
 
+  if (!club.isRecruiting) {
+    alert("현재 모집 중인 동아리가 아니므로 지원할 수 없습니다.");
+    return;
+  }
+
   applyState.selectedClubId = String(clubId);
+  applyState.applicationForm = null;
+  applyState.applicationQuestions = [];
 
   document.querySelector("#applyEmpty").style.display = "none";
   document.querySelector("#clubApplicationForm").style.display = "grid";
@@ -184,6 +231,9 @@ function selectApplyClub(clubId) {
   document.querySelector("#applicationClubDesc").textContent = club.description;
 
   renderApplyClubs();
+  renderApplicationQuestionsLoading();
+
+  await loadApplicationFormForClub(clubId);
 }
 
 document.querySelectorAll("[data-apply-type]").forEach((button) => {
@@ -233,6 +283,438 @@ document.querySelector("#applySearchInput")?.addEventListener("input", (event) =
   renderApplyClubs();
 });
 
+function getApiData(result, fallback = null) {
+  return result?.data ?? result ?? fallback;
+}
+
+function escapeApplyHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function ensureApplicationQuestionsContainer() {
+  let container = document.querySelector("#applicationQuestions");
+
+  if (container) return container;
+
+  container = document.createElement("div");
+  container.id = "applicationQuestions";
+  container.className = "application-questions";
+
+  const phoneRow = document.querySelector("#applicantPhone")?.closest(".application-row");
+  const reasonRow = document.querySelector("#applicantReason")?.closest(".application-row");
+  const form = document.querySelector("#clubApplicationForm");
+
+  if (phoneRow) {
+    phoneRow.insertAdjacentElement("afterend", container);
+  } else if (reasonRow) {
+    reasonRow.insertAdjacentElement("beforebegin", container);
+  } else if (form) {
+    form.appendChild(container);
+  }
+
+  return container;
+}
+
+function setStaticQuestionRowsVisible(visible) {
+  const rows = [
+    document.querySelector("#applicantReason")?.closest(".application-row"),
+    document.querySelector("#applicantIntro")?.closest(".application-row"),
+  ];
+
+  rows.forEach((row) => {
+    if (row) row.style.display = visible ? "" : "none";
+  });
+}
+
+function renderApplicationQuestionsLoading() {
+  const container = ensureApplicationQuestionsContainer();
+  setStaticQuestionRowsVisible(false);
+  container.innerHTML = `<div class="mypage-empty-line">지원서 질문을 불러오는 중입니다...</div>`;
+}
+
+function normalizeApplicationQuestions(formData) {
+  const form = getApiData(formData, {}) || {};
+  const questions = Array.isArray(form.questions)
+    ? form.questions
+    : Array.isArray(form.applicationQuestions)
+      ? form.applicationQuestions
+      : [];
+
+  return questions
+    .map((question, index) => ({
+      questionId: question.questionId || question.id || question.applicationQuestionId || question.applicationquestionid,
+      label: question.label || question.title || question.question || `문항 ${index + 1}`,
+      type: String(question.type || question.questionType || "TEXTAREA").toUpperCase(),
+      required: Boolean(question.required),
+      sortOrder: Number(question.sortOrder || question.order || index + 1),
+      options: Array.isArray(question.options)
+        ? question.options
+        : Array.isArray(question.choices)
+          ? question.choices
+          : [],
+    }))
+    .filter((question) => question.questionId)
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+}
+
+function renderApplicationQuestions(questions) {
+  const container = ensureApplicationQuestionsContainer();
+
+  if (!questions.length) {
+    setStaticQuestionRowsVisible(false);
+    container.innerHTML = `
+      <div class="application-row application-textarea-row" data-fallback-application-field="지원동기">
+        <label for="fallbackMotivation">지원동기<span>*</span></label>
+        <textarea id="fallbackMotivation" required placeholder="지원동기를 작성해주세요."></textarea>
+      </div>
+      <div class="application-row application-textarea-row" data-fallback-application-field="자기소개">
+        <label for="fallbackIntroduction">자기소개<span>*</span></label>
+        <textarea id="fallbackIntroduction" required placeholder="자기소개를 작성해주세요."></textarea>
+      </div>
+    `;
+    return;
+  }
+
+  setStaticQuestionRowsVisible(false);
+
+  container.innerHTML = questions
+    .map((question) => {
+      const id = `applicationQuestion_${question.questionId}`;
+      const label = `${escapeApplyHtml(question.label)}${question.required ? "<span>*</span>" : ""}`;
+      const requiredAttr = question.required ? "required" : "";
+
+      if (question.type === "TEXT") {
+        return `
+          <div class="application-row" data-application-question-id="${question.questionId}" data-question-type="TEXT">
+            <label for="${id}">${label}</label>
+            <input type="text" id="${id}" ${requiredAttr} placeholder="답변을 입력해주세요." />
+          </div>
+        `;
+      }
+
+      if (question.type === "SELECT" || question.type === "RADIO") {
+        return `
+          <div class="application-row" data-application-question-id="${question.questionId}" data-question-type="SELECT">
+            <label for="${id}">${label}</label>
+            <select id="${id}" ${requiredAttr}>
+              <option value="">선택해주세요</option>
+              ${(question.options || [])
+                .map((option) => `<option value="${escapeApplyHtml(option)}">${escapeApplyHtml(option)}</option>`)
+                .join("")}
+            </select>
+          </div>
+        `;
+      }
+
+      if (question.type === "CHECKBOX") {
+        return `
+          <div class="application-row application-checkbox-row" data-application-question-id="${question.questionId}" data-question-type="CHECKBOX">
+            <label>${label}</label>
+            <div class="application-checkbox-options">
+              ${(question.options || [])
+                .map(
+                  (option, index) => `
+                    <label class="application-checkbox-option" for="${id}_${index}">
+                      <input type="checkbox" id="${id}_${index}" value="${escapeApplyHtml(option)}" />
+                      <span>${escapeApplyHtml(option)}</span>
+                    </label>
+                  `
+                )
+                .join("")}
+            </div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="application-row application-textarea-row" data-application-question-id="${question.questionId}" data-question-type="TEXTAREA">
+          <label for="${id}">${label}</label>
+          <textarea id="${id}" ${requiredAttr} placeholder="답변을 작성해주세요."></textarea>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+function fillApplicantFromApplicationForm(formData) {
+  const form = getApiData(formData, {}) || {};
+  const applicant = form.applicant || form.user || {};
+
+  if (!applicant) return;
+
+  const user = {
+    name: applicant.name || "",
+    studentId: applicant.studentId || applicant.studentid || "",
+    department: applicant.department || "",
+  };
+
+  fillApplicantFromUser(user);
+}
+
+async function fetchApplicationFormForClub(clubId) {
+  const result = await apiRequest(`/api/clubs/${clubId}/application-form`);
+  return {
+    result,
+    form: getApiData(result, {}),
+    questions: normalizeApplicationQuestions(result),
+  };
+}
+
+async function loadApplicationFormForClub(clubId) {
+  applyState.applicationFormLoading = true;
+
+  try {
+    const { result, form, questions } = await fetchApplicationFormForClub(clubId);
+
+    applyState.applicationForm = form;
+    applyState.applicationQuestions = questions;
+
+    fillApplicantFromApplicationForm(result);
+    renderApplicationQuestions(questions);
+    return questions;
+  } catch (error) {
+    console.error("지원서 양식 조회 실패:", error);
+    applyState.applicationForm = null;
+    applyState.applicationQuestions = [];
+
+    renderApplicationQuestions([]);
+    return [];
+  } finally {
+    applyState.applicationFormLoading = false;
+  }
+}
+
+function normalizeQuestionLabel(label) {
+  return String(label || "")
+    .replace(/\s+/g, "")
+    .replace(/[＊*]/g, "")
+    .trim()
+    .toLowerCase();
+}
+
+async function getLatestApplicationQuestionsBeforeSubmit(clubId) {
+  try {
+    const { form, questions } = await fetchApplicationFormForClub(clubId);
+    applyState.applicationForm = form;
+    applyState.applicationQuestions = questions;
+    return questions;
+  } catch (error) {
+    console.warn("제출 직전 지원서 질문 재조회 실패:", error);
+    return applyState.applicationQuestions || [];
+  }
+}
+
+function remapAnswersToLatestQuestions(currentAnswers, latestQuestions) {
+  if (!latestQuestions.length) return [];
+
+  const answersById = new Map(
+    (currentAnswers || []).map((answer) => [String(answer.questionId), answer])
+  );
+  const answersByLabel = new Map(
+    (currentAnswers || []).map((answer) => [normalizeQuestionLabel(answer.label), answer])
+  );
+
+  const remapped = latestQuestions.map((question) => {
+    const current =
+      answersById.get(String(question.questionId)) ||
+      answersByLabel.get(normalizeQuestionLabel(question.label)) ||
+      null;
+
+    const values = Array.isArray(current?.values)
+      ? current.values.filter((value) => String(value || "").trim())
+      : [];
+
+    return {
+      questionId: Number(question.questionId),
+      label: question.label,
+      value: values.join(", "),
+      values,
+      required: Boolean(question.required),
+    };
+  });
+
+  const missing = remapped.find((answer) => answer.required && answer.values.length === 0);
+  if (missing) {
+    throw new Error(`${missing.label} 항목을 입력해주세요.`);
+  }
+
+  return remapped;
+}
+
+function getQuestionInputValue(question) {
+  const row = document.querySelector(`[data-application-question-id="${question.questionId}"]`);
+  if (!row) return { value: "", values: [] };
+
+  const type = row.dataset.questionType || question.type;
+
+  if (type === "CHECKBOX") {
+    const values = Array.from(row.querySelectorAll("input[type='checkbox']:checked"))
+      .map((input) => input.value.trim())
+      .filter(Boolean);
+    return { value: values.join(", "), values };
+  }
+
+  const input = row.querySelector("input, textarea, select");
+  const value = input?.value?.trim() || "";
+  return { value, values: value ? [value] : [] };
+}
+
+function collectFallbackApplicationAnswers() {
+  const rows = Array.from(document.querySelectorAll("[data-fallback-application-field]"));
+
+  const answers = rows.map((row, index) => {
+    const label = row.dataset.fallbackApplicationField || `기본 문항 ${index + 1}`;
+    const value = row.querySelector("textarea, input")?.value?.trim() || "";
+    return {
+      questionId: null,
+      label,
+      value,
+      values: value ? [value] : [],
+      required: true,
+      localOnly: true,
+    };
+  });
+
+  const missing = answers.find((answer) => answer.required && answer.values.length === 0);
+  if (missing) {
+    throw new Error(`${missing.label} 항목을 입력해주세요.`);
+  }
+
+  return answers;
+}
+
+function collectApplicationAnswers() {
+  const questions = applyState.applicationQuestions || [];
+
+  if (questions.length === 0) {
+    return collectFallbackApplicationAnswers();
+  }
+
+  const answers = questions.map((question) => {
+    const result = getQuestionInputValue(question);
+    return {
+      questionId: Number(question.questionId),
+      label: question.label,
+      value: result.value,
+      values: result.values,
+      required: question.required,
+    };
+  });
+
+  const missing = answers.find((answer) => answer.required && answer.values.length === 0);
+  if (missing) {
+    throw new Error(`${missing.label} 항목을 입력해주세요.`);
+  }
+
+  return answers;
+}
+
+
+const APPLICATION_CACHE_KEY = "clubApplicationCache";
+
+function safeApplyJsonParse(value, fallback = null) {
+  try {
+    return value ? JSON.parse(value) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function getApplicationCache() {
+  return safeApplyJsonParse(localStorage.getItem(APPLICATION_CACHE_KEY), []) || [];
+}
+
+function saveApplicationCache(applications) {
+  localStorage.setItem(APPLICATION_CACHE_KEY, JSON.stringify(applications || []));
+}
+
+function getCurrentApplicantSnapshot() {
+  const storedUser =
+    safeApplyJsonParse(sessionStorage.getItem("currentUser"), null) ||
+    safeApplyJsonParse(localStorage.getItem("currentUser"), null) ||
+    safeApplyJsonParse(localStorage.getItem("registeredUser"), null) ||
+    {};
+
+  return {
+    userId: storedUser.userId || storedUser.userid || storedUser.id || "",
+    name: document.querySelector("#applicantName")?.value?.trim() || storedUser.name || "",
+    studentId:
+      document.querySelector("#applicantStudentId")?.value?.trim() ||
+      storedUser.studentId ||
+      storedUser.studentid ||
+      "",
+    department:
+      document.querySelector("#applicantDepartment")?.value?.trim() ||
+      storedUser.department ||
+      "",
+    email: storedUser.email || "",
+    phone: document.querySelector("#applicantPhone")?.value?.trim() || "",
+  };
+}
+
+function normalizeApplicationResponseId(result) {
+  const data = result?.data || result || {};
+  return String(
+    data.applicationId ||
+      data.applicationid ||
+      data.id ||
+      data.application?.applicationId ||
+      data.application?.id ||
+      ""
+  );
+}
+
+function saveSubmittedApplicationLocally(result, club, answers) {
+  const applicant = getCurrentApplicantSnapshot();
+  const now = new Date().toISOString();
+  const applicationId = normalizeApplicationResponseId(result) || `local-${club.id}-${Date.now()}`;
+  const ownerKey = String(applicant.email || applicant.studentId || applicant.userId || "anonymous").trim().toLowerCase().replace(/[^a-z0-9가-힣@._-]/gi, "_") || "anonymous";
+  const record = {
+    applicationId,
+    id: applicationId,
+    clubId: String(club.id),
+    clubName: club.name,
+    clubType: club.type,
+    studentName: applicant.name,
+    name: applicant.name,
+    studentId: applicant.studentId,
+    studentid: applicant.studentId,
+    department: applicant.department,
+    email: applicant.email,
+    phone: applicant.phone,
+    ownerKey,
+    ownerEmail: String(applicant.email || "").trim().toLowerCase(),
+    ownerUserId: applicant.userId || "",
+    status: "PENDING",
+    answers,
+    content: answers.map((item) => `${item.label}: ${item.value}`).join("\n\n"),
+    createdAt: now,
+    appliedAt: now,
+    source: applicationId.startsWith("local-") ? "apply-local-cache" : "apply-api-cache",
+  };
+
+  const applications = getApplicationCache().filter((item) => {
+    const sameId = String(item.applicationId || item.id || "") === String(applicationId);
+    const sameStudentClub =
+      String(item.clubId || item.club?.clubId || "") === String(club.id) &&
+      String(item.studentId || item.studentid || "") === String(applicant.studentId || "") &&
+      String(item.status || "PENDING") === "PENDING";
+    return !sameId && !sameStudentClub;
+  });
+
+  applications.unshift(record);
+  saveApplicationCache(applications);
+  localStorage.setItem("latestSubmittedApplication", JSON.stringify(record));
+  sessionStorage.setItem("applicationsDirty", "true");
+
+  return record;
+}
+
 document.querySelector("#clubApplicationForm")?.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -241,47 +723,73 @@ document.querySelector("#clubApplicationForm")?.addEventListener("submit", async
     return;
   }
 
-  const reasonInput = document.querySelector("#applicantReason");
-  const introInput = document.querySelector("#applicantIntro");
-  const reason = reasonInput?.value.trim() || "";
-  const intro = introInput?.value.trim() || "";
-
-  if (!reason || !intro) {
-    alert("지원동기와 자기소개를 입력해주세요.");
-    return;
-  }
-
   const submitButton = event.submitter || document.querySelector("#clubApplicationForm button[type='submit']");
 
   try {
+    if (applyState.applicationFormLoading) {
+      alert("지원서 질문을 불러오는 중입니다. 잠시 후 다시 제출해주세요.");
+      return;
+    }
+
+    const phoneInput = document.querySelector("#applicantPhone");
+    if (!phoneInput?.value.trim()) {
+      alert("연락처 항목을 입력해주세요.");
+      phoneInput?.focus();
+      return;
+    }
+
     if (submitButton) {
       submitButton.disabled = true;
       submitButton.textContent = "제출 중...";
     }
 
-    await apiRequest(`/api/clubs/${applyState.selectedClubId}/applications`, {
+    const selectedClub = applyClubs.find((club) => String(club.id) === String(applyState.selectedClubId));
+
+    if (!selectedClub?.isRecruiting) {
+      alert("현재 모집 중인 동아리가 아니므로 지원할 수 없습니다.");
+      return;
+    }
+
+    // 1) 사용자가 현재 화면에 입력한 답변을 먼저 모은다.
+    // 2) 제출 직전에 백엔드에서 최신 질문 목록을 다시 가져온다.
+    // 3) 질문 ID가 바뀌었으면 질문 라벨 기준으로 최신 questionId에 답변을 다시 매칭한다.
+    // 백엔드 수정 없이도 "해당 동아리의 지원서 질문이 아닙니다" 오류를 최대한 피하기 위한 처리다.
+    const currentAnswers = collectApplicationAnswers();
+    const latestQuestions = await getLatestApplicationQuestionsBeforeSubmit(applyState.selectedClubId);
+    const answers = latestQuestions.length
+      ? remapAnswersToLatestQuestions(currentAnswers, latestQuestions)
+      : currentAnswers;
+
+    const requestAnswers = answers
+      .filter((item) => item.questionId && item.values && item.values.length > 0)
+      .map((item) => ({
+        questionId: item.questionId,
+        values: item.values,
+      }));
+
+    const result = await apiRequest(`/api/clubs/${applyState.selectedClubId}/applications`, {
       method: "POST",
       body: {
-        answers: [
-          {
-            questionId: 1,
-            values: [reason],
-          },
-          {
-            questionId: 2,
-            values: [intro],
-          },
-        ],
+        answers: requestAnswers,
       },
     });
 
-    localStorage.setItem("latestApplicationExtra", JSON.stringify({ reason, intro }));
+    if (selectedClub) {
+      saveSubmittedApplicationLocally(result, selectedClub, answers);
+    }
 
-    alert("지원서가 제출되었습니다.");
-    window.location.href = "./mypage.html";
+    localStorage.setItem("latestApplicationExtra", JSON.stringify({ answers }));
+
+    alert("지원서가 제출되었습니다. 운영진 지원자 현황에서 확인할 수 있습니다.");
+    window.location.href = "./mypage.html?tab=applications";
   } catch (error) {
     console.error(error);
-    alert(error.message || "지원서 제출에 실패했습니다. 지원 질문 ID가 백엔드와 다를 수 있으니 API 명세서를 확인해주세요.");
+    const message = String(error.message || "");
+    if (message.includes("지원서 질문") || message.includes("질문이 아닙니다")) {
+      alert("지원서 질문 정보가 맞지 않습니다. 동아리를 다시 선택하거나 새로고침 후 다시 제출해주세요.");
+    } else {
+      alert(message || "지원서 제출에 실패했습니다. 지원서 질문을 다시 불러온 뒤 시도해주세요.");
+    }
   } finally {
     if (submitButton) {
       submitButton.disabled = false;

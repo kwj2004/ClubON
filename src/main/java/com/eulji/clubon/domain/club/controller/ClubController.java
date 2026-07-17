@@ -76,7 +76,8 @@ public class ClubController {
         @PathVariable Long clubId,
         Authentication authentication
     ) {
-        ClubDetailResponse response = clubService.getClubDetail(clubId, authentication.getName());
+        String email = authentication == null ? null : authentication.getName();
+        ClubDetailResponse response = clubService.getClubDetail(clubId, email);
 
         return ResponseEntity.ok(ApiResponse.of(
             HttpStatus.OK.value(),

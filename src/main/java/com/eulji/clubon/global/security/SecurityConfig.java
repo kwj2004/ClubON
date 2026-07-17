@@ -48,6 +48,7 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/departments").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/clubs").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/clubs/*").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("SCHOOL_ADMIN")
                         .requestMatchers(HttpMethod.POST,"/api/inquiries").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/clubs/*/bookmarks").hasRole("STUDENT")

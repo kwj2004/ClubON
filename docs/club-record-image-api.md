@@ -58,6 +58,15 @@ await fetch(uploadUrl, {
 
 목록 및 상세 조회 응답에서는 비공개 S3 객체를 볼 수 있는 15분 유효 다운로드 URL로 변환해 반환합니다.
 
+활동기록 상세 조회 응답에는 수정 요청에서 재사용할 원본 객체 키인 `imageKeys`와 화면 표시용 Presigned GET URL인 `imageUrls`가 함께 포함됩니다. 수정 요청에는 `imageUrls`가 아니라 `imageKeys` 값을 전달해야 합니다.
+
+```json
+{
+  "imageKeys": ["club-records/1/uuid.jpg"],
+  "imageUrls": ["https://s3-presigned-download-url..."]
+}
+```
+
 ## 오류
 
 | HTTP | 코드 | 조건 |

@@ -62,8 +62,45 @@
             <div class="signup-field">
               <label for="signupDepartment">학과 <span>*</span></label>
               <select id="signupDepartment" name="department" class="department-select" required>
-                <option value="">학과 목록을 불러오는 중...</option>
-              </select>
+  <option value="">학과를 선택하세요</option>
+
+  <option value="간호학과">간호학과</option>
+  <option value="임상병리학과">임상병리학과</option>
+  <option value="안경광학과">안경광학과</option>
+  <option value="응급구조학과">응급구조학과</option>
+  <option value="방사선학과">방사선학과</option>
+  <option value="치위생학과">치위생학과</option>
+  <option value="물리치료학과">물리치료학과</option>
+  <option value="의료경영학과">의료경영학과</option>
+  <option value="빅데이터인공지능전공">빅데이터인공지능전공</option>
+  <option value="글로벌빅데이터AI학과">글로벌빅데이터AI학과</option>
+  <option value="식품영양전공">식품영양전공</option>
+  <option value="식품생명공학전공">식품생명공학전공</option>
+  <option value="안전공학전공">안전공학전공</option>
+  <option value="화장품과학전공">화장품과학전공</option>
+  <option value="의료공학전공">의료공학전공</option>
+  <option value="인문사회계열학부">인문사회계열학부</option>
+  <option value="레저산업전공">레저산업전공</option>
+  <option value="뷰티아트전공">뷰티아트전공</option>
+  <option value="시각디자인전공">시각디자인전공</option>
+  <option value="사회복지전공">사회복지전공</option>
+  <option value="아동청소년상담전공">아동청소년상담전공</option>
+  <option value="중독상담전공">중독상담전공</option>
+  <option value="장례산업전공">장례산업전공</option>
+  <option value="식품영양학과">식품영양학과</option>
+  <option value="식품산업외식학과">식품산업외식학과</option>
+  <option value="보건환경안전학과">보건환경안전학과</option>
+  <option value="의료IT학과">의료IT학과</option>
+  <option value="의료공학과">의료공학과</option>
+  <option value="미용화장품과학과">미용화장품과학과</option>
+  <option value="의료홍보디자인학과">의료홍보디자인학과</option>
+  <option value="스포츠아웃도어학과">스포츠아웃도어학과</option>
+  <option value="장례지도학과">장례지도학과</option>
+  <option value="중독재활복지학과">중독재활복지학과</option>
+  <option value="유아교육학과">유아교육학과</option>
+  <option value="아동학과">아동학과</option>
+  <option value="빅데이터의료융합학과">빅데이터의료융합학과</option>
+</select>
             </div>
 
             <div class="signup-field">
@@ -154,17 +191,17 @@
               </span>
             </button>
 
-            <button type="button" class="member-type-card" data-role-select="ROLE_CLUB_ADMIN_PENDING">
+            <button type="button" class="member-type-card" data-role-select="ROLE_CLUB_ADMIN">
               <span class="radio-circle"></span>
               <span>
-                <strong>일반 회원 + 동아리 운영자 신청</strong>
-                <em>동아리 운영자 권한을 신청합니다. 승인 후 동아리 정보 수정과 게시물 관리가 가능합니다.</em>
+                <strong>동아리 운영자</strong>
+                <em>가입 후 바로 운영진 메뉴를 사용할 수 있습니다.</em>
               </span>
             </button>
           </div>
 
           <div class="operator-request-box" id="operatorRequestBox">
-            <h2>운영자 신청 정보</h2>
+            <h2>운영자 정보</h2>
 
             <div class="operator-form-grid">
               <div class="signup-field">
@@ -193,11 +230,11 @@
             </div>
 
             <div class="operator-notice">
-              <strong>운영자 신청 안내</strong>
+              <strong>운영자 가입 안내</strong>
               <ul>
-                <li>신청 후 학교에서 검토 및 승인 과정이 진행됩니다.</li>
+                <li>운영자로 가입하면 마이페이지에서 운영진 메뉴가 바로 표시됩니다.</li>
                 <li>동아리의 공지 작성·게시글 관리·동아리 정보 수정 등이 가능합니다.</li>
-                <li>승인 결과는 이메일에서 확인 가능합니다.</li>
+                <li>백엔드 권한 설정이 필요한 API는 서버에서도 운영진 권한이 부여되어야 정상 작동합니다.</li>
               </ul>
             </div>
           </div>
@@ -216,7 +253,7 @@
           <p id="completeMessage">가입을 환영합니다. 동아리 ON에서 동아리 활동을 함께 즐겨요!</p>
 
           <div class="operator-pending-notice" id="operatorPendingNotice">
-            <strong>운영자 신청 안내</strong>
+            <strong>운영자 가입 안내</strong>
             <p>
               운영자 권한은 학교의 승인이 필요합니다.<br />
               승인 결과는 이메일로 안내드리며<br />

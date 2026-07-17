@@ -47,7 +47,7 @@ public class Notification {
     @Column(length = 500)
     private String linkUrl;
 
-    @Column(nullable = false)
+    @Column(name = "is_read", nullable = false, columnDefinition = "boolean default false")
     private boolean read;
 
     @Column(nullable = false, updatable = false)
