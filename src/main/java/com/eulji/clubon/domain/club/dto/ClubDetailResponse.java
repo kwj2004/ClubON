@@ -22,10 +22,17 @@ public record ClubDetailResponse(
         @JsonProperty("isRecruiting")
         boolean isRecruiting,
         @JsonProperty("isBookmarked")
-        boolean isBookmarked
+        boolean isBookmarked,
+        String operatorName,
+        String operatorEmail
 ) {
 
-    public static ClubDetailResponse of(Club club, boolean isBookmarked) {
+    public static ClubDetailResponse of(
+        Club club,
+        boolean isBookmarked,
+        String operatorName,
+        String operatorEmail
+    ) {
         RecruitmentStatusInfo recruitmentStatusInfo = RecruitmentStatusResolver.resolve(
                 club.getStatus(),
                 club.getRecruitPeriod()
@@ -47,7 +54,9 @@ public record ClubDetailResponse(
                 recruitmentStatusInfo.status(),
                 recruitmentStatusInfo.label(),
                 recruitmentStatusInfo.isRecruiting(),
-                isBookmarked
+                isBookmarked,
+                operatorName,
+                operatorEmail
         );
     }
 }

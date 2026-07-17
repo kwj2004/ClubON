@@ -748,6 +748,8 @@ function mapApiClubToDetail(apiClub) {
     email: fallback.email || "club@eulji.ac.kr",
     contactUrl: apiClub.contactUrl || fallback.contactUrl || "",
     isBookmarked: Boolean(apiClub.isBookmarked),
+    operatorName: apiClub.operatorName || "",
+    operatorEmail: apiClub.operatorEmail || "",
     tags: fallback.tags || [`#${CATEGORY_MAP[apiClub.category] || "동아리"}`, "#을지대학교"],
     activities: fallback.activities || [apiClub.activityInfo || "동아리 활동"],
   };
@@ -1198,9 +1200,8 @@ function renderClubDetail() {
   if (memberTitle) memberTitle.textContent = club.name;
 
   const memberValues = [
-    ["회장", club.president || "운영진"],
-    ["전화번호", club.phone || "010-0000-0000"],
-    ["이메일", club.email || "club@eulji.ac.kr"],
+    ["운영진", club.operatorName || "운영진 정보 없음"],
+    ["이메일", club.operatorEmail || "등록된 이메일 없음"],
   ];
 
   memberRows.forEach((row, index) => {
@@ -1822,8 +1823,8 @@ function renderBoardPosts() {
     .join("");
 
   tbody.querySelectorAll("[data-post-id]").forEach((row) => {
-    row.addEventListener("click", () => {
-      openPostDetail(row.dataset.postId);
+    row.addEventListener("click", async () => {
+      await openPostDetail(row.dataset.postId);
     });
   });
 }
@@ -1900,9 +1901,23 @@ function showWriteForm() {
   renderPostCategoryTabs();
 }
 
-function openPostDetail(postId) {
-  const post = increasePostViews(postId);
+async function openPostDetail(postId) {
+  let post = increasePostViews(postId);
   if (!post) return;
+
+  if (typeof apiRequest === "function" && /^\d+$/.test(String(postId))) {
+    try {
+      const result = await apiRequest(`/api/clubs/${club.id}/posts/${postId}`);
+      const detailPost = normalizeApiBoardPost(result.data || {});
+      post = { ...post, ...detailPost };
+
+      const posts = getBoardPosts().filter((item) => String(getBoardPostId(item)) !== String(postId));
+      posts.unshift(post);
+      saveBoardPosts(posts);
+    } catch (error) {
+      console.warn("게시글 상세 API 조회 실패, 목록 데이터를 사용합니다:", error);
+    }
+  }
 
   currentBoardPostId = String(post.id || post.postId || post.postid || postId);
   const deleteButton = document.querySelector("#deletePostBtn");
@@ -1924,11 +1939,16 @@ function openPostDetail(postId) {
       <p>${String(post.content || "").replace(/\n/g, "<br />")}</p>
     `;
 
-    if (post.category === "NOTICE") {
+    const attachedImages = Array.isArray(post.attachmentUrls)
+      ? post.attachmentUrls.filter((url) => /\.(png|jpe?g|gif|webp|bmp|svg)(?:[?#]|$)/i.test(String(url || "")))
+      : [];
+
+    if (attachedImages.length > 0) {
       postBody.innerHTML += `
-        <div class="poster-large post-poster">
-          <img src="${club.posterImage || club.image || './images/likelion-poster.png'}" alt="모집 공지 이미지" onerror="this.style.display='none'; this.parentElement.classList.add('is-empty');" />
-          <p>공지 이미지를 images/likelion-poster.png로 넣으면 여기에 표시됩니다.</p>
+        <div class="post-api-attachments post-image-attachments">
+          ${attachedImages
+            .map((url) => `<img src="${escapeDetailHtml(url)}" alt="게시글 첨부 이미지" loading="lazy" />`)
+            .join("")}
         </div>
       `;
     }
@@ -1980,7 +2000,7 @@ async function openInitialBoardPostFromUrl() {
     });
 
     if (targetPost) {
-      openPostDetail(targetPost.id || targetPost.postId || targetPost.postid || requestedPostId);
+      await openPostDetail(targetPost.id || targetPost.postId || targetPost.postid || requestedPostId);
     }
   }
 

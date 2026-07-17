@@ -41,10 +41,19 @@ public class ClubService {
 
     public ClubDetailResponse getClubDetail(Long clubId, String email) {
         return clubRepository.findById(clubId)
-                .map(club -> ClubDetailResponse.of(
+                .map(club -> {
+                    var operator = clubMembershipRepository
+                        .findFirstByClub_IdAndRoleOrderByJoinedAtAsc(clubId, ClubMemberRole.ADMIN)
+                        .map(membership -> membership.getMember())
+                        .orElse(null);
+
+                    return ClubDetailResponse.of(
                         club,
-                        email != null && clubBookmarkService.isBookmarked(clubId, email)
-                ))
+                        email != null && clubBookmarkService.isBookmarked(clubId, email),
+                        operator == null ? null : operator.getName(),
+                        operator == null ? null : operator.getEmail()
+                    );
+                })
                 .orElseThrow(ClubNotFoundException::new);
     }
 

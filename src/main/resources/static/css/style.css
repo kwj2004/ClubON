@@ -9380,6 +9380,16 @@ body.protected-page-locked .login-required-overlay {
   word-break: break-all;
 }
 
+.post-image-attachments img {
+  display: block;
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
 .operator-quick-link {
   display: inline-flex;
   align-items: center;
