@@ -51,6 +51,9 @@ public class ClubAdminRequest {
 
     private LocalDateTime reviewedAt;
 
+    @Column(length = 500)
+    private String rejectedReason;
+
     @Builder
     public ClubAdminRequest(Member member, Club club, String position) {
         this.member = member;
@@ -67,6 +70,26 @@ public class ClubAdminRequest {
         }
         if (createdAt == null) {
             createdAt = LocalDateTime.now();
+        }
+    }
+
+    public void approve() {
+        validatePending();
+        this.status = ClubAdminRequestStatus.APPROVED;
+        this.reviewedAt = LocalDateTime.now();
+        this.rejectedReason = null;
+    }
+
+    public void reject(String reason) {
+        validatePending();
+        this.status = ClubAdminRequestStatus.REJECTED;
+        this.reviewedAt = LocalDateTime.now();
+        this.rejectedReason = reason;
+    }
+
+    private void validatePending() {
+        if (status != ClubAdminRequestStatus.PENDING) {
+            throw new IllegalStateException("이미 처리된 운영자 신청입니다.");
         }
     }
 }

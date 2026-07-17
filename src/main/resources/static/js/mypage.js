@@ -224,22 +224,14 @@ function getDisplayUser() {
 
 function isOperatorUser() {
   const user = getDisplayUser();
-  const email = getUserEmailForCompare(user) || String(localStorage.getItem("lastLoginEmail") || "").trim().toLowerCase();
-  const signupRole = typeof getSignupAccountRoleForEmail === "function" ? getSignupAccountRoleForEmail(email) : "";
-  if (signupRole === "ROLE_CLUB_ADMIN") return true;
-  if (signupRole === "ROLE_STUDENT") return false;
-
-  const savedRole = typeof getAccountRoleForEmail === "function" ? getAccountRoleForEmail(email) : "";
-  const role = normalizeMyPageRoleValue(user.role || user.signupRole || user.memberType || user.membertype || savedRole || "");
+  const role = normalizeMyPageRoleValue(user.role || user.memberType || user.membertype || "");
   const status = String(user.operatorStatus || user.clubAdminRequestStatus || "").toUpperCase();
 
   return (
     role === "ROLE_CLUB_ADMIN" ||
-    savedRole === "ROLE_CLUB_ADMIN" ||
     user.memberType === "CLUB_ADMIN" ||
     user.membertype === "CLUB_ADMIN" ||
     ["APPROVED", "ACCEPTED", "ACTIVE", "COMPLETE", "COMPLETED"].includes(status) ||
-    Boolean(user.operatorRequest || user.clubAdminRequest) ||
     (Array.isArray(mypageState.operatorClubs) && mypageState.operatorClubs.length > 0)
   );
 }
@@ -730,8 +722,7 @@ function normalizeUserFromApi(data = {}) {
   const normalizedStatus = String(operatorStatus || "").toUpperCase();
   const isApprovedOperator =
     role === "ROLE_CLUB_ADMIN" ||
-    ["APPROVED", "ACCEPTED", "ACTIVE", "COMPLETE", "COMPLETED"].includes(normalizedStatus) ||
-    Boolean(data.operatorRequest || data.clubAdminRequest);
+    ["APPROVED", "ACCEPTED", "ACTIVE", "COMPLETE", "COMPLETED"].includes(normalizedStatus);
 
   return {
     userId: data.userId || data.userid || data.id || "",

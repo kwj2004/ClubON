@@ -4,6 +4,8 @@ import com.eulji.clubon.domain.club.entity.ClubAdminRequest;
 import com.eulji.clubon.domain.club.entity.ClubAdminRequestStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 // 동아리 운영자 신청 저장/조회용 Repository입니다.
 public interface ClubAdminRequestRepository extends JpaRepository<ClubAdminRequest, Long> {
 
@@ -12,4 +14,7 @@ public interface ClubAdminRequestRepository extends JpaRepository<ClubAdminReque
         Long clubId,
         ClubAdminRequestStatus status
     );
+
+    List<ClubAdminRequest> findAllByOrderByCreatedAtDesc();
+    List<ClubAdminRequest> findByStatusOrderByCreatedAtDesc(ClubAdminRequestStatus status);
 }

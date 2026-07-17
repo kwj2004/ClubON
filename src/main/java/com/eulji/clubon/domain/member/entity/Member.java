@@ -90,6 +90,11 @@ public class Member {
         this.updatedAt = LocalDateTime.now();
     }
 
+    public void changeRole(Role role) {
+        this.role = role;
+        this.updatedAt = LocalDateTime.now();
+    }
+
     public boolean isActive() {
         return status == MemberStatus.ACTIVE;
     }

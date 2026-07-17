@@ -78,7 +78,7 @@ document.querySelector("#loginForm")?.addEventListener("submit", async (event) =
   const wasLocallyDeleted =
     typeof isAccountDeleted === "function" && isAccountDeleted(loginEmail);
 
-  const shouldForceOperatorLogin = isSavedLoginOperatorEmail(loginEmail);
+  const shouldForceOperatorLogin = false;
 
   try {
     if (submitButton) {

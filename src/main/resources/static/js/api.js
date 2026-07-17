@@ -336,6 +336,30 @@ function getOperatorRoleOverrideByEmail(email) {
 function applyOperatorRoleOverride(user = {}) {
   const email = normalizeOperatorEmail(user.email || user.loginId || localStorage.getItem("lastLoginEmail") || "");
   const currentRole = getRoleFromAuthData(user);
+
+  // 운영자 권한은 백엔드 role 또는 실제 동아리 ADMIN 멤버십만 신뢰한다.
+  // 과거 localStorage의 운영자 가입 기록으로 서버 권한을 덮어쓰지 않는다.
+  if (currentRole !== "ROLE_CLUB_ADMIN") {
+    return {
+      ...user,
+      email: user.email || email,
+      role: "ROLE_STUDENT",
+      signupRole: "ROLE_STUDENT",
+      memberType: "STUDENT",
+      operatorStatus: user.operatorStatus || user.clubAdminRequestStatus || "NONE",
+    };
+  }
+
+  return {
+    ...user,
+    email: user.email || email,
+    role: "ROLE_CLUB_ADMIN",
+    signupRole: "ROLE_CLUB_ADMIN",
+    memberType: "CLUB_ADMIN",
+    operatorStatus: user.operatorStatus || "APPROVED",
+  };
+
+  /* Legacy localStorage migration code kept unreachable for compatibility reference. */
   const signupAccount = getSignupAccountByEmail(email);
   const signupRole = getSignupAccountRoleForEmail(email);
   const override = getOperatorRoleOverrideByEmail(email) || getStoredOperatorHintByEmail(email);

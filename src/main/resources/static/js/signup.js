@@ -89,9 +89,9 @@ function buildRegisteredUser(responseData = null) {
     name: responseData?.name || values.name,
     studentId: responseData?.studentId || responseData?.studentid || values.studentId,
     department: responseData?.department || values.department,
-    role: isOperatorSignup() ? "ROLE_CLUB_ADMIN" : (responseData?.role || "ROLE_STUDENT"),
-    signupRole: isOperatorSignup() ? "ROLE_CLUB_ADMIN" : selectedRole,
-    operatorStatus: responseData?.clubAdminRequestStatus || (isOperatorSignup() ? "APPROVED" : "NONE"),
+    role: responseData?.role || "ROLE_STUDENT",
+    signupRole: responseData?.role || "ROLE_STUDENT",
+    operatorStatus: responseData?.clubAdminRequestStatus || "NONE",
     createdAt: responseData?.createdAt || "",
   };
 
@@ -113,16 +113,12 @@ function saveRegisteredUser(responseData = null) {
   localStorage.setItem("registeredUser", JSON.stringify(user));
   localStorage.removeItem("currentUser");
 
-  const signupRole = isOperatorSignup() ? "ROLE_CLUB_ADMIN" : "ROLE_STUDENT";
+  const signupRole = user.role || "ROLE_STUDENT";
 
   if (typeof saveSignupAccountForEmail === "function") {
     saveSignupAccountForEmail(user.email, user, signupRole);
   } else if (typeof saveAccountRoleForEmail === "function") {
     saveAccountRoleForEmail(user.email, signupRole);
-  }
-
-  if (isOperatorSignup()) {
-    saveOperatorRoleOverride(user);
   }
 
   return user;
@@ -385,10 +381,10 @@ async function completeSignup() {
 
     saveRegisteredUser(result.data);
 
-    localStorage.setItem("signupRole", selectedRole);
+    localStorage.setItem("signupRole", result.data?.role || "ROLE_STUDENT");
 
     if (typeof saveSignupAccountForEmail === "function") {
-      saveSignupAccountForEmail(values.email, buildRegisteredUser(result.data || {}), isOperatorSignup() ? "ROLE_CLUB_ADMIN" : "ROLE_STUDENT");
+      saveSignupAccountForEmail(values.email, buildRegisteredUser(result.data || {}), result.data?.role || "ROLE_STUDENT");
     }
 
     if (isOperatorSignup()) {
@@ -401,14 +397,13 @@ async function completeSignup() {
         clubName: savedUser.operatorClubName,
         clubRole: savedUser.operatorRole,
       };
-      saveStoredOperatorUser(operatorUser);
-      saveOperatorRoleOverride(operatorUser);
+      localStorage.setItem("registeredUser", JSON.stringify(operatorUser));
 
-      localStorage.setItem("signupStatus", "OPERATOR_COMPLETED");
-      operatorPendingNotice.style.display = "none";
+      localStorage.setItem("signupStatus", "OPERATOR_PENDING");
+      operatorPendingNotice.style.display = "block";
 
-      completeTitle.textContent = "운영자 회원가입이 완료되었습니다!";
-      completeMessage.textContent = "로그인 후 마이페이지에서 운영진 메뉴를 바로 사용할 수 있습니다.";
+      completeTitle.textContent = "운영자 신청이 완료되었습니다!";
+      completeMessage.textContent = "학교 관리자 승인 후 다시 로그인하면 운영진 기능을 이용할 수 있습니다.";
     } else {
       localStorage.setItem("signupStatus", "STUDENT_COMPLETED");
       operatorPendingNotice.style.display = "none";
